@@ -1,0 +1,42 @@
+{
+    "name": "auth-api",
+    "version": "1.0.0",
+    "description": "Clean Architecture case study @dicoding",
+    "main": "index.js",
+    "scripts": {
+        "start": "node ./src/app.js",
+        "start-dev": "nodemon ./src/app.js",
+        "test": "jest --setupFiles dotenv/config",
+        "test-watch": "jest --watchAll --coverage --runInBand --setupFiles dotenv/config",
+        "test-watch-clg": "jest --watchAll --coverage --runInBand --silent=false --setupFiles dotenv/config",
+        "migrate": "node-pg-migrate",
+        "migrate-test": "node-pg-migrate -f ./config/database/test.json"
+    },
+    "keywords": [
+        "auth",
+        "authentication",
+        "api",
+        "auth-api"
+    ],
+    "author": "Qory Amanah Putra",
+    "license": "ISC",
+    "dependencies": {
+        "@hapi/hapi": "^20.2.1",
+        "@hapi/jwt": "^2.1.0",
+        "auto-bind": "^4.0.0",
+        "bcrypt": "^5.0.1",
+        "dotenv": "^11.0.0",
+        "instances-container": "^2.0.5",
+        "nanoid": "^3.1.32",
+        "pg": "^8.7.1"
+    },
+    "devDependencies": {
+        "@types/jest": "^27.4.0",
+        "eslint": "^8.6.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-plugin-import": "^2.25.4",
+        "jest": "^27.4.7",
+        "node-pg-migrate": "^6.2.1",
+        "nodemon": "^2.0.15"
+    }
+}
