@@ -1,4 +1,3 @@
-const AuthenticationError = require('./AuthenticationError');
 const InvariantError = require('./InvariantError');
 
 const DomainErrorTranslator = {
