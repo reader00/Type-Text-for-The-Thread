@@ -252,7 +252,7 @@ describe('/authentications endpoint', () => {
 
             expect(response.statusCode).toEqual(400);
             expect(responseJson.status).toEqual('fail');
-            expect(responseJson.message).toEqual('refresh token tidak ditemukan');
+            expect(responseJson.message).toEqual('refresh token tidak ditemukan di database');
         });
 
         it('should return 200 and new acecss token', async () => {
@@ -364,7 +364,7 @@ describe('/authentications endpoint', () => {
 
             expect(response.statusCode).toEqual(400);
             expect(responseJson.status).toEqual('fail');
-            expect(responseJson.message).toEqual('refresh token tidak ditemukan');
+            expect(responseJson.message).toEqual('refresh token tidak ditemukan di database');
         });
 
         it('should return 200 and success message', async () => {
