@@ -47,5 +47,6 @@ describe('AddCommentUseCase', () => {
                 owner: 'user-123',
             })
         );
+        expect(mockThreadRepository.verifyThreadExist).toBeCalledWith('thread-123');
     });
 });
