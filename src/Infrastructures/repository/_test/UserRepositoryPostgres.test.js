@@ -122,7 +122,7 @@ describe('UserRepositoryPostgres', () => {
             const userRepositoryPostgres = new UserRepositoryPostgres(pool, fageIdGenerator);
 
             // Action and Assert
-            await expect(userRepositoryPostgres.getPasswordByUsername('dicoding')).rejects.toThrowError(
+            await expect(userRepositoryPostgres.getIdByUsername('dicoding')).rejects.toThrowError(
                 'username tidak ditemukan'
             );
         });
