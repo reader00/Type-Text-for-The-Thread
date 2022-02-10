@@ -5,6 +5,8 @@ const AddComment = require('../../../Domains/threads/entities/AddComment');
 const AddedComment = require('../../../Domains/threads/entities/AddedComment');
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
 const AddThread = require('../../../Domains/threads/entities/addThread');
+const GetThreadDetails = require('../../../Domains/threads/entities/GetThreadDetails');
+const ThreadDetails = require('../../../Domains/threads/entities/ThreadDetails');
 const pool = require('../../database/postgres/pool');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
@@ -139,6 +141,45 @@ describe('ThreadRepositoryPostgres', () => {
                     owner: 'user-123',
                 })
             );
+        });
+    });
+
+    describe('getThreadDetails function', () => {
+        it('should persist get thread detail', async () => {
+            // Arrange
+            await ThreadsTableTestHelper.addThread({});
+            const getThreadDetails = new GetThreadDetails({
+                threadId: 'thread-123',
+            });
+
+            const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+            // Action
+            const threadDetails = await threadRepositoryPostgres.getThreadDetails(getThreadDetails);
+
+            // Assert
+            expect(threadDetails).toBeInstanceOf(ThreadDetails);
+        });
+
+        it('should return thread details correctly', async () => {
+            // Arrange
+            await ThreadsTableTestHelper.addThread({});
+            const getThreadDetails = new GetThreadDetails({
+                threadId: 'thread-123',
+            });
+
+            const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+            // Action
+            const threadDetails = await threadRepositoryPostgres.getThreadDetails(getThreadDetails);
+
+            // Assert
+            expect(threadDetails).toHaveProperty('id');
+            expect(threadDetails).toHaveProperty('title');
+            expect(threadDetails).toHaveProperty('body');
+            expect(threadDetails).toHaveProperty('date');
+            expect(threadDetails).toHaveProperty('username');
+            expect(threadDetails).toHaveProperty('comments');
         });
     });
 });

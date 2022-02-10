@@ -3,6 +3,7 @@ const pool = require('../database/postgres/pool');
 const AddedThread = require('../../Domains/threads/entities/AddedThread');
 const AddedComment = require('../../Domains/threads/entities/AddedComment');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
+const ThreadDetails = require('../../Domains/threads/entities/ThreadDetails');
 
 class ThreadRepositoryPostgres extends ThreadRepository {
     constructor(pool, idGenerator) {
@@ -50,6 +51,32 @@ class ThreadRepositoryPostgres extends ThreadRepository {
         const result = await pool.query(query);
 
         return new AddedComment({ ...result.rows[0] });
+    }
+
+    async getThreadDetails({ threadId }) {
+        const threadQuery = {
+            text: `	SELECT t.id, t.title, t.body, CAST(t.date AS VARCHAR) date, u.username
+					FROM threads t
+					JOIN users u ON t.owner = u.id
+					WHERE t.id = $1`,
+            values: [threadId],
+        };
+
+        const commentsQuery = {
+            text: `	SELECT c.id, c.date, c.content, u.username
+					FROM comments c
+					JOIN users u ON c.owner = u.id
+					JOIN threads t ON c.thread_id = t.id
+					WHERE c.thread_id = $1`,
+            values: [threadId],
+        };
+
+        const thread = await this._pool.query(threadQuery);
+        const comments = await this._pool.query(commentsQuery);
+
+        const result = { ...thread.rows[0], comments: comments.rows };
+
+        return new ThreadDetails(result);
     }
 }
 
