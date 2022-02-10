@@ -245,53 +245,6 @@ describe('/threads endpoint', () => {
         });
     });
 
-    describe('when GET /threads/{threadId}', () => {
-        it('should response 200 and persisted thread details', async () => {
-            // Arrange
-            await UsersTableTestHelper.addUser({});
-            const threadId = await ThreadTableTestHelper.addThread({});
-
-            const server = await createServer(container);
-
-            // Action
-            const response = await server.inject({
-                method: 'GET',
-                url: `/threads/${threadId}`,
-            });
-
-            // Assert
-            const responseJson = JSON.parse(response.payload);
-            expect(response.statusCode).toEqual(200);
-            expect(responseJson.status).toEqual('success');
-            expect(responseJson.data.thread).toBeDefined();
-            expect(responseJson.data.thread).toHaveProperty('id');
-            expect(responseJson.data.thread).toHaveProperty('title');
-            expect(responseJson.data.thread).toHaveProperty('body');
-            expect(responseJson.data.thread).toHaveProperty('date');
-            expect(responseJson.data.thread).toHaveProperty('username');
-            expect(responseJson.data.thread).toHaveProperty('comments');
-        });
-
-        it('should response 404 when thread is not exist', async () => {
-            // Arrange
-
-            const server = await createServer(container);
-
-            // Action
-
-            const response = await server.inject({
-                method: 'GET',
-                url: '/threads/thread-123',
-            });
-
-            // Assert
-            const responseJson = JSON.parse(response.payload);
-            expect(response.statusCode).toEqual(404);
-            expect(responseJson.status).toEqual('fail');
-            expect(responseJson.message).toEqual('thread tidak ditemukan');
-        });
-    });
-
     describe('when DELETE /threads/{threadId}/comments/{commentId}', () => {
         it('should response 200 and persisted delete comment', async () => {
             // Arrange
@@ -317,7 +270,7 @@ describe('/threads endpoint', () => {
             expect(responseJson.message).toEqual('berhasil menghapus komentar');
         });
 
-        it('should response 404 when thread is not exist', async () => {
+        it('should response 404 when comment is not exist', async () => {
             // Arrange
             const accessToken = await ServerTestHelper.getAccessToken();
             const threadId = await ThreadTableTestHelper.addThread({});
@@ -339,6 +292,299 @@ describe('/threads endpoint', () => {
             expect(response.statusCode).toEqual(404);
             expect(responseJson.status).toEqual('fail');
             expect(responseJson.message).toEqual('komentar tidak ditemukan');
+        });
+    });
+
+    describe('when POST /threads/{threadId}/comments/{commentId}/replies', () => {
+        it('should response 201 and persisted reply', async () => {
+            // Arrange
+            const requestPayload = {
+                content: 'Hai, apa kabar',
+            };
+            const accessToken = await ServerTestHelper.getAccessToken();
+            const threadId = await ThreadTableTestHelper.addThread({});
+            const commentId = await ThreadTableTestHelper.addComment({});
+
+            const server = await createServer(container);
+
+            // Action
+            const response = await server.inject({
+                method: 'POST',
+                url: `/threads/${threadId}/comments/${commentId}/replies`,
+                payload: requestPayload,
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(201);
+            expect(responseJson.status).toEqual('success');
+            expect(responseJson.data.addedReply).toBeDefined();
+            expect(responseJson.data.addedReply).toHaveProperty('id');
+            expect(responseJson.data.addedReply).toHaveProperty('content');
+            expect(responseJson.data.addedReply).toHaveProperty('owner');
+        });
+
+        it('should response 400 when request payload not contain needed property', async () => {
+            // Arrange
+            const requestPayload = {};
+            const accessToken = await ServerTestHelper.getAccessToken();
+            const threadId = await ThreadTableTestHelper.addThread({});
+            const commentId = await ThreadTableTestHelper.addComment({});
+
+            const server = await createServer(container);
+
+            // Action
+
+            const response = await server.inject({
+                method: 'POST',
+                url: `/threads/${threadId}/comments/${commentId}/replies`,
+                payload: requestPayload,
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(400);
+            expect(responseJson.status).toEqual('fail');
+            expect(responseJson.message).toEqual(
+                'tidak dapat membuat balasan baru karena properti yang dibutuhkan tidak lengkap'
+            );
+        });
+
+        it('should response 400 when request payload not meet data type specification', async () => {
+            // Arrange
+            const requestPayload = {
+                content: 123,
+            };
+            const accessToken = await ServerTestHelper.getAccessToken();
+            const threadId = await ThreadTableTestHelper.addThread({});
+            const commentId = await ThreadTableTestHelper.addComment({});
+
+            const server = await createServer(container);
+
+            // Action
+
+            const response = await server.inject({
+                method: 'POST',
+                url: `/threads/${threadId}/comments/${commentId}/replies`,
+                payload: requestPayload,
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(400);
+            expect(responseJson.status).toEqual('fail');
+            expect(responseJson.message).toEqual(
+                'tidak dapat membuat balasan baru karena tipe data tidak sesuai'
+            );
+        });
+
+        it('should response 404 when comment is not exist', async () => {
+            // Arrange
+            const requestPayload = {
+                content: 'Hai, apa kabar',
+            };
+            const accessToken = await ServerTestHelper.getAccessToken();
+
+            const server = await createServer(container);
+
+            // Action
+
+            const response = await server.inject({
+                method: 'POST',
+                url: '/threads/thread-123/comments/comment-123/replies',
+                payload: requestPayload,
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(404);
+            expect(responseJson.status).toEqual('fail');
+            expect(responseJson.message).toEqual('komentar tidak ditemukan');
+        });
+    });
+
+    describe('when DELETE /threads/{threadId}/comments/{commentId}/replies/{replyId}', () => {
+        it('should response 200 and persisted delete reply', async () => {
+            // Arrange
+            const accessToken = await ServerTestHelper.getAccessToken();
+            const threadId = await ThreadTableTestHelper.addThread({});
+            const commentId = await ThreadTableTestHelper.addComment({});
+            const replyId = await ThreadTableTestHelper.addReply({});
+
+            const server = await createServer(container);
+
+            // Action
+            const response = await server.inject({
+                method: 'DELETE',
+                url: `/threads/${threadId}/comments/${commentId}/replies/${replyId}`,
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(200);
+            expect(responseJson.status).toEqual('success');
+            expect(responseJson.message).toEqual('berhasil menghapus balasan');
+        });
+
+        it('should response 404 when reply is not exist', async () => {
+            // Arrange
+            const accessToken = await ServerTestHelper.getAccessToken();
+            const threadId = await ThreadTableTestHelper.addThread({});
+            const commentId = await ThreadTableTestHelper.addComment({});
+
+            const server = await createServer(container);
+
+            // Action
+
+            const response = await server.inject({
+                method: 'DELETE',
+                url: `/threads/${threadId}/comments/${commentId}/replies/reply-123`,
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(404);
+            expect(responseJson.status).toEqual('fail');
+            expect(responseJson.message).toEqual('balasan tidak ditemukan');
+        });
+    });
+
+    describe('when GET /threads/{threadId}', () => {
+        it('should response 200 and persisted thread details without comments', async () => {
+            // Arrange
+            await UsersTableTestHelper.addUser({});
+            const threadId = await ThreadTableTestHelper.addThread({});
+
+            const server = await createServer(container);
+
+            // Action
+            const response = await server.inject({
+                method: 'GET',
+                url: `/threads/${threadId}`,
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(200);
+            expect(responseJson.status).toEqual('success');
+            expect(responseJson.data.thread).toBeDefined();
+            expect(responseJson.data.thread).toHaveProperty('id');
+            expect(responseJson.data.thread).toHaveProperty('title');
+            expect(responseJson.data.thread).toHaveProperty('body');
+            expect(responseJson.data.thread).toHaveProperty('date');
+            expect(responseJson.data.thread).toHaveProperty('username');
+            expect(responseJson.data.thread).toHaveProperty('comments');
+            expect(responseJson.data.thread.comments).toHaveLength(0);
+        });
+
+        it('should response 200 and persisted thread details with comments', async () => {
+            // Arrange
+            await UsersTableTestHelper.addUser({});
+            const threadId = await ThreadTableTestHelper.addThread({});
+            await ThreadTableTestHelper.addComment({});
+
+            const server = await createServer(container);
+
+            // Action
+            const response = await server.inject({
+                method: 'GET',
+                url: `/threads/${threadId}`,
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(200);
+            expect(responseJson.status).toEqual('success');
+            expect(responseJson.data.thread).toBeDefined();
+            expect(responseJson.data.thread).toHaveProperty('id');
+            expect(responseJson.data.thread).toHaveProperty('title');
+            expect(responseJson.data.thread).toHaveProperty('body');
+            expect(responseJson.data.thread).toHaveProperty('date');
+            expect(responseJson.data.thread).toHaveProperty('username');
+            expect(responseJson.data.thread).toHaveProperty('comments');
+            expect(responseJson.data.thread.comments).toHaveLength(1);
+            expect(responseJson.data.thread.comments[0]).toHaveProperty('id');
+            expect(responseJson.data.thread.comments[0]).toHaveProperty('content');
+            expect(responseJson.data.thread.comments[0]).toHaveProperty('date');
+            expect(responseJson.data.thread.comments[0]).toHaveProperty('username');
+            expect(responseJson.data.thread.comments[0]).toHaveProperty('replies');
+            expect(responseJson.data.thread.comments[0].replies).toHaveLength(0);
+        });
+
+        it('should response 200 and persisted thread details with comments and replies', async () => {
+            // Arrange
+            await UsersTableTestHelper.addUser({});
+            const threadId = await ThreadTableTestHelper.addThread({});
+            await ThreadTableTestHelper.addComment({});
+            await ThreadTableTestHelper.addReply({});
+
+            const server = await createServer(container);
+
+            // Action
+            const response = await server.inject({
+                method: 'GET',
+                url: `/threads/${threadId}`,
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(200);
+            expect(responseJson.status).toEqual('success');
+            expect(responseJson.data.thread).toBeDefined();
+            expect(responseJson.data.thread).toHaveProperty('id');
+            expect(responseJson.data.thread).toHaveProperty('title');
+            expect(responseJson.data.thread).toHaveProperty('body');
+            expect(responseJson.data.thread).toHaveProperty('date');
+            expect(responseJson.data.thread).toHaveProperty('username');
+            expect(responseJson.data.thread).toHaveProperty('comments');
+            expect(responseJson.data.thread.comments).toHaveLength(1);
+            expect(responseJson.data.thread.comments[0]).toHaveProperty('id');
+            expect(responseJson.data.thread.comments[0]).toHaveProperty('content');
+            expect(responseJson.data.thread.comments[0]).toHaveProperty('date');
+            expect(responseJson.data.thread.comments[0]).toHaveProperty('username');
+            expect(responseJson.data.thread.comments[0]).toHaveProperty('replies');
+            expect(responseJson.data.thread.comments[0].replies).toHaveLength(1);
+            expect(responseJson.data.thread.comments[0].replies[0]).toHaveProperty('id');
+            expect(responseJson.data.thread.comments[0].replies[0]).toHaveProperty('content');
+            expect(responseJson.data.thread.comments[0].replies[0]).toHaveProperty('date');
+            expect(responseJson.data.thread.comments[0].replies[0]).toHaveProperty('username');
+        });
+
+        it('should response 404 when thread is not exist', async () => {
+            // Arrange
+
+            const server = await createServer(container);
+
+            // Action
+
+            const response = await server.inject({
+                method: 'GET',
+                url: '/threads/thread-123',
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(404);
+            expect(responseJson.status).toEqual('fail');
+            expect(responseJson.message).toEqual('thread tidak ditemukan');
         });
     });
 });
