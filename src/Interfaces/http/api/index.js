@@ -1,5 +1,6 @@
 const users = require('./users');
-const authentication = require('./authentications');
+const authentications = require('./authentications');
+const threads = require('./threads');
 
 const plugins = (container) => [
     {
@@ -9,7 +10,13 @@ const plugins = (container) => [
         },
     },
     {
-        plugin: authentication,
+        plugin: authentications,
+        options: {
+            container,
+        },
+    },
+    {
+        plugin: threads,
         options: {
             container,
         },
