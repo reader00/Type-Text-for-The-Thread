@@ -3,8 +3,8 @@ const pool = require('../database/postgres/pool');
 const AddedThread = require('../../Domains/threads/entities/AddedThread');
 const AddedComment = require('../../Domains/threads/entities/AddedComment');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
-const ThreadDetails = require('../../Domains/threads/entities/ThreadDetails');
 const ForbiddenError = require('../../Commons/exceptions/ForbiddenError');
+const AddedReply = require('../../Domains/threads/entities/AddedReply');
 
 class ThreadRepositoryPostgres extends ThreadRepository {
     constructor(pool, idGenerator) {
@@ -18,8 +18,8 @@ class ThreadRepositoryPostgres extends ThreadRepository {
         const id = `thread-${this._idGenerator()}`;
 
         const query = {
-            text: 'INSERT INTO threads(id, title, body, owner) VALUES($1, $2, $3, $4) RETURNING id, title, owner',
-            values: [id, title, body, owner],
+            text: 'INSERT INTO threads(id, title, body, owner, date) VALUES($1, $2, $3, $4, $5) RETURNING id, title, owner',
+            values: [id, title, body, owner, new Date().toISOString()],
         };
 
         const result = await pool.query(query);
@@ -53,13 +53,26 @@ class ThreadRepositoryPostgres extends ThreadRepository {
         }
     }
 
+    async verifyReplyExist({ commentId, replyId }) {
+        const query = {
+            text: 'SELECT id FROM replies WHERE id = $1 AND comment_id = $2',
+            values: [replyId, commentId],
+        };
+
+        const results = await this._pool.query(query);
+
+        if (!results.rowCount) {
+            throw new NotFoundError('balasan tidak ditemukan');
+        }
+    }
+
     async addComment(addComment) {
         const { threadId, content, owner } = addComment;
         const id = `comment-${this._idGenerator()}`;
 
         const query = {
-            text: 'INSERT INTO comments(id, thread_id, content, owner) VALUES($1, $2, $3, $4) RETURNING id, content, owner',
-            values: [id, threadId, content, owner],
+            text: 'INSERT INTO comments(id, thread_id, content, owner, date) VALUES($1, $2, $3, $4, $5) RETURNING id, content, owner',
+            values: [id, threadId, content, owner, new Date().toISOString()],
         };
 
         const result = await pool.query(query);
@@ -67,16 +80,18 @@ class ThreadRepositoryPostgres extends ThreadRepository {
         return new AddedComment({ ...result.rows[0] });
     }
 
-    async deleteCommentById({ commentId, owner }) {
+    async addReply(addReply) {
+        const { commentId, content, owner } = addReply;
+        const id = `reply-${this._idGenerator()}`;
+
         const query = {
-            text: `UPDATE comments SET is_deleted = 1 WHERE id = $1 AND owner = $2 RETURNING id`,
-            values: [commentId, owner],
+            text: 'INSERT INTO replies(id, comment_id, content, owner, date) VALUES($1, $2, $3, $4, $5) RETURNING id, content, owner',
+            values: [id, commentId, content, owner, new Date().toISOString()],
         };
 
-        const results = await this._pool.query(query);
-        if (!results.rowCount) {
-            throw new ForbiddenError('anda tidak berhak menghapus komentar ini');
-        }
+        const result = await pool.query(query);
+
+        return new AddedReply({ ...result.rows[0] });
     }
 
     async getThreadDetailsById({ threadId }) {
@@ -97,7 +112,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
         const query = {
             text: `	SELECT
 						c.id,
-						c.date,
+						CAST(c.date AS VARCHAR) date,
 						CASE
 							when c.is_deleted = 1 then '**komentar telah dihapus**'
 						ELSE 
@@ -115,6 +130,54 @@ class ThreadRepositoryPostgres extends ThreadRepository {
         const results = await this._pool.query(query);
 
         return results.rows;
+    }
+
+    async getCommentRepliesById({ commentId }) {
+        const query = {
+            text: `	SELECT
+						r.id,
+						CAST(r.date AS VARCHAR) date,
+						CASE
+							when r.is_deleted = 1 then '**balasan telah dihapus**'
+						ELSE 
+							r.content
+						END AS content,
+						u.username
+					FROM replies r
+					JOIN users u ON r.owner = u.id
+					JOIN comments c ON r.comment_id = c.id
+					WHERE r.comment_id = $1
+					ORDER BY r.date ASC`,
+            values: [commentId],
+        };
+
+        const results = await this._pool.query(query);
+
+        return results.rows;
+    }
+
+    async deleteCommentById({ commentId, owner }) {
+        const query = {
+            text: `UPDATE comments SET is_deleted = 1 WHERE id = $1 AND owner = $2 RETURNING id`,
+            values: [commentId, owner],
+        };
+
+        const results = await this._pool.query(query);
+        if (!results.rowCount) {
+            throw new ForbiddenError('anda tidak berhak menghapus komentar ini');
+        }
+    }
+
+    async deleteReplyById({ replyId, owner }) {
+        const query = {
+            text: `UPDATE replies SET is_deleted = 1 WHERE id = $1 AND owner = $2 RETURNING id`,
+            values: [replyId, owner],
+        };
+
+        const results = await this._pool.query(query);
+        if (!results.rowCount) {
+            throw new ForbiddenError('anda tidak berhak menghapus balasan ini');
+        }
     }
 }
 
