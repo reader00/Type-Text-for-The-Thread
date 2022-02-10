@@ -128,7 +128,7 @@ describe('/threads endpoint', () => {
         });
     });
 
-    describe('when POST /threads/threadId/comments', () => {
+    describe('when POST /threads/{threadId}/comments', () => {
         it('should response 201 and persisted comment', async () => {
             // Arrange
             const requestPayload = {
@@ -235,6 +235,53 @@ describe('/threads endpoint', () => {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(404);
+            expect(responseJson.status).toEqual('fail');
+            expect(responseJson.message).toEqual('thread tidak ditemukan');
+        });
+    });
+
+    describe('when GET /threads/{threadId}', () => {
+        it('should response 201 and persisted thread details', async () => {
+            // Arrange
+            await UsersTableTestHelper.addUser({});
+            const threadId = await ThreadTableTestHelper.addThread({});
+
+            const server = await createServer(container);
+
+            // Action
+            const response = await server.inject({
+                method: 'GET',
+                url: `/threads/${threadId}`,
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(201);
+            expect(responseJson.status).toEqual('success');
+            expect(responseJson.data.thread).toBeDefined();
+            expect(responseJson.data.thread).toHaveProperty('id');
+            expect(responseJson.data.thread).toHaveProperty('title');
+            expect(responseJson.data.thread).toHaveProperty('body');
+            expect(responseJson.data.thread).toHaveProperty('date');
+            expect(responseJson.data.thread).toHaveProperty('username');
+            expect(responseJson.data.thread).toHaveProperty('comments');
+        });
+
+        it('should response 404 when thread is not exist', async () => {
+            // Arrange
+
+            const server = await createServer(container);
+
+            // Action
+
+            const response = await server.inject({
+                method: 'GET',
+                url: '/threads/thread-123',
             });
 
             // Assert
