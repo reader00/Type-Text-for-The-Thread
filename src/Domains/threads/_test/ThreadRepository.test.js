@@ -12,10 +12,19 @@ describe('ThreadRepository interface', () => {
         await expect(threadRepository.verifyThreadExist()).rejects.toThrowError(
             'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
         );
+        await expect(threadRepository.verifyCommentExist()).rejects.toThrowError(
+            'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+        );
         await expect(threadRepository.addComment({})).rejects.toThrowError(
             'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
         );
-        await expect(threadRepository.getThreadDetails({})).rejects.toThrowError(
+        await expect(threadRepository.getThreadDetailsById({})).rejects.toThrowError(
+            'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+        );
+        await expect(threadRepository.getThreadCommentsById({})).rejects.toThrowError(
+            'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+        );
+        await expect(threadRepository.deleteCommentById({})).rejects.toThrowError(
             'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
         );
     });
