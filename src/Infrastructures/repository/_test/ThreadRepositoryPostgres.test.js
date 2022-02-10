@@ -266,6 +266,9 @@ describe('ThreadRepositoryPostgres', () => {
             await expect(threadRepositoryPostgres.deleteCommentById(deleteComment)).resolves.not.toThrow(
                 ForbiddenError
             );
+            const comment = await CommentsTableTestHelper.findCommentById('comment-123');
+            expect(comment).toHaveLength(1);
+            expect(comment[0]).toHaveProperty('is_deleted', 1);
         });
 
         it('should throw ForbiddenError when the access user is not the owner', async () => {
@@ -307,6 +310,9 @@ describe('ThreadRepositoryPostgres', () => {
             await expect(threadRepositoryPostgres.deleteReplyById(deleteReply)).resolves.not.toThrow(
                 ForbiddenError
             );
+            const reply = await RepliesTableTestHelper.findReplyById('reply-123');
+            expect(reply).toHaveLength(1);
+            expect(reply[0]).toHaveProperty('is_deleted', 1);
         });
 
         it('should throw ForbiddenError when the access user is not the owner', async () => {
