@@ -45,17 +45,29 @@ DomainErrorTranslator._dictionaries = {
     'ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
         'tidak dapat membuat komentar baru karena tipe data tidak sesuai'
     ),
+    'DELETE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+        'tidak dapat menghapus komentar karena properti yang dibutuhkan tidak lengkap'
+    ),
+    'DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+        'tidak dapat menghapus komentar karena tipe data tidak sesuai'
+    ),
     'GET_THREAD_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
         'tidak dapat mengambil rincian thread karena properti yang dibutuhkan tidak lengkap'
     ),
     'GET_THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
         'tidak dapat mengambil rincian karena tipe data tidak sesuai'
     ),
-    'DELETE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
-        'tidak dapat menghapus komentar karena properti yang dibutuhkan tidak lengkap'
+    'ADD_REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+        'tidak dapat membuat balasan baru karena properti yang dibutuhkan tidak lengkap'
     ),
-    'DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
-        'tidak dapat menghapus komentar karena tipe data tidak sesuai'
+    'ADD_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+        'tidak dapat membuat balasan baru karena tipe data tidak sesuai'
+    ),
+    'DELETE_REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+        'tidak dapat menghapus balasan karena properti yang dibutuhkan tidak lengkap'
+    ),
+    'DELETE_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+        'tidak dapat menghapus balasan karena tipe data tidak sesuai'
     ),
 };
 
