@@ -3,7 +3,7 @@ const Jwt = require('@hapi/jwt');
 
 const plugins = require('../../Interfaces/http/api');
 const extensions = require('../../Interfaces/http/extensions');
-const { jwtStrategy } = require('./strategy');
+const { jwtStrategy } = require('../../Interfaces/http/strategy');
 
 const createServer = async (container) => {
     const server = Hapi.server({
