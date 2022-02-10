@@ -20,7 +20,7 @@ exports.up = (pgm) => {
         },
         date: {
             type: 'TIMESTAMP',
-            default: 'NOW()',
+            notNull: true,
         },
         is_deleted: {
             type: 'INTEGER',
