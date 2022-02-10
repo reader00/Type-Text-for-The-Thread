@@ -30,6 +30,9 @@ describe('ThreadRepository interface', () => {
         await expect(threadRepository.getThreadCommentsById({})).rejects.toThrowError(
             'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
         );
+        await expect(threadRepository.getCommentRepliesById({})).rejects.toThrowError(
+            'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+        );
         await expect(threadRepository.deleteCommentById({})).rejects.toThrowError(
             'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
         );
