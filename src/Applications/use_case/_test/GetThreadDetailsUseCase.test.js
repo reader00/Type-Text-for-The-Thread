@@ -19,7 +19,22 @@ describe('GetThreadDetailsUseCase', () => {
             body: 'Ku ingin terbang',
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
-            comments: [],
+            comments: [
+                {
+                    id: 'comment-123',
+                    content: 'Tentang cerita dulu',
+                    date: '2021-08-08T07:19:09.775Z',
+                    username: 'dicoding',
+                    replies: [
+                        {
+                            id: 'reply-123',
+                            content: 'Hai, apa kabar',
+                            date: '2021-08-08T07:19:09.775Z',
+                            username: 'dicoding',
+                        },
+                    ],
+                },
+            ],
         });
 
         /** creating dependency of use case */
@@ -29,7 +44,26 @@ describe('GetThreadDetailsUseCase', () => {
         mockThreadRepository.getThreadDetailsById = jest
             .fn()
             .mockImplementation(() => Promise.resolve(expectedAddedThread));
-        mockThreadRepository.getThreadCommentsById = jest.fn().mockImplementation(() => Promise.resolve([]));
+        mockThreadRepository.getThreadCommentsById = jest.fn().mockImplementation(() =>
+            Promise.resolve([
+                {
+                    id: 'comment-123',
+                    content: 'Tentang cerita dulu',
+                    date: '2021-08-08T07:19:09.775Z',
+                    username: 'dicoding',
+                },
+            ])
+        );
+        mockThreadRepository.getCommentRepliesById = jest.fn().mockImplementation(() =>
+            Promise.resolve([
+                {
+                    id: 'reply-123',
+                    content: 'Hai, apa kabar',
+                    date: '2021-08-08T07:19:09.775Z',
+                    username: 'dicoding',
+                },
+            ])
+        );
         mockThreadRepository.verifyThreadExist = jest.fn().mockImplementation(() => Promise.resolve());
 
         /** creating use case instance */
@@ -52,6 +86,7 @@ describe('GetThreadDetailsUseCase', () => {
                 threadId: 'thread-123',
             })
         );
+        expect(mockThreadRepository.getCommentRepliesById).toBeCalledWith({ commentId: 'comment-123' });
         expect(mockThreadRepository.verifyThreadExist).toBeCalledWith('thread-123');
     });
 });

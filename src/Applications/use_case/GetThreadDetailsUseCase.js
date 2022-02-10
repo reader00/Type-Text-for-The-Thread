@@ -1,3 +1,4 @@
+const CommentDetails = require('../../Domains/threads/entities/CommentDetails');
 const GetThreadDetails = require('../../Domains/threads/entities/GetThreadDetails');
 const ThreadDetails = require('../../Domains/threads/entities/ThreadDetails');
 
@@ -13,6 +14,16 @@ class GetThreadDetailsUseCase {
 
         const thread = await this._threadRepository.getThreadDetailsById(getThreadDetails);
         const threadComments = await this._threadRepository.getThreadCommentsById(getThreadDetails);
+
+        for (let i = 0; i < threadComments.length; i++) {
+            const commentReplies = await this._threadRepository.getCommentRepliesById({
+                commentId: threadComments[i].id,
+            });
+            threadComments[i].replies = commentReplies;
+
+            const comment = threadComments[i];
+            new CommentDetails(comment);
+        }
 
         return new ThreadDetails({
             ...thread,
