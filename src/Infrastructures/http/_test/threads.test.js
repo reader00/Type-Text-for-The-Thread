@@ -1,9 +1,11 @@
 const pool = require('../../database/postgres/pool');
-const ThreadTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
+const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const container = require('../../container');
 const createServer = require('../createServer');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ServerTestHelper = require('../../../../tests/ServerTestHelper');
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
+const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
 
 describe('/threads endpoint', () => {
     afterAll(async () => {
@@ -12,7 +14,9 @@ describe('/threads endpoint', () => {
 
     afterEach(async () => {
         await UsersTableTestHelper.cleanTable();
-        await ThreadTableTestHelper.cleanTable();
+        await ThreadsTableTestHelper.cleanTable();
+        await CommentsTableTestHelper.cleanTable();
+        await RepliesTableTestHelper.cleanTable();
     });
 
     describe('when POST /threads', () => {
@@ -135,7 +139,7 @@ describe('/threads endpoint', () => {
                 content: 'Tentang cerita dulu',
             };
             const accessToken = await ServerTestHelper.getAccessToken();
-            const threadId = await ThreadTableTestHelper.addThread({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
 
             const server = await createServer(container);
 
@@ -163,7 +167,7 @@ describe('/threads endpoint', () => {
             // Arrange
             const requestPayload = {};
             const accessToken = await ServerTestHelper.getAccessToken();
-            const threadId = await ThreadTableTestHelper.addThread({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
 
             const server = await createServer(container);
 
@@ -193,7 +197,7 @@ describe('/threads endpoint', () => {
                 content: 123,
             };
             const accessToken = await ServerTestHelper.getAccessToken();
-            const threadId = await ThreadTableTestHelper.addThread({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
 
             const server = await createServer(container);
 
@@ -249,8 +253,8 @@ describe('/threads endpoint', () => {
         it('should response 200 and persisted delete comment', async () => {
             // Arrange
             const accessToken = await ServerTestHelper.getAccessToken();
-            const threadId = await ThreadTableTestHelper.addThread({});
-            const commentId = await ThreadTableTestHelper.addComment({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            const commentId = await CommentsTableTestHelper.addComment({});
 
             const server = await createServer(container);
 
@@ -273,7 +277,7 @@ describe('/threads endpoint', () => {
         it('should response 404 when comment is not exist', async () => {
             // Arrange
             const accessToken = await ServerTestHelper.getAccessToken();
-            const threadId = await ThreadTableTestHelper.addThread({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
 
             const server = await createServer(container);
 
@@ -302,8 +306,8 @@ describe('/threads endpoint', () => {
                 content: 'Hai, apa kabar',
             };
             const accessToken = await ServerTestHelper.getAccessToken();
-            const threadId = await ThreadTableTestHelper.addThread({});
-            const commentId = await ThreadTableTestHelper.addComment({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            const commentId = await CommentsTableTestHelper.addComment({});
 
             const server = await createServer(container);
 
@@ -331,8 +335,8 @@ describe('/threads endpoint', () => {
             // Arrange
             const requestPayload = {};
             const accessToken = await ServerTestHelper.getAccessToken();
-            const threadId = await ThreadTableTestHelper.addThread({});
-            const commentId = await ThreadTableTestHelper.addComment({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            const commentId = await CommentsTableTestHelper.addComment({});
 
             const server = await createServer(container);
 
@@ -362,8 +366,8 @@ describe('/threads endpoint', () => {
                 content: 123,
             };
             const accessToken = await ServerTestHelper.getAccessToken();
-            const threadId = await ThreadTableTestHelper.addThread({});
-            const commentId = await ThreadTableTestHelper.addComment({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            const commentId = await CommentsTableTestHelper.addComment({});
 
             const server = await createServer(container);
 
@@ -419,9 +423,9 @@ describe('/threads endpoint', () => {
         it('should response 200 and persisted delete reply', async () => {
             // Arrange
             const accessToken = await ServerTestHelper.getAccessToken();
-            const threadId = await ThreadTableTestHelper.addThread({});
-            const commentId = await ThreadTableTestHelper.addComment({});
-            const replyId = await ThreadTableTestHelper.addReply({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            const commentId = await CommentsTableTestHelper.addComment({});
+            const replyId = await RepliesTableTestHelper.addReply({});
 
             const server = await createServer(container);
 
@@ -444,8 +448,8 @@ describe('/threads endpoint', () => {
         it('should response 404 when reply is not exist', async () => {
             // Arrange
             const accessToken = await ServerTestHelper.getAccessToken();
-            const threadId = await ThreadTableTestHelper.addThread({});
-            const commentId = await ThreadTableTestHelper.addComment({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            const commentId = await CommentsTableTestHelper.addComment({});
 
             const server = await createServer(container);
 
@@ -471,7 +475,7 @@ describe('/threads endpoint', () => {
         it('should response 200 and persisted thread details without comments', async () => {
             // Arrange
             await UsersTableTestHelper.addUser({});
-            const threadId = await ThreadTableTestHelper.addThread({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
 
             const server = await createServer(container);
 
@@ -498,8 +502,8 @@ describe('/threads endpoint', () => {
         it('should response 200 and persisted thread details with comments', async () => {
             // Arrange
             await UsersTableTestHelper.addUser({});
-            const threadId = await ThreadTableTestHelper.addThread({});
-            await ThreadTableTestHelper.addComment({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            await CommentsTableTestHelper.addComment({});
 
             const server = await createServer(container);
 
@@ -532,9 +536,9 @@ describe('/threads endpoint', () => {
         it('should response 200 and persisted thread details with comments and replies', async () => {
             // Arrange
             await UsersTableTestHelper.addUser({});
-            const threadId = await ThreadTableTestHelper.addThread({});
-            await ThreadTableTestHelper.addComment({});
-            await ThreadTableTestHelper.addReply({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            await CommentsTableTestHelper.addComment({});
+            await RepliesTableTestHelper.addReply({});
 
             const server = await createServer(container);
 

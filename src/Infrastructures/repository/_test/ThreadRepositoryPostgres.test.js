@@ -1,3 +1,5 @@
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
+const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ForbiddenError = require('../../../Commons/exceptions/ForbiddenError');
@@ -21,6 +23,8 @@ describe('ThreadRepositoryPostgres', () => {
 
     afterEach(async () => {
         await ThreadsTableTestHelper.cleanTable();
+        await CommentsTableTestHelper.cleanTable();
+        await RepliesTableTestHelper.cleanTable();
     });
 
     afterAll(async () => {
@@ -110,7 +114,7 @@ describe('ThreadRepositoryPostgres', () => {
         it('should not throw InvariantError when comment is not exist', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            await ThreadsTableTestHelper.addComment({});
+            await CommentsTableTestHelper.addComment({});
             const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
             // Action and Assert
@@ -137,8 +141,8 @@ describe('ThreadRepositoryPostgres', () => {
         it('should not throw InvariantError when reply is not exist', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            await ThreadsTableTestHelper.addComment({});
-            await ThreadsTableTestHelper.addReply({});
+            await CommentsTableTestHelper.addComment({});
+            await RepliesTableTestHelper.addReply({});
             const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
             // Action and Assert
@@ -165,7 +169,7 @@ describe('ThreadRepositoryPostgres', () => {
             await threadRepositoryPostgres.addComment(addComment);
 
             // Assert
-            const comment = await ThreadsTableTestHelper.findCommentById('comment-123');
+            const comment = await CommentsTableTestHelper.findCommentById('comment-123');
             expect(comment).toHaveLength(1);
         });
 
@@ -199,7 +203,7 @@ describe('ThreadRepositoryPostgres', () => {
         it('should persist add reply', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            await ThreadsTableTestHelper.addComment({});
+            await CommentsTableTestHelper.addComment({});
             const addReply = new AddReply({
                 commentId: 'comment-123',
                 content: 'Hai, apa kabar',
@@ -213,14 +217,14 @@ describe('ThreadRepositoryPostgres', () => {
             await threadRepositoryPostgres.addReply(addReply);
 
             // Assert
-            const reply = await ThreadsTableTestHelper.findReplyById('reply-123');
+            const reply = await RepliesTableTestHelper.findReplyById('reply-123');
             expect(reply).toHaveLength(1);
         });
 
         it('should return added reply correctly', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            await ThreadsTableTestHelper.addComment({});
+            await CommentsTableTestHelper.addComment({});
             const addReply = new AddReply({
                 commentId: 'comment-123',
                 content: 'Hai, apa kabar',
@@ -248,7 +252,7 @@ describe('ThreadRepositoryPostgres', () => {
         it('should persist delete comment detail', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            await ThreadsTableTestHelper.addComment({});
+            await CommentsTableTestHelper.addComment({});
 
             const deleteComment = new DeleteComment({
                 threadId: 'thread-123',
@@ -267,7 +271,7 @@ describe('ThreadRepositoryPostgres', () => {
         it('should throw ForbiddenError when the access user is not the owner', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            await ThreadsTableTestHelper.addComment({});
+            await CommentsTableTestHelper.addComment({});
 
             const deleteComment = new DeleteComment({
                 threadId: 'thread-123',
@@ -288,8 +292,8 @@ describe('ThreadRepositoryPostgres', () => {
         it('should persist delete reply detail', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            await ThreadsTableTestHelper.addComment({});
-            await ThreadsTableTestHelper.addReply({});
+            await CommentsTableTestHelper.addComment({});
+            await RepliesTableTestHelper.addReply({});
 
             const deleteReply = new DeleteReply({
                 commentId: 'comment-123',
@@ -308,8 +312,8 @@ describe('ThreadRepositoryPostgres', () => {
         it('should throw ForbiddenError when the access user is not the owner', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            await ThreadsTableTestHelper.addComment({});
-            await ThreadsTableTestHelper.addReply({});
+            await CommentsTableTestHelper.addComment({});
+            await RepliesTableTestHelper.addReply({});
 
             const deleteReply = new DeleteReply({
                 commentId: 'comment-123',
@@ -365,7 +369,7 @@ describe('ThreadRepositoryPostgres', () => {
         it('should return comments correctly', async () => {
             // Arrange
             const threadId = await ThreadsTableTestHelper.addThread({});
-            await ThreadsTableTestHelper.addComment({});
+            await CommentsTableTestHelper.addComment({});
 
             const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
@@ -381,8 +385,8 @@ describe('ThreadRepositoryPostgres', () => {
         it('should return "**komentar telah dihapus**" for deleted comments', async () => {
             // Arrange
             const threadId = await ThreadsTableTestHelper.addThread({});
-            await ThreadsTableTestHelper.addComment({});
-            await ThreadsTableTestHelper.deleteComment({});
+            await CommentsTableTestHelper.addComment({});
+            await CommentsTableTestHelper.deleteComment({});
 
             const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
@@ -400,7 +404,7 @@ describe('ThreadRepositoryPostgres', () => {
         it('should return empty replies', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            const commentId = await ThreadsTableTestHelper.addComment({});
+            const commentId = await CommentsTableTestHelper.addComment({});
 
             const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
@@ -414,8 +418,8 @@ describe('ThreadRepositoryPostgres', () => {
         it('should return replies correctly', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            const commentId = await ThreadsTableTestHelper.addComment({});
-            await ThreadsTableTestHelper.addReply({});
+            const commentId = await CommentsTableTestHelper.addComment({});
+            await RepliesTableTestHelper.addReply({});
 
             const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
@@ -431,9 +435,9 @@ describe('ThreadRepositoryPostgres', () => {
         it('should return "**balasan telah dihapus**" for deleted replies', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            const commentId = await ThreadsTableTestHelper.addComment({});
-            await ThreadsTableTestHelper.addReply({});
-            await ThreadsTableTestHelper.deleteReply({});
+            const commentId = await CommentsTableTestHelper.addComment({});
+            await RepliesTableTestHelper.addReply({});
+            await RepliesTableTestHelper.deleteReply({});
 
             const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
