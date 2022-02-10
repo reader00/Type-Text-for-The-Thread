@@ -22,6 +22,10 @@ exports.up = (pgm) => {
             type: 'TIMESTAMP',
             default: 'NOW()',
         },
+        is_deleted: {
+            type: 'INTEGER',
+            default: 0,
+        },
     });
 
     pgm.addConstraint(
