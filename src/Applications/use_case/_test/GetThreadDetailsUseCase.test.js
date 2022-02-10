@@ -26,9 +26,10 @@ describe('GetThreadDetailsUseCase', () => {
         const mockThreadRepository = new ThreadRepository();
 
         /** mocking needed function */
-        mockThreadRepository.getThreadDetails = jest
+        mockThreadRepository.getThreadDetailsById = jest
             .fn()
             .mockImplementation(() => Promise.resolve(expectedAddedThread));
+        mockThreadRepository.getThreadCommentsById = jest.fn().mockImplementation(() => Promise.resolve([]));
         mockThreadRepository.verifyThreadExist = jest.fn().mockImplementation(() => Promise.resolve());
 
         /** creating use case instance */
@@ -41,10 +42,16 @@ describe('GetThreadDetailsUseCase', () => {
 
         // Assert
         expect(threadDetails).toStrictEqual(expectedAddedThread);
-        expect(mockThreadRepository.getThreadDetails).toBeCalledWith(
+        expect(mockThreadRepository.getThreadDetailsById).toBeCalledWith(
             new GetThreadDetails({
                 threadId: 'thread-123',
             })
         );
+        expect(mockThreadRepository.getThreadCommentsById).toBeCalledWith(
+            new GetThreadDetails({
+                threadId: 'thread-123',
+            })
+        );
+        expect(mockThreadRepository.verifyThreadExist).toBeCalledWith('thread-123');
     });
 });

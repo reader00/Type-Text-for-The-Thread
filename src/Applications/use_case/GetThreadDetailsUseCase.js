@@ -1,4 +1,5 @@
 const GetThreadDetails = require('../../Domains/threads/entities/GetThreadDetails');
+const ThreadDetails = require('../../Domains/threads/entities/ThreadDetails');
 
 class GetThreadDetailsUseCase {
     constructor({ threadRepository }) {
@@ -10,7 +11,13 @@ class GetThreadDetailsUseCase {
 
         await this._threadRepository.verifyThreadExist(useCasePayload.threadId);
 
-        return this._threadRepository.getThreadDetails(getThreadDetails);
+        const thread = await this._threadRepository.getThreadDetailsById(getThreadDetails);
+        const threadComments = await this._threadRepository.getThreadCommentsById(getThreadDetails);
+
+        return new ThreadDetails({
+            ...thread,
+            comments: threadComments,
+        });
     }
 }
 
