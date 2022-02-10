@@ -31,12 +31,12 @@ describe('AddCommentUseCase', () => {
         mockThreadRepository.verifyThreadExist = jest.fn().mockImplementation(() => Promise.resolve());
 
         /** creating use case instance */
-        const getCommentUseCase = new AddCommentUseCase({
+        const addCommentUseCase = new AddCommentUseCase({
             threadRepository: mockThreadRepository,
         });
 
         // Action
-        const addedThread = await getCommentUseCase.execute(useCasePayload);
+        const addedThread = await addCommentUseCase.execute(useCasePayload);
 
         // Assert
         expect(addedThread).toStrictEqual(expectedAddedThread);
