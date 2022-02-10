@@ -4,6 +4,7 @@ const AddedThread = require('../../Domains/threads/entities/AddedThread');
 const AddedComment = require('../../Domains/threads/entities/AddedComment');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const ThreadDetails = require('../../Domains/threads/entities/ThreadDetails');
+const ForbiddenError = require('../../Commons/exceptions/ForbiddenError');
 
 class ThreadRepositoryPostgres extends ThreadRepository {
     constructor(pool, idGenerator) {
@@ -39,6 +40,19 @@ class ThreadRepositoryPostgres extends ThreadRepository {
         }
     }
 
+    async verifyCommentExist({ threadId, commentId }) {
+        const query = {
+            text: 'SELECT id FROM comments WHERE id = $1 AND thread_id = $2',
+            values: [commentId, threadId],
+        };
+
+        const results = await this._pool.query(query);
+
+        if (!results.rowCount) {
+            throw new NotFoundError('komentar tidak ditemukan');
+        }
+    }
+
     async addComment(addComment) {
         const { threadId, content, owner } = addComment;
         const id = `comment-${this._idGenerator()}`;
@@ -53,8 +67,20 @@ class ThreadRepositoryPostgres extends ThreadRepository {
         return new AddedComment({ ...result.rows[0] });
     }
 
-    async getThreadDetails({ threadId }) {
-        const threadQuery = {
+    async deleteCommentById({ commentId, owner }) {
+        const query = {
+            text: `UPDATE comments SET is_deleted = 1 WHERE id = $1 AND owner = $2 RETURNING id`,
+            values: [commentId, owner],
+        };
+
+        const results = await this._pool.query(query);
+        if (!results.rowCount) {
+            throw new ForbiddenError('anda tidak berhak menghapus komentar ini');
+        }
+    }
+
+    async getThreadDetailsById({ threadId }) {
+        const query = {
             text: `	SELECT t.id, t.title, t.body, CAST(t.date AS VARCHAR) date, u.username
 					FROM threads t
 					JOIN users u ON t.owner = u.id
@@ -62,21 +88,33 @@ class ThreadRepositoryPostgres extends ThreadRepository {
             values: [threadId],
         };
 
-        const commentsQuery = {
-            text: `	SELECT c.id, c.date, c.content, u.username
+        const results = await this._pool.query(query);
+
+        return results.rows[0];
+    }
+
+    async getThreadCommentsById({ threadId }) {
+        const query = {
+            text: `	SELECT
+						c.id,
+						c.date,
+						CASE
+							when c.is_deleted = 1 then '**komentar telah dihapus**'
+						ELSE 
+							c.content
+						END AS content,
+						u.username
 					FROM comments c
 					JOIN users u ON c.owner = u.id
 					JOIN threads t ON c.thread_id = t.id
-					WHERE c.thread_id = $1`,
+					WHERE c.thread_id = $1
+					ORDER BY c.date ASC`,
             values: [threadId],
         };
 
-        const thread = await this._pool.query(threadQuery);
-        const comments = await this._pool.query(commentsQuery);
+        const results = await this._pool.query(query);
 
-        const result = { ...thread.rows[0], comments: comments.rows };
-
-        return new ThreadDetails(result);
+        return results.rows;
     }
 }
 

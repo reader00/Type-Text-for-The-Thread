@@ -1,10 +1,12 @@
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
+const ForbiddenError = require('../../../Commons/exceptions/ForbiddenError');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const AddComment = require('../../../Domains/threads/entities/AddComment');
 const AddedComment = require('../../../Domains/threads/entities/AddedComment');
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
 const AddThread = require('../../../Domains/threads/entities/addThread');
+const DeleteComment = require('../../../Domains/threads/entities/DeleteComment');
 const GetThreadDetails = require('../../../Domains/threads/entities/GetThreadDetails');
 const ThreadDetails = require('../../../Domains/threads/entities/ThreadDetails');
 const pool = require('../../database/postgres/pool');
@@ -12,12 +14,7 @@ const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
 describe('ThreadRepositoryPostgres', () => {
     beforeAll(async () => {
-        await UsersTableTestHelper.addUser({
-            id: 'user-123',
-            username: 'dicoding',
-            password: 'secret',
-            fullname: 'Dicoding Indonesia',
-        });
+        await UsersTableTestHelper.addUser({});
     });
 
     afterEach(async () => {
@@ -144,23 +141,47 @@ describe('ThreadRepositoryPostgres', () => {
         });
     });
 
-    describe('getThreadDetails function', () => {
-        it('should persist get thread detail', async () => {
+    describe('deleteCommentById function', () => {
+        it('should persist delete comment detail', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
-            const getThreadDetails = new GetThreadDetails({
+            await ThreadsTableTestHelper.addComment({});
+
+            const getThreadDetails = new DeleteComment({
                 threadId: 'thread-123',
+                commentId: 'comment-123',
+                owner: 'user-123',
             });
 
             const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
-            // Action
-            const threadDetails = await threadRepositoryPostgres.getThreadDetails(getThreadDetails);
-
-            // Assert
-            expect(threadDetails).toBeInstanceOf(ThreadDetails);
+            // Action and Assert
+            await expect(
+                threadRepositoryPostgres.getThreadDetailsById(getThreadDetails)
+            ).resolves.not.toThrow(ForbiddenError);
         });
 
+        it('should throw ForbiddenError when the access user is not the owner', async () => {
+            // Arrange
+            await ThreadsTableTestHelper.addThread({});
+            await ThreadsTableTestHelper.addComment({});
+
+            const deleteComment = new DeleteComment({
+                threadId: 'thread-123',
+                commentId: 'comment-123',
+                owner: 'user-124',
+            });
+
+            const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+            // Action and Assert
+            await expect(threadRepositoryPostgres.deleteCommentById(deleteComment)).rejects.toThrow(
+                ForbiddenError
+            );
+        });
+    });
+
+    describe('getThreadDetailsById function', () => {
         it('should return thread details correctly', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
@@ -171,7 +192,7 @@ describe('ThreadRepositoryPostgres', () => {
             const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
             // Action
-            const threadDetails = await threadRepositoryPostgres.getThreadDetails(getThreadDetails);
+            const threadDetails = await threadRepositoryPostgres.getThreadDetailsById(getThreadDetails);
 
             // Assert
             expect(threadDetails).toHaveProperty('id');
@@ -179,7 +200,54 @@ describe('ThreadRepositoryPostgres', () => {
             expect(threadDetails).toHaveProperty('body');
             expect(threadDetails).toHaveProperty('date');
             expect(threadDetails).toHaveProperty('username');
-            expect(threadDetails).toHaveProperty('comments');
+        });
+    });
+
+    describe('getThreadCommentsById', () => {
+        it('should return empty comments', async () => {
+            // Arrange
+            const threadId = await ThreadsTableTestHelper.addThread({});
+
+            const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+            // Action
+            const comments = await threadRepositoryPostgres.getThreadCommentsById({ threadId });
+
+            // Assert
+            expect(comments).toHaveLength(0);
+        });
+
+        it('should return comments correctly', async () => {
+            // Arrange
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            await ThreadsTableTestHelper.addComment({});
+
+            const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+            // Action
+            const comments = await threadRepositoryPostgres.getThreadCommentsById({ threadId });
+
+            // Assert
+            expect(comments).toHaveLength(1);
+            expect(comments[0]).toHaveProperty('content');
+            expect(comments[0].content).toBeDefined();
+        });
+
+        it('should return "**komentar telah dihapus**" for deleted comments', async () => {
+            // Arrange
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            await ThreadsTableTestHelper.addComment({});
+            await ThreadsTableTestHelper.deleteComment({});
+
+            const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+            // Action
+            const comments = await threadRepositoryPostgres.getThreadCommentsById({ threadId });
+
+            // Assert
+            expect(comments).toHaveLength(1);
+            expect(comments[0]).toHaveProperty('content');
+            expect(comments[0].content).toEqual('**komentar telah dihapus**');
         });
     });
 });
