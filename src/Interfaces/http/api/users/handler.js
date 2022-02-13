@@ -1,4 +1,4 @@
-const AddUserUseCase = require('../../../../Applications/use_case/AdduserUseCase');
+const AddUserUseCase = require('../../../../Applications/use_case/AddUserUseCase');
 const Handler = require('../Handler');
 
 class UsersHandler extends Handler {
