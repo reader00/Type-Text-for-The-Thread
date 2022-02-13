@@ -6,10 +6,11 @@ class CommentDetails {
         this.content = payload.content;
         this.date = payload.date;
         this.username = payload.username;
+        this.replies = payload.replies;
     }
 
-    _verifyPayload({ id, content, date, username }) {
-        if (!id || !content || !date || !username) {
+    _verifyPayload({ id, content, date, username, replies }) {
+        if (!id || !content || !date || !username || !replies) {
             throw new Error('COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
         }
 
@@ -17,7 +18,8 @@ class CommentDetails {
             typeof id !== 'string' ||
             typeof content !== 'string' ||
             typeof date !== 'string' ||
-            typeof username !== 'string'
+            typeof username !== 'string' ||
+            !(replies instanceof Array)
         ) {
             throw new Error('COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
         }

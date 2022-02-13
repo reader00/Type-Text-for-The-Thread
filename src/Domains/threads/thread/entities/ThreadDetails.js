@@ -7,10 +7,11 @@ class ThreadDetails {
         this.body = payload.body;
         this.date = payload.date;
         this.username = payload.username;
+        this.comments = payload.comments;
     }
 
-    _verifyPayload({ id, title, body, date, username }) {
-        if (!id || !title || !body || !date || !username) {
+    _verifyPayload({ id, title, body, date, username, comments }) {
+        if (!id || !title || !body || !date || !username || !comments) {
             throw new Error('THREAD_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
         }
 
@@ -19,7 +20,8 @@ class ThreadDetails {
             typeof title !== 'string' ||
             typeof body !== 'string' ||
             typeof date !== 'string' ||
-            typeof username !== 'string'
+            typeof username !== 'string' ||
+            !(comments instanceof Array)
         ) {
             throw new Error('THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
         }
