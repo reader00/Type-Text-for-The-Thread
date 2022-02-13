@@ -1,4 +1,4 @@
-const ReplyDetails = require('../ReplyDetails');
+const ReplyDetails = require('../../../thread/entities/ReplyDetails');
 
 describe('a ReplyDetails entities', () => {
     it('should throw error when payload did not contain needed property', () => {
