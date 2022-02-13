@@ -13,7 +13,7 @@ describe('commentRepository interface', () => {
             'COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED'
         );
 
-        await expect(commentRepository.getCommentRepliesById({})).rejects.toThrowError(
+        await expect(commentRepository.getCommentsByThreadId({})).rejects.toThrowError(
             'COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED'
         );
 
