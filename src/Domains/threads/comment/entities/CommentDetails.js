@@ -2,15 +2,17 @@ class CommentDetails {
     constructor(payload) {
         this._verifyPayload(payload);
 
-        this.id = payload.id;
-        this.content = payload.content;
-        this.date = payload.date;
-        this.username = payload.username;
-        this.replies = payload.replies;
+        const { id, content, date, username, is_deleted, replies } = payload;
+
+        this.id = id;
+        this.content = is_deleted == 0 ? content : '**komentar telah dihapus**';
+        this.date = `${date}`;
+        this.username = username;
+        this.replies = replies;
     }
 
-    _verifyPayload({ id, content, date, username, replies }) {
-        if (!id || !content || !date || !username || !replies) {
+    _verifyPayload({ id, content, date, username, is_deleted, replies }) {
+        if (!id || !content || !date || !username || !is_deleted || !replies) {
             throw new Error('COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
         }
 
@@ -19,6 +21,7 @@ class CommentDetails {
             typeof content !== 'string' ||
             typeof date !== 'string' ||
             typeof username !== 'string' ||
+            typeof is_deleted !== 'number' ||
             !(replies instanceof Array)
         ) {
             throw new Error('COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');

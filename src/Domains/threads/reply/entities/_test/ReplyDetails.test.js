@@ -18,6 +18,7 @@ describe('a ReplyDetails entities', () => {
             content: 'Hai, apa kabar',
             date: '2021-08-08T07:19:09.775Z',
             username: [],
+            is_deleted: {},
         };
 
         // Action and Assert
@@ -33,6 +34,7 @@ describe('a ReplyDetails entities', () => {
             content: 'Hai, apa kabar',
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
+            is_deleted: 0,
         };
 
         // Action
@@ -41,6 +43,26 @@ describe('a ReplyDetails entities', () => {
         // Assert
         expect(id).toEqual(payload.id);
         expect(content).toEqual(payload.content);
+        expect(date).toEqual(payload.date);
+        expect(username).toEqual(payload.username);
+    });
+
+    it('should create ReplyDetails object when the content is deleted correctly', () => {
+        // Arrange
+        const payload = {
+            id: 'reply-123',
+            content: 'Hai, apa kabar',
+            date: '2021-08-08T07:19:09.775Z',
+            username: 'dicoding',
+            is_deleted: 1,
+        };
+
+        // Action
+        const { id, content, date, username } = new ReplyDetails(payload);
+
+        // Assert
+        expect(id).toEqual(payload.id);
+        expect(content).toEqual('**balasan telah dihapus**');
         expect(date).toEqual(payload.date);
         expect(username).toEqual(payload.username);
     });

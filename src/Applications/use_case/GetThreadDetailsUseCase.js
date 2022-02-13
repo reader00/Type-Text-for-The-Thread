@@ -29,14 +29,8 @@ class GetThreadDetailsUseCase {
         for (let i = 0; i < comments.length; i++) {
             const commentId = comments[i].id;
 
-            comments[i].content =
-                comments[i].is_deleted == 0 ? comments[i].content : '**komentar telah dihapus**';
-            comments[i].date = `${comments[i].date}`;
-
             comments[i].replies = replies.reduce((filtered, reply) => {
                 if (reply.comment_id == commentId) {
-                    reply.content = reply.is_deleted == 0 ? reply.content : '**balasan telah dihapus**';
-                    reply.date = `${reply.date}`;
                     filtered.push(new ReplyDetails(reply));
                 }
 

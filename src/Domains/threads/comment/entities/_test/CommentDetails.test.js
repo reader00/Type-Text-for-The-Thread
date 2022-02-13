@@ -18,6 +18,7 @@ describe('a CommentDetails entities', () => {
             content: 'Tentang cerita dulu',
             date: '2021-08-08T07:19:09.775Z',
             username: [],
+            is_deleted: '',
             replies: {},
         };
 
@@ -30,10 +31,11 @@ describe('a CommentDetails entities', () => {
     it('should create CommentDetails object correctly', () => {
         // Arrange
         const payload = {
-            id: 'reply-123',
+            id: 'comment-123',
             content: 'Tentang cerita dulu',
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
+            is_deleted: 0,
             replies: [],
         };
 
@@ -41,8 +43,30 @@ describe('a CommentDetails entities', () => {
         const { id, content, date, username, replies } = new CommentDetails(payload);
 
         // Assert
-        expect(id).toEqual(payload.id);
-        expect(content).toEqual(payload.content);
+        expect(id).toEqual('reply-123');
+        expect(content).toEqual('Tentang cerita dulu');
+        expect(date).toEqual('2021-08-08T07:19:09.775Z');
+        expect(username).toEqual('dicoding');
+        expect(replies).toStrictEqual([]);
+    });
+
+    it('should create CommentDetails object when the content is deleted correctly', () => {
+        // Arrange
+        const payload = {
+            id: 'comment-123',
+            content: 'Tentang cerita dulu',
+            date: '2021-08-08T07:19:09.775Z',
+            username: 'dicoding',
+            is_deleted: 1,
+            replies: [],
+        };
+
+        // Action
+        const { id, content, date, username, replies } = new CommentDetails(payload);
+
+        // Assert
+        expect(id).toEqual('comment-123');
+        expect(content).toEqual('**komentar telah dihapus**');
         expect(date).toEqual(payload.date);
         expect(username).toEqual(payload.username);
         expect(replies).toStrictEqual(payload.replies);
