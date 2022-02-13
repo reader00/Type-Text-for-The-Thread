@@ -31,7 +31,7 @@ describe('CommentRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(commentRepositoryPostgres.verifyCommentExist('reply-123')).rejects.toThrow(
-                NotFoundError
+                NotFoundError,
             );
         });
 
@@ -46,7 +46,7 @@ describe('CommentRepositoryPostgres', () => {
                 commentRepositoryPostgres.verifyCommentExist({
                     threadId: 'thread-123',
                     commentId: 'comment-123',
-                })
+                }),
             ).resolves.not.toThrowError(NotFoundError);
         });
     });
@@ -99,7 +99,7 @@ describe('CommentRepositoryPostgres', () => {
                     id: 'comment-123',
                     content: 'Hai, apa kabar',
                     owner: 'user-123',
-                })
+                }),
             );
         });
     });
@@ -155,7 +155,7 @@ describe('CommentRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(commentRepositoryPostgres.deleteCommentById(deleteComment)).resolves.not.toThrow(
-                ForbiddenError
+                ForbiddenError,
             );
             const comment = await CommentsTableTestHelper.findCommentById('comment-123');
             expect(comment).toHaveLength(1);
@@ -177,7 +177,7 @@ describe('CommentRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(commentRepositoryPostgres.deleteCommentById(deleteComment)).rejects.toThrow(
-                ForbiddenError
+                ForbiddenError,
             );
             const comment = await CommentsTableTestHelper.findCommentById('comment-123');
             expect(comment).toHaveLength(1);

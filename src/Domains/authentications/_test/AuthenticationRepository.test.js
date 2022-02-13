@@ -7,15 +7,15 @@ describe('UserRepository Interface', () => {
 
         // Action and Assert
         await expect(userRepository.addToken({})).rejects.toThrowError(
-            'AUTHENTICATION_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+            'AUTHENTICATION_REPOSITORY.METHOD_NOT_IMPLEMENTED',
         );
 
         await expect(userRepository.checkAvailabilityToken('')).rejects.toThrowError(
-            'AUTHENTICATION_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+            'AUTHENTICATION_REPOSITORY.METHOD_NOT_IMPLEMENTED',
         );
 
         await expect(userRepository.deleteToken('')).rejects.toThrowError(
-            'AUTHENTICATION_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+            'AUTHENTICATION_REPOSITORY.METHOD_NOT_IMPLEMENTED',
         );
     });
 });

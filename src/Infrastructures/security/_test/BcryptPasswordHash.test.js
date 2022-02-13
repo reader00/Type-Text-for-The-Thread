@@ -28,7 +28,7 @@ describe('BcyptPasswordHash', () => {
 
             // Action and Assert
             await expect(
-                bcryptPasswordHash.comparePassword('wrong_password', encryptedPassword)
+                bcryptPasswordHash.comparePassword('wrong_password', encryptedPassword),
             ).rejects.toThrow(AuthenticationError);
         });
 
@@ -40,7 +40,7 @@ describe('BcyptPasswordHash', () => {
 
             // Action and Assert
             await expect(
-                bcryptPasswordHash.comparePassword('plain_password', encryptedPassword)
+                bcryptPasswordHash.comparePassword('plain_password', encryptedPassword),
             ).resolves.not.toThrow(AuthenticationError);
         });
     });

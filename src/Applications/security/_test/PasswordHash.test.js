@@ -8,7 +8,7 @@ describe('PasswordHash interface', () => {
         // Action and Assert
         await expect(passwordHash.hash('asd')).rejects.toThrowError('PASSWORD_HASH.METHOD_NOT_IMPLEMENTED');
         await expect(passwordHash.comparePassword('asd')).rejects.toThrowError(
-            'PASSWORD_HASH.METHOD_NOT_IMPLEMENTED'
+            'PASSWORD_HASH.METHOD_NOT_IMPLEMENTED',
         );
     });
 });

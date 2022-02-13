@@ -23,7 +23,7 @@ describe('a ReplyDetails entities', () => {
 
         // Action and Assert
         expect(() => new ReplyDetails(payload)).toThrowError(
-            'REPLY_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION'
+            'REPLY_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
@@ -38,7 +38,9 @@ describe('a ReplyDetails entities', () => {
         };
 
         // Action
-        const { id, content, date, username } = new ReplyDetails(payload);
+        const {
+            id, content, date, username,
+        } = new ReplyDetails(payload);
 
         // Assert
         expect(id).toEqual(payload.id);
@@ -58,7 +60,9 @@ describe('a ReplyDetails entities', () => {
         };
 
         // Action
-        const { id, content, date, username } = new ReplyDetails(payload);
+        const {
+            id, content, date, username,
+        } = new ReplyDetails(payload);
 
         // Assert
         expect(id).toEqual(payload.id);

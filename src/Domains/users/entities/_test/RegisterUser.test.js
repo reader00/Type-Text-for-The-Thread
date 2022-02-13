@@ -22,7 +22,7 @@ describe('a RegisterUser entities', () => {
 
         // Action and Assert
         expect(() => new RegisterUser(payload)).toThrowError(
-            'REGISTER_USER.NOT_MEET_DATA_TYPE_SPECIFICATION'
+            'REGISTER_USER.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
@@ -48,7 +48,7 @@ describe('a RegisterUser entities', () => {
 
         // Action and Assert
         expect(() => new RegisterUser(payload)).toThrowError(
-            'REGISTER_USER.USERNAME_CONTAINS_RESTRICTED_CHARACTER'
+            'REGISTER_USER.USERNAME_CONTAINS_RESTRICTED_CHARACTER',
         );
     });
 

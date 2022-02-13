@@ -21,7 +21,7 @@ describe('a DeleteComment entities', () => {
 
         // Action and Assert
         expect(() => new DeleteComment(payload)).toThrowError(
-            'DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION'
+            'DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 

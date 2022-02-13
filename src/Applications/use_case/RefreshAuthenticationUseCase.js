@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 class RefreshAuthenticationUseCase {
     constructor({ authenticationRepository, authenticationTokenManager }) {
         this._authenticationRepository = authenticationRepository;
@@ -10,21 +11,32 @@ class RefreshAuthenticationUseCase {
         const { refreshToken } = useCasePayload;
 
         await this._authenticationTokenManager.verifyRefreshToken(refreshToken);
-        await this._authenticationRepository.checkAvailabilityToken(refreshToken);
-        const { username, id } = await this._authenticationTokenManager.decodePayload(refreshToken);
+        await this._authenticationRepository.checkAvailabilityToken(
+            refreshToken,
+        );
+        const { username, id } =
+            await this._authenticationTokenManager.decodePayload(refreshToken);
 
-        const newAccessToken = await this._authenticationTokenManager.createAccessToken({ username, id });
+        const newAccessToken =
+            await this._authenticationTokenManager.createAccessToken({
+                username,
+                id,
+            });
 
         return newAccessToken;
     }
 
     _validatePayload({ refreshToken }) {
         if (!refreshToken) {
-            throw new Error('REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN');
+            throw new Error(
+                'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN',
+            );
         }
 
         if (typeof refreshToken !== 'string') {
-            throw new Error('REFRESH_AUTHENTICATION_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION');
+            throw new Error(
+                'REFRESH_AUTHENTICATION_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION',
+            );
         }
     }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 class CommentRepository {
     async verifyCommentExist(data) {
         throw new Error('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED');

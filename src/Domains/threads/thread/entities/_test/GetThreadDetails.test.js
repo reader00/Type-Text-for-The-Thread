@@ -14,7 +14,7 @@ describe('a GetThreadDetails entities', () => {
 
         // Action and Assert
         expect(() => new GetThreadDetails(payload)).toThrowError(
-            'GET_THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION'
+            'GET_THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 

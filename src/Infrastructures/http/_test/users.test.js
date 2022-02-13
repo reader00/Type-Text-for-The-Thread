@@ -58,7 +58,7 @@ describe('/users endpoint', () => {
             expect(response.statusCode).toEqual(400);
             expect(responseJson.status).toEqual('fail');
             expect(responseJson.message).toEqual(
-                'tidak dapat membuat user baru karena properti yang dibutuhkan tidak lengkap'
+                'tidak dapat membuat user baru karena properti yang dibutuhkan tidak lengkap',
             );
         });
 
@@ -85,7 +85,7 @@ describe('/users endpoint', () => {
             expect(response.statusCode).toEqual(400);
             expect(responseJson.status).toEqual('fail');
             expect(responseJson.message).toEqual(
-                'tidak dapat membuat user baru karena tipe data tidak sesuai'
+                'tidak dapat membuat user baru karena tipe data tidak sesuai',
             );
         });
 
@@ -113,7 +113,7 @@ describe('/users endpoint', () => {
             expect(response.statusCode).toEqual(400);
             expect(responseJson.status).toEqual('fail');
             expect(responseJson.message).toEqual(
-                'tidak dapat membuat user baru karena karakter username melebihi batas'
+                'tidak dapat membuat user baru karena karakter username melebihi batas',
             );
         });
 
@@ -140,7 +140,7 @@ describe('/users endpoint', () => {
             expect(response.statusCode).toEqual(400);
             expect(responseJson.status).toEqual('fail');
             expect(responseJson.message).toEqual(
-                'tidak dapat membuat user baru karena username mengandung karakter terlarang'
+                'tidak dapat membuat user baru karena username mengandung karakter terlarang',
             );
         });
 

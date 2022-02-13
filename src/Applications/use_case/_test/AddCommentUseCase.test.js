@@ -48,7 +48,7 @@ describe('AddCommentUseCase', () => {
                 threadId: 'thread-123',
                 content: 'Tentang cerita dulu',
                 owner: 'user-123',
-            })
+            }),
         );
         expect(mockThreadRepository.verifyThreadExist).toBeCalledWith('thread-123');
     });

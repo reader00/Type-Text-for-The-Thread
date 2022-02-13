@@ -33,7 +33,7 @@ describe('ReplyRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(replyRepositoryPostgres.verifyReplyExist('reply-123')).rejects.toThrow(
-                NotFoundError
+                NotFoundError,
             );
         });
 
@@ -46,7 +46,7 @@ describe('ReplyRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(
-                replyRepositoryPostgres.verifyReplyExist({ commentId: 'comment-123', replyId: 'reply-123' })
+                replyRepositoryPostgres.verifyReplyExist({ commentId: 'comment-123', replyId: 'reply-123' }),
             ).resolves.not.toThrowError(NotFoundError);
         });
     });
@@ -101,7 +101,7 @@ describe('ReplyRepositoryPostgres', () => {
                     id: 'reply-123',
                     content: 'Hai, apa kabar',
                     owner: 'user-123',
-                })
+                }),
             );
         });
     });
@@ -160,7 +160,7 @@ describe('ReplyRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(replyRepositoryPostgres.deleteReplyById(deleteReply)).resolves.not.toThrow(
-                ForbiddenError
+                ForbiddenError,
             );
             const reply = await RepliesTableTestHelper.findReplyById('reply-123');
             expect(reply).toHaveLength(1);
@@ -183,7 +183,7 @@ describe('ReplyRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(replyRepositoryPostgres.deleteReplyById(deleteReply)).rejects.toThrow(
-                ForbiddenError
+                ForbiddenError,
             );
             const reply = await RepliesTableTestHelper.findReplyById('reply-123');
             expect(reply).toHaveLength(1);

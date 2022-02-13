@@ -44,7 +44,7 @@ describe('AddThreadUseCase', () => {
                 title: 'Di atas Awan',
                 body: 'Ku ingin terbang',
                 owner: 'user-123',
-            })
+            }),
         );
     });
 });

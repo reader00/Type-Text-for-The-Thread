@@ -51,7 +51,9 @@ class ThreadsHandler extends Handler {
         const { threadId, commentId } = request.params;
 
         const addReplyUseCase = this._container.getInstance(AddReplyUseCase.name);
-        const addedReply = await addReplyUseCase.execute({ content, owner, threadId, commentId });
+        const addedReply = await addReplyUseCase.execute({
+            content, owner, threadId, commentId,
+        });
 
         const response = h.response({
             status: 'success',
@@ -103,7 +105,9 @@ class ThreadsHandler extends Handler {
         const { id: owner } = request.auth.credentials;
 
         const deleteReplyUseCase = this._container.getInstance(DeleteReplyUseCase.name);
-        await deleteReplyUseCase.execute({ threadId, commentId, replyId, owner });
+        await deleteReplyUseCase.execute({
+            threadId, commentId, replyId, owner,
+        });
 
         const response = h.response({
             status: 'success',

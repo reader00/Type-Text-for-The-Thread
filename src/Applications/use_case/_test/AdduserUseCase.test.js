@@ -53,7 +53,7 @@ describe('AddUserUseCase', () => {
                 username: useCasePayload.username,
                 password: 'hashed-password',
                 fullname: useCasePayload.fullname,
-            })
+            }),
         );
     });
 });

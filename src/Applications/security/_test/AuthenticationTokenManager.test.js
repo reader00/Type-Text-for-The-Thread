@@ -7,19 +7,19 @@ describe('AuthenticationTokenManager', () => {
 
         // Action and Assert
         expect(tokenManager.createAccessToken('')).rejects.toThrowError(
-            'AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED'
+            'AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED',
         );
 
         expect(tokenManager.createRefreshToken('')).rejects.toThrowError(
-            'AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED'
+            'AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED',
         );
 
         expect(tokenManager.verifyRefreshToken('')).rejects.toThrowError(
-            'AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED'
+            'AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED',
         );
 
         expect(tokenManager.decodePayload('')).rejects.toThrowError(
-            'AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED'
+            'AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED',
         );
     });
 });

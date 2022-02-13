@@ -22,7 +22,7 @@ describe('UserRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).rejects.toThrow(
-                InvariantError
+                InvariantError,
             );
         });
 
@@ -32,7 +32,7 @@ describe('UserRepositoryPostgres', () => {
 
             // Action and Assert
             expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).resolves.not.toThrowError(
-                InvariantError
+                InvariantError,
             );
         });
     });
@@ -77,7 +77,7 @@ describe('UserRepositoryPostgres', () => {
                     id: 'user-123',
                     username: 'dicoding',
                     fullname: 'Dicoding Indonesia',
-                })
+                }),
             );
         });
     });
@@ -90,7 +90,7 @@ describe('UserRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(userRepositoryPostgres.getPasswordByUsername('dicoding')).rejects.toThrowError(
-                'username tidak ditemukan'
+                'username tidak ditemukan',
             );
         });
 
@@ -123,7 +123,7 @@ describe('UserRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(userRepositoryPostgres.getIdByUsername('dicoding')).rejects.toThrowError(
-                'username tidak ditemukan'
+                'username tidak ditemukan',
             );
         });
 

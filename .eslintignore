@@ -1,0 +1,4 @@
+config
+coverege
+node_modules
+**/*.test.js

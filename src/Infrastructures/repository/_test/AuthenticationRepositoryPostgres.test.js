@@ -37,7 +37,7 @@ describe('AuthenticationRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(authenticationRepositoryPostgres.checkAvailabilityToken(token)).rejects.toThrow(
-                InvariantError
+                InvariantError,
             );
         });
 
@@ -50,7 +50,7 @@ describe('AuthenticationRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(authenticationRepositoryPostgres.checkAvailabilityToken(token)).resolves.not.toThrow(
-                InvariantError
+                InvariantError,
             );
         });
     });

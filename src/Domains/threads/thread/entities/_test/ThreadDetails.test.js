@@ -24,7 +24,7 @@ describe('a ThreadDetails entities', () => {
 
         // Action and Assert
         expect(() => new ThreadDetails(payload)).toThrowError(
-            'THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION'
+            'THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
@@ -40,7 +40,9 @@ describe('a ThreadDetails entities', () => {
         };
 
         // Action
-        const { id, title, body, date, username, comments } = new ThreadDetails(payload);
+        const {
+            id, title, body, date, username, comments,
+        } = new ThreadDetails(payload);
 
         // Assert
         expect(id).toEqual(payload.id);

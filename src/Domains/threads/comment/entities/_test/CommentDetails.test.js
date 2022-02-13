@@ -24,7 +24,7 @@ describe('a CommentDetails entities', () => {
 
         // Action and Assert
         expect(() => new CommentDetails(payload)).toThrowError(
-            'COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION'
+            'COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
@@ -40,7 +40,9 @@ describe('a CommentDetails entities', () => {
         };
 
         // Action
-        const { id, content, date, username, replies } = new CommentDetails(payload);
+        const {
+            id, content, date, username, replies,
+        } = new CommentDetails(payload);
 
         // Assert
         expect(id).toEqual(payload.id);
@@ -62,7 +64,9 @@ describe('a CommentDetails entities', () => {
         };
 
         // Action
-        const { id, content, date, username, replies } = new CommentDetails(payload);
+        const {
+            id, content, date, username, replies,
+        } = new CommentDetails(payload);
 
         // Assert
         expect(id).toEqual(payload.id);

@@ -31,7 +31,9 @@ describe('AddReplyUseCase', () => {
         mockReplyRepository.addReply = jest
             .fn()
             .mockImplementation(() => Promise.resolve(expectedAddedReply));
-        mockCommentRepository.verifyCommentExist = jest.fn().mockImplementation(() => Promise.resolve());
+        mockCommentRepository.verifyCommentExist = jest
+            .fn()
+            .mockImplementation(() => Promise.resolve());
 
         /** creating use case instance */
         const addReplyUseCase = new AddReplyUseCase({
@@ -49,7 +51,7 @@ describe('AddReplyUseCase', () => {
                 commentId: 'comment-123',
                 content: 'Tentang cerita dulu',
                 owner: 'user-123',
-            })
+            }),
         );
         expect(mockCommentRepository.verifyCommentExist).toBeCalledWith({
             threadId: 'thread-123',

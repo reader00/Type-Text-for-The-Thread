@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 class ReplyRepository {
     async verifyReplyExist(data) {
         throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');

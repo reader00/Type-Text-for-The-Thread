@@ -10,7 +10,7 @@ describe('RefreshAuthenticationUseCase', () => {
 
         // Action and Assert
         await expect(refreshAuthenticationUseCase.execute(useCasePayload)).rejects.toThrowError(
-            'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN'
+            'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN',
         );
     });
 
@@ -23,7 +23,7 @@ describe('RefreshAuthenticationUseCase', () => {
 
         // Action and Assert
         await expect(refreshAuthenticationUseCase.execute(useCasePayload)).rejects.toThrowError(
-            'REFRESH_AUTHENTICATION_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION'
+            'REFRESH_AUTHENTICATION_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
@@ -41,12 +41,10 @@ describe('RefreshAuthenticationUseCase', () => {
         mockAuthenticationTokenManager.verifyRefreshToken = jest
             .fn()
             .mockImplementation(() => Promise.resolve());
-        mockAuthenticationTokenManager.decodePayload = jest.fn().mockImplementation(() =>
-            Promise.resolve({
-                id: 'user-123',
-                username: 'dicoding',
-            })
-        );
+        mockAuthenticationTokenManager.decodePayload = jest.fn().mockImplementation(() => Promise.resolve({
+            id: 'user-123',
+            username: 'dicoding',
+        }));
         mockAuthenticationTokenManager.createAccessToken = jest
             .fn()
             .mockImplementation(() => Promise.resolve('access_token'));
@@ -62,7 +60,7 @@ describe('RefreshAuthenticationUseCase', () => {
         // Assert
         expect(mockAuthenticationTokenManager.verifyRefreshToken).toBeCalledWith(useCasePayload.refreshToken);
         expect(mockAuthenticationRepository.checkAvailabilityToken).toBeCalledWith(
-            useCasePayload.refreshToken
+            useCasePayload.refreshToken,
         );
         expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(useCasePayload.refreshToken);
         expect(mockAuthenticationTokenManager.createAccessToken).toBeCalledWith({

@@ -1,5 +1,5 @@
+/* eslint-disable no-tabs */
 const ThreadRepository = require('../../Domains/threads/thread/ThreadRepository');
-const pool = require('../database/postgres/pool');
 const AddedThread = require('../../Domains/threads/thread/entities/AddedThread');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 
@@ -19,7 +19,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
             values: [id, title, body, owner, new Date().toISOString()],
         };
 
-        const result = await pool.query(query);
+        const result = await this._pool.query(query);
 
         return new AddedThread({ ...result.rows[0] });
     }

@@ -65,7 +65,7 @@ describe('ThreadRepositoryPostgres', () => {
                     id: 'thread-123',
                     title: 'Di atas Awan',
                     owner: 'user-123',
-                })
+                }),
             );
         });
     });
@@ -77,7 +77,7 @@ describe('ThreadRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(threadRepositoryPostgres.verifyThreadExist('thread-123')).rejects.toThrow(
-                NotFoundError
+                NotFoundError,
             );
         });
 
@@ -88,7 +88,7 @@ describe('ThreadRepositoryPostgres', () => {
 
             // Action and Assert
             await expect(threadRepositoryPostgres.verifyThreadExist('thread-123')).resolves.not.toThrowError(
-                NotFoundError
+                NotFoundError,
             );
         });
     });

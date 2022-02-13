@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable max-len */
 const CommentDetails = require('../../Domains/threads/comment/entities/CommentDetails');
 const ReplyDetails = require('../../Domains/threads/reply/entities/ReplyDetails');
 const GetThreadDetails = require('../../Domains/threads/thread/entities/GetThreadDetails');
@@ -15,23 +17,33 @@ class GetThreadDetailsUseCase {
 
         await this._threadRepository.verifyThreadExist(useCasePayload.threadId);
 
-        const threadDetails = await this._threadRepository.getThreadDetailsById(getThreadDetails);
-        const threadComments = await this._commentRepository.getCommentsByThreadId(getThreadDetails);
-        const threadReplies = await this._replyRepository.getRepliesByThreadId(getThreadDetails);
+        const threadDetails = await this._threadRepository.getThreadDetailsById(
+            getThreadDetails,
+        );
+        const threadComments =
+            await this._commentRepository.getCommentsByThreadId(
+                getThreadDetails,
+            );
+        const threadReplies = await this._replyRepository.getRepliesByThreadId(
+            getThreadDetails,
+        );
 
-        threadDetails.comments = this._getCommentAndReplies(threadComments, threadReplies);
+        threadDetails.comments = this._getCommentAndReplies(
+            threadComments,
+            threadReplies,
+        );
 
         return new ThreadDetails(threadDetails);
     }
 
     _getCommentAndReplies(comments, replies) {
         const commentDetails = [];
-        for (let i = 0; i < comments.length; i++) {
+        for (let i = 0; i < comments.length; i += 1) {
             const commentId = comments[i].id;
 
             comments[i].date = `${comments[i].date}`;
             comments[i].replies = replies.reduce((filtered, reply) => {
-                if (reply.comment_id == commentId) {
+                if (reply.comment_id === commentId) {
                     reply.date = `${reply.date}`;
                     filtered.push(new ReplyDetails(reply));
                 }

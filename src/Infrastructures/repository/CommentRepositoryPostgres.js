@@ -1,5 +1,5 @@
+/* eslint-disable no-tabs */
 const CommentRepository = require('../../Domains/threads/comment/CommentRepository');
-const pool = require('../database/postgres/pool');
 const AddedComment = require('../../Domains/threads/comment/entities/AddedComment');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const ForbiddenError = require('../../Commons/exceptions/ForbiddenError');
@@ -33,7 +33,7 @@ class CommentRepositoryPostgres extends CommentRepository {
             values: [id, threadId, content, owner, new Date().toISOString()],
         };
 
-        const result = await pool.query(query);
+        const result = await this._pool.query(query);
 
         return new AddedComment({ ...result.rows[0] });
     }
@@ -62,13 +62,15 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     async deleteCommentById({ commentId, owner }) {
         const query = {
-            text: `UPDATE comments SET is_deleted = 1 WHERE id = $1 AND owner = $2 RETURNING id`,
+            text: 'UPDATE comments SET is_deleted = 1 WHERE id = $1 AND owner = $2 RETURNING id',
             values: [commentId, owner],
         };
 
         const results = await this._pool.query(query);
         if (!results.rowCount) {
-            throw new ForbiddenError('anda tidak berhak menghapus komentar ini');
+            throw new ForbiddenError(
+                'anda tidak berhak menghapus komentar ini',
+            );
         }
     }
 }

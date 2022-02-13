@@ -9,7 +9,7 @@ describe('LogoutUserUseCase', () => {
 
         // Action and Assert
         await expect(logoutUserUseCase.execute(useCasePayload)).rejects.toThrowError(
-            'LOGOUT_USER_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN'
+            'LOGOUT_USER_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN',
         );
     });
 
@@ -22,7 +22,7 @@ describe('LogoutUserUseCase', () => {
 
         // Action and Assert
         await expect(logoutUserUseCase.execute(useCasePayload)).rejects.toThrowError(
-            'LOGOUT_USER_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION'
+            'LOGOUT_USER_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 

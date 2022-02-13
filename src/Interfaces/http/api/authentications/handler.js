@@ -5,9 +5,13 @@ const Handler = require('../Handler');
 
 class AuthenticationsHandler extends Handler {
     async postAuthenticationHandler(request, h) {
-        const loginUserUseCase = this._container.getInstance(LoginUserUseCase.name);
+        const loginUserUseCase = this._container.getInstance(
+            LoginUserUseCase.name,
+        );
 
-        const { accessToken, refreshToken } = await loginUserUseCase.execute(request.payload);
+        const { accessToken, refreshToken } = await loginUserUseCase.execute(
+            request.payload,
+        );
 
         const response = h.response({
             status: 'success',
@@ -23,28 +27,40 @@ class AuthenticationsHandler extends Handler {
     }
 
     async putAuthenticationHandler(request, h) {
-        const refreshAuthenticationUseCase = this._container.getInstance(RefreshAuthenticationUseCase.name);
+        const refreshAuthenticationUseCase = this._container.getInstance(
+            RefreshAuthenticationUseCase.name,
+        );
 
-        const accessToken = await refreshAuthenticationUseCase.execute(request.payload);
+        const accessToken = await refreshAuthenticationUseCase.execute(
+            request.payload,
+        );
 
-        return {
+        const response = h.response({
             status: 'success',
             message: 'berhasil memperbarui access token',
             data: {
                 accessToken,
             },
-        };
+        });
+
+        response.code(200);
+        return response;
     }
 
     async deleteAuthenticationHandler(request, h) {
-        const logoutUserUseCase = this._container.getInstance(LogoutUserUseCase.name);
+        const logoutUserUseCase = this._container.getInstance(
+            LogoutUserUseCase.name,
+        );
 
         await logoutUserUseCase.execute(request.payload);
 
-        return {
+        const response = h.response({
             status: 'success',
             message: 'berhasil logout',
-        };
+        });
+
+        response.code(200);
+        return response;
     }
 }
 

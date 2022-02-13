@@ -1,5 +1,5 @@
+/* eslint-disable no-tabs */
 const ReplyRepository = require('../../Domains/threads/reply/ReplyRepository');
-const pool = require('../database/postgres/pool');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const ForbiddenError = require('../../Commons/exceptions/ForbiddenError');
 const AddedReply = require('../../Domains/threads/reply/entities/AddedReply');
@@ -33,7 +33,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
             values: [id, commentId, content, owner, new Date().toISOString()],
         };
 
-        const result = await pool.query(query);
+        const result = await this._pool.query(query);
 
         return new AddedReply({ ...result.rows[0] });
     }
@@ -62,7 +62,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     async deleteReplyById({ replyId, owner }) {
         const query = {
-            text: `UPDATE replies SET is_deleted = 1 WHERE id = $1 AND owner = $2 RETURNING id`,
+            text: 'UPDATE replies SET is_deleted = 1 WHERE id = $1 AND owner = $2 RETURNING id',
             values: [replyId, owner],
         };
 
