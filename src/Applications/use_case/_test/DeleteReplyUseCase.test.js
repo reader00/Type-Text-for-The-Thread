@@ -1,6 +1,6 @@
 const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const DeleteReply = require('../../../Domains/threads/reply/entities/DeleteReply');
-const ThreadRepository = require('../../../Domains/threads/thread/ThreadRepository');
+const ReplyRepository = require('../../../Domains/threads/thread/ReplyRepository');
 const DeleteReplyUseCase = require('../DeleteReplyUseCase');
 
 describe('DeleteReplyUseCase', () => {
@@ -16,27 +16,27 @@ describe('DeleteReplyUseCase', () => {
         };
 
         /** creating dependency of use case */
-        const mockThreadRepository = new ThreadRepository();
+        const mockReplyRepository = new ReplyRepository();
 
         /** mocking needed function */
-        mockThreadRepository.deleteReplyById = jest.fn().mockImplementation(() => Promise.resolve());
-        mockThreadRepository.verifyReplyExist = jest.fn().mockImplementation(() => Promise.resolve());
+        mockReplyRepository.deleteReplyById = jest.fn().mockImplementation(() => Promise.resolve());
+        mockReplyRepository.verifyReplyExist = jest.fn().mockImplementation(() => Promise.resolve());
 
         /** creating use case instance */
         const deleteReplyUseCase = new DeleteReplyUseCase({
-            threadRepository: mockThreadRepository,
+            replyRepository: mockReplyRepository,
         });
 
         // Action and Assert
         await expect(deleteReplyUseCase.execute(useCasePayload)).resolves.not.toThrow(InvariantError);
-        expect(mockThreadRepository.deleteReplyById).toBeCalledWith(
+        expect(mockReplyRepository.deleteReplyById).toBeCalledWith(
             new DeleteReply({
                 commentId: 'comment-123',
                 replyId: 'reply-123',
                 owner: 'user-123',
             })
         );
-        expect(mockThreadRepository.verifyReplyExist).toBeCalledWith({
+        expect(mockReplyRepository.verifyReplyExist).toBeCalledWith({
             commentId: 'comment-123',
             replyId: 'reply-123',
         });

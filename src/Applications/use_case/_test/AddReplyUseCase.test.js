@@ -1,6 +1,6 @@
 const AddedReply = require('../../../Domains/threads/reply/entities/AddedReply');
 const AddReply = require('../../../Domains/threads/reply/entities/AddReply');
-const ThreadRepository = require('../../../Domains/threads/thread/ThreadRepository');
+const ReplyRepository = require('../../../Domains/threads/thread/ReplyRepository');
 const AddReplyUseCase = require('../AddReplyUseCase');
 
 describe('AddReplyUseCase', () => {
@@ -23,17 +23,17 @@ describe('AddReplyUseCase', () => {
         });
 
         /** creating dependency of use case */
-        const mockThreadRepository = new ThreadRepository();
+        const mockReplyRepository = new ReplyRepository();
 
         /** mocking needed function */
-        mockThreadRepository.addReply = jest
+        mockReplyRepository.addReply = jest
             .fn()
             .mockImplementation(() => Promise.resolve(expectedAddedReply));
-        mockThreadRepository.verifyCommentExist = jest.fn().mockImplementation(() => Promise.resolve());
+        mockReplyRepository.verifyCommentExist = jest.fn().mockImplementation(() => Promise.resolve());
 
         /** creating use case instance */
         const addReplyUseCase = new AddReplyUseCase({
-            threadRepository: mockThreadRepository,
+            replyRepository: mockReplyRepository,
         });
 
         // Action
@@ -41,14 +41,14 @@ describe('AddReplyUseCase', () => {
 
         // Assert
         expect(addedThread).toStrictEqual(expectedAddedReply);
-        expect(mockThreadRepository.addReply).toBeCalledWith(
+        expect(mockReplyRepository.addReply).toBeCalledWith(
             new AddReply({
                 commentId: 'comment-123',
                 content: 'Tentang cerita dulu',
                 owner: 'user-123',
             })
         );
-        expect(mockThreadRepository.verifyCommentExist).toBeCalledWith({
+        expect(mockReplyRepository.verifyCommentExist).toBeCalledWith({
             threadId: 'thread-123',
             commentId: 'comment-123',
         });

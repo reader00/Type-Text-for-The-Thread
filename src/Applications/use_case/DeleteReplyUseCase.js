@@ -1,19 +1,19 @@
 const DeleteReply = require('../../Domains/threads/reply/entities/DeleteReply');
 
 class DeleteReplyUseCase {
-    constructor({ threadRepository }) {
-        this._threadRepository = threadRepository;
+    constructor({ replyRepository }) {
+        this._replyRepository = replyRepository;
     }
 
     async execute(useCasePayload) {
         const deleteReply = new DeleteReply(useCasePayload);
 
-        await this._threadRepository.verifyReplyExist({
+        await this._replyRepository.verifyReplyExist({
             commentId: useCasePayload.commentId,
             replyId: useCasePayload.replyId,
         });
 
-        return this._threadRepository.deleteReplyById(deleteReply);
+        return this._replyRepository.deleteReplyById(deleteReply);
     }
 }
 

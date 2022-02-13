@@ -1,19 +1,19 @@
 const AddReply = require('../../Domains/threads/reply/entities/AddReply');
 
 class AddReplyUseCase {
-    constructor({ threadRepository }) {
-        this._threadRepository = threadRepository;
+    constructor({ replyRepository }) {
+        this._replyRepository = replyRepository;
     }
 
     async execute(useCasePayload) {
         const addReply = new AddReply(useCasePayload);
 
-        await this._threadRepository.verifyCommentExist({
+        await this._replyRepository.verifyCommentExist({
             threadId: useCasePayload.threadId,
             commentId: useCasePayload.commentId,
         });
 
-        return this._threadRepository.addReply(addReply);
+        return this._replyRepository.addReply(addReply);
     }
 }
 
