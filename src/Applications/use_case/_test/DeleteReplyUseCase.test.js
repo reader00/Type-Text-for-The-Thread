@@ -1,6 +1,6 @@
 const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const DeleteReply = require('../../../Domains/threads/entities/DeleteReply');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const ThreadRepository = require('../../../Domains/threads/thread/ThreadRepository');
 const DeleteReplyUseCase = require('../DeleteReplyUseCase');
 
 describe('DeleteReplyUseCase', () => {

@@ -1,6 +1,6 @@
 const AddedReply = require('../../../Domains/threads/entities/AddedReply');
 const AddReply = require('../../../Domains/threads/entities/AddReply');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const ThreadRepository = require('../../../Domains/threads/thread/ThreadRepository');
 const AddReplyUseCase = require('../AddReplyUseCase');
 
 describe('AddReplyUseCase', () => {

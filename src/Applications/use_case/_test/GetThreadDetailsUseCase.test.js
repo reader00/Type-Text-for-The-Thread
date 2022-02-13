@@ -1,6 +1,6 @@
-const GetThreadDetails = require('../../../Domains/threads/entities/GetThreadDetails');
-const ThreadDetails = require('../../../Domains/threads/entities/ThreadDetails');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const GetThreadDetails = require('../../../Domains/threads/thread/entities/GetThreadDetails');
+const ThreadDetails = require('../../../Domains/threads/thread/entities/ThreadDetails');
+const ThreadRepository = require('../../../Domains/threads/thread/ThreadRepository');
 const GetThreadDetailsUseCase = require('../GetThreadDetailsUseCase');
 
 describe('GetThreadDetailsUseCase', () => {

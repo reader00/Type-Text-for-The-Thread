@@ -7,12 +7,12 @@ const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const AddComment = require('../../../Domains/threads/entities/AddComment');
 const AddedComment = require('../../../Domains/threads/entities/AddedComment');
 const AddedReply = require('../../../Domains/threads/entities/AddedReply');
-const AddedThread = require('../../../Domains/threads/entities/AddedThread');
+const AddedThread = require('../../../Domains/threads/thread/entities/AddedThread');
 const AddReply = require('../../../Domains/threads/entities/AddReply');
-const AddThread = require('../../../Domains/threads/entities/AddThread');
+const AddThread = require('../../../Domains/threads/thread/entities/AddThread');
 const DeleteComment = require('../../../Domains/threads/entities/DeleteComment');
 const DeleteReply = require('../../../Domains/threads/entities/DeleteReply');
-const GetThreadDetails = require('../../../Domains/threads/entities/GetThreadDetails');
+const GetThreadDetails = require('../../../Domains/threads/thread/entities/GetThreadDetails');
 const pool = require('../../database/postgres/pool');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
