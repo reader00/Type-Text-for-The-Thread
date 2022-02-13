@@ -42,6 +42,7 @@ class CommentRepositoryPostgres extends CommentRepository {
         const query = {
             text: `	SELECT
 						c.id,
+						c.thread_id,
 						c.date,
 						c.is_deleted,
 						c.content,

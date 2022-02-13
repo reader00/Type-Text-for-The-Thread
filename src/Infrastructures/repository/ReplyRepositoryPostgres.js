@@ -42,6 +42,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
         const query = {
             text: `	SELECT
 						r.id,
+						r.comment_id,
 						r.date,
 						r.is_deleted,
 						r.content,
