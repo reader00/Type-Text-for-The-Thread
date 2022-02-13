@@ -29,12 +29,14 @@ describe('GetThreadDetailsUseCase', () => {
                     content: 'Tentang cerita dulu',
                     date: '2021-08-08T07:19:09.775Z',
                     username: 'dicoding',
+                    is_deleted: 0,
                     replies: [
                         new ReplyDetails({
                             id: 'reply-123',
                             content: '**balasan telah dihapus**',
                             date: '2021-08-08T07:19:09.775Z',
                             username: 'dicoding',
+                            is_deleted: 1,
                         }),
                     ],
                 }),

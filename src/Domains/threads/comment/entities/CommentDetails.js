@@ -6,13 +6,13 @@ class CommentDetails {
 
         this.id = id;
         this.content = is_deleted == 0 ? content : '**komentar telah dihapus**';
-        this.date = `${date}`;
+        this.date = date;
         this.username = username;
         this.replies = replies;
     }
 
     _verifyPayload({ id, content, date, username, is_deleted, replies }) {
-        if (!id || !content || !date || !username || !is_deleted || !replies) {
+        if (!id || !content || !date || !username || !replies) {
             throw new Error('COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
         }
 

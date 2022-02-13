@@ -29,8 +29,10 @@ class GetThreadDetailsUseCase {
         for (let i = 0; i < comments.length; i++) {
             const commentId = comments[i].id;
 
+            comments[i].date = `${comments[i].date}`;
             comments[i].replies = replies.reduce((filtered, reply) => {
                 if (reply.comment_id == commentId) {
+                    reply.date = `${reply.date}`;
                     filtered.push(new ReplyDetails(reply));
                 }
 
