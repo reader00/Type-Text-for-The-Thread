@@ -1,5 +1,5 @@
 const InvariantError = require('../../../Commons/exceptions/InvariantError');
-const DeleteReply = require('../../../Domains/threads/entities/DeleteReply');
+const DeleteReply = require('../../../Domains/threads/reply/entities/DeleteReply');
 const ThreadRepository = require('../../../Domains/threads/thread/ThreadRepository');
 const DeleteReplyUseCase = require('../DeleteReplyUseCase');
 

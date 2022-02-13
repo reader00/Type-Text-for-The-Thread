@@ -1,5 +1,5 @@
-const AddedReply = require('../../../Domains/threads/entities/AddedReply');
-const AddReply = require('../../../Domains/threads/entities/AddReply');
+const AddedReply = require('../../../Domains/threads/reply/entities/AddedReply');
+const AddReply = require('../../../Domains/threads/reply/entities/AddReply');
 const ThreadRepository = require('../../../Domains/threads/thread/ThreadRepository');
 const AddReplyUseCase = require('../AddReplyUseCase');
 
