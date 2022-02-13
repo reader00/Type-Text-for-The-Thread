@@ -6,16 +6,20 @@ describe('ReplyRepository interface', () => {
         const replyRepository = new ReplyRepository();
 
         // Action and Assert
+        await expect(replyRepository.verifyReplyExist({})).rejects.toThrowError(
+            'REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+        );
+
         await expect(replyRepository.addReply({})).rejects.toThrowError(
-            'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+            'REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED'
         );
 
         await expect(replyRepository.getRepliesByThreadId({})).rejects.toThrowError(
-            'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+            'REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED'
         );
 
         await expect(replyRepository.deleteReplyById({})).rejects.toThrowError(
-            'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED'
+            'REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED'
         );
     });
 });
