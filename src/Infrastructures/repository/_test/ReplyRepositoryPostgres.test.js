@@ -71,6 +71,12 @@ describe('ReplyRepositoryPostgres', () => {
             // Assert
             const reply = await RepliesTableTestHelper.findReplyById('reply-123');
             expect(reply).toHaveLength(1);
+            expect(comment[0]).toHaveProperty('id', 'reply-123');
+            expect(comment[0]).toHaveProperty('comment_id', 'comment-123');
+            expect(comment[0]).toHaveProperty('content', 'Hai, apa kabar');
+            expect(comment[0]).toHaveProperty('owner', 'user-123');
+            expect(comment[0]).toHaveProperty('is_deleted', 0);
+            expect(comment[0]).toHaveProperty('date');
         });
 
         it('should return added reply correctly', async () => {
@@ -129,6 +135,7 @@ describe('ReplyRepositoryPostgres', () => {
             // Assert
             expect(replies).toHaveLength(1);
             expect(comments[0]).toHaveProperty('id', 'reply-123');
+            expect(comments[0]).toHaveProperty('comment_id', 'comment-123');
             expect(comments[0]).toHaveProperty('content', 'Hai, apa kabar');
             expect(comments[0]).toHaveProperty('username', 'dicoding');
             expect(comments[0]).toHaveProperty('id_deleted', 0);

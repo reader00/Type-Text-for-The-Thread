@@ -70,6 +70,7 @@ describe('CommentRepositoryPostgres', () => {
             // Assert
             const comment = await CommentsTableTestHelper.findCommentById('comment-123');
             expect(comment).toHaveLength(1);
+            expect(comment[0]).toHaveProperty('id', 'comment-123');
             expect(comment[0]).toHaveProperty('thread_id', 'thread-123');
             expect(comment[0]).toHaveProperty('content', 'Tentang cerita dulu');
             expect(comment[0]).toHaveProperty('owner', 'user-123');
@@ -130,6 +131,7 @@ describe('CommentRepositoryPostgres', () => {
             // Assert
             expect(comments).toHaveLength(1);
             expect(comments[0]).toHaveProperty('id', 'comment-123');
+            expect(comments[0]).toHaveProperty('thread_id', 'thread-123');
             expect(comments[0]).toHaveProperty('content', 'Tentang cerita dulu');
             expect(comments[0]).toHaveProperty('username', 'dicoding');
             expect(comments[0]).toHaveProperty('id_deleted', 0);
