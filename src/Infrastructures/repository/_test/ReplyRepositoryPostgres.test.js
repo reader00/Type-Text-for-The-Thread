@@ -27,7 +27,7 @@ describe('ReplyRepositoryPostgres', () => {
     });
 
     describe('verifyReplyExist function', () => {
-        it('should throw NotFound when reply is not exist', async () => {
+        it('should throw NotFoundError when reply is not exist', async () => {
             // Arrange
             const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
@@ -37,7 +37,7 @@ describe('ReplyRepositoryPostgres', () => {
             );
         });
 
-        it('should not throw InvariantError when reply is exist', async () => {
+        it('should not throw NotFoundError when reply is exist', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
             await CommentsTableTestHelper.addComment({});

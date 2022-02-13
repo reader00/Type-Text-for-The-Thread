@@ -107,11 +107,11 @@ describe('ThreadRepositoryPostgres', () => {
             const threadDetails = await threadRepositoryPostgres.getThreadDetailsById(getThreadDetails);
 
             // Assert
-            expect(threadDetails).toHaveProperty('id');
-            expect(threadDetails).toHaveProperty('title');
-            expect(threadDetails).toHaveProperty('body');
+            expect(threadDetails).toHaveProperty('id', 'thread-123');
+            expect(threadDetails).toHaveProperty('title', 'Di atas Awan');
+            expect(threadDetails).toHaveProperty('body', 'Ku ingin terbang');
+            expect(threadDetails).toHaveProperty('username', 'dicoding');
             expect(threadDetails).toHaveProperty('date');
-            expect(threadDetails).toHaveProperty('username');
         });
     });
 });
