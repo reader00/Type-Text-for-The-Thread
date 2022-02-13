@@ -1,3 +1,5 @@
+const CommentDetails = require('../../comment/entities/CommentDetails');
+
 class ThreadDetails {
     constructor(payload) {
         this._verifyPayload(payload);

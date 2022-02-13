@@ -1,3 +1,5 @@
+const ReplyDetails = require('../../reply/entities/ReplyDetails');
+
 class CommentDetails {
     constructor(payload) {
         this._verifyPayload(payload);
