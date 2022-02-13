@@ -1,6 +1,6 @@
 const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const DeleteComment = require('../../../Domains/threads/comment/entities/DeleteComment');
-const ThreadRepository = require('../../../Domains/threads/thread/ThreadRepository');
+const CommentRepository = require('../../../Domains/threads/comment/CommentRepository');
 const DeleteCommentUseCase = require('../DeleteCommentUseCase');
 
 describe('DeleteCommentUseCase', () => {
@@ -16,27 +16,27 @@ describe('DeleteCommentUseCase', () => {
         };
 
         /** creating dependency of use case */
-        const mockThreadRepository = new ThreadRepository();
+        const mockCommentRepository = new CommentRepository();
 
         /** mocking needed function */
-        mockThreadRepository.deleteCommentById = jest.fn().mockImplementation(() => Promise.resolve());
-        mockThreadRepository.verifyCommentExist = jest.fn().mockImplementation(() => Promise.resolve());
+        mockCommentRepository.deleteCommentById = jest.fn().mockImplementation(() => Promise.resolve());
+        mockCommentRepository.verifyCommentExist = jest.fn().mockImplementation(() => Promise.resolve());
 
         /** creating use case instance */
         const deleteCommentUseCase = new DeleteCommentUseCase({
-            threadRepository: mockThreadRepository,
+            commentRepository: mockCommentRepository,
         });
 
         // Action and Assert
         await expect(deleteCommentUseCase.execute(useCasePayload)).resolves.not.toThrow(InvariantError);
-        expect(mockThreadRepository.deleteCommentById).toBeCalledWith(
+        expect(mockCommentRepository.deleteCommentById).toBeCalledWith(
             new DeleteComment({
                 threadId: 'thread-123',
                 commentId: 'comment-123',
                 owner: 'user-123',
             })
         );
-        expect(mockThreadRepository.verifyCommentExist).toBeCalledWith({
+        expect(mockCommentRepository.verifyCommentExist).toBeCalledWith({
             threadId: 'thread-123',
             commentId: 'comment-123',
         });
