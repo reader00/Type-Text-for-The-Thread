@@ -1,19 +1,19 @@
-class ThreadRepository {
+class CommentRepository {
     async verifyCommentExist(data) {
-        throw new Error('THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+        throw new Error('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED');
     }
 
     async addComment(addComment) {
-        throw new Error('THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+        throw new Error('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED');
     }
 
     async getCommentsByThreadId(threadId) {
-        throw new Error('THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+        throw new Error('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED');
     }
 
     async deleteCommentById(commentId) {
-        throw new Error('THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+        throw new Error('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED');
     }
 }
 
-module.exports = ThreadRepository;
+module.exports = CommentRepository;
