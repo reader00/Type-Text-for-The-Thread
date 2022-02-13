@@ -1,6 +1,6 @@
 const RegisterUser = require('../../Domains/users/entities/RegisterUser');
 
-class AddUseruseCase {
+class AddUserUseCase {
     constructor({ userRepository, passwordHash }) {
         this._userRepository = userRepository;
         this._passwordHash = passwordHash;
@@ -17,4 +17,4 @@ class AddUseruseCase {
     }
 }
 
-module.exports = AddUseruseCase;
+module.exports = AddUserUseCase;

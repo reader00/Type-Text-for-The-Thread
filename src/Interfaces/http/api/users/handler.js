@@ -3,8 +3,8 @@ const Handler = require('../Handler');
 
 class UsersHandler extends Handler {
     async postUserHandler(request, h) {
-        const adduserUseCase = this._container.getInstance(AddUserUseCase.name);
-        const addedUser = await adduserUseCase.execute(request.payload);
+        const addUserUseCase = this._container.getInstance(AddUserUseCase.name);
+        const addedUser = await addUserUseCase.execute(request.payload);
 
         const response = h.response({
             status: 'success',
