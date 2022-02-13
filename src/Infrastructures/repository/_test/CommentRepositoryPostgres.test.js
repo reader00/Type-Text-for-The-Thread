@@ -134,29 +134,13 @@ describe('CommentRepositoryPostgres', () => {
             expect(comments[0]).toHaveProperty('thread_id', 'thread-123');
             expect(comments[0]).toHaveProperty('content', 'Tentang cerita dulu');
             expect(comments[0]).toHaveProperty('username', 'dicoding');
-            expect(comments[0]).toHaveProperty('id_deleted', 0);
+            expect(comments[0]).toHaveProperty('is_deleted', 0);
             expect(comments[0]).toHaveProperty('date');
-        });
-
-        it('should return "**komentar telah dihapus**" for deleted comments', async () => {
-            // Arrange
-            const threadId = await ThreadsTableTestHelper.addThread({});
-            await CommentsTableTestHelper.addComment({});
-            await CommentsTableTestHelper.deleteComment({});
-
-            const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
-
-            // Action
-            const comments = await commentRepositoryPostgres.getCommentsByThreadId({ threadId });
-
-            // Assert
-            expect(comments).toHaveLength(1);
-            expect(comments[0]).toHaveProperty('content', '**komentar telah dihapus**');
         });
     });
 
     describe('deleteCommentById function', () => {
-        it('should persist delete comment detail', async () => {
+        it('should persist delete comment', async () => {
             // Arrange
             await ThreadsTableTestHelper.addThread({});
             await CommentsTableTestHelper.addComment({});
@@ -174,7 +158,8 @@ describe('CommentRepositoryPostgres', () => {
                 ForbiddenError
             );
             const comment = await CommentsTableTestHelper.findCommentById('comment-123');
-            expect(comment).toHaveLength(0);
+            expect(comment).toHaveLength(1);
+            expect(comment[0]).toHaveProperty('is_deleted', 1);
         });
 
         it('should throw ForbiddenError when the access user is not the owner', async () => {

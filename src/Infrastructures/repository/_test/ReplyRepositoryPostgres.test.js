@@ -3,7 +3,7 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ForbiddenError = require('../../../Commons/exceptions/ForbiddenError');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const AddedReply = require('../../../Domains/threads/reply/entities/AddedReply');
-const AddReply = require('../../../Domains/threads/entities/AddReply');
+const AddReply = require('../../../Domains/threads/reply/entities/AddReply');
 const DeleteReply = require('../../../Domains/threads/reply/entities/DeleteReply');
 const pool = require('../../database/postgres/pool');
 const ReplyRepositoryPostgres = require('../ReplyRepositoryPostgres');
@@ -71,12 +71,12 @@ describe('ReplyRepositoryPostgres', () => {
             // Assert
             const reply = await RepliesTableTestHelper.findReplyById('reply-123');
             expect(reply).toHaveLength(1);
-            expect(comment[0]).toHaveProperty('id', 'reply-123');
-            expect(comment[0]).toHaveProperty('comment_id', 'comment-123');
-            expect(comment[0]).toHaveProperty('content', 'Hai, apa kabar');
-            expect(comment[0]).toHaveProperty('owner', 'user-123');
-            expect(comment[0]).toHaveProperty('is_deleted', 0);
-            expect(comment[0]).toHaveProperty('date');
+            expect(reply[0]).toHaveProperty('id', 'reply-123');
+            expect(reply[0]).toHaveProperty('comment_id', 'comment-123');
+            expect(reply[0]).toHaveProperty('content', 'Hai, apa kabar');
+            expect(reply[0]).toHaveProperty('owner', 'user-123');
+            expect(reply[0]).toHaveProperty('is_deleted', 0);
+            expect(reply[0]).toHaveProperty('date');
         });
 
         it('should return added reply correctly', async () => {
@@ -130,33 +130,16 @@ describe('ReplyRepositoryPostgres', () => {
             const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
             // Action
-            const replies = await replyRepositoryPostgres.getCommentRepliesById({ threadId });
+            const replies = await replyRepositoryPostgres.getRepliesByThreadId({ threadId });
 
             // Assert
             expect(replies).toHaveLength(1);
-            expect(comments[0]).toHaveProperty('id', 'reply-123');
-            expect(comments[0]).toHaveProperty('comment_id', 'comment-123');
-            expect(comments[0]).toHaveProperty('content', 'Hai, apa kabar');
-            expect(comments[0]).toHaveProperty('username', 'dicoding');
-            expect(comments[0]).toHaveProperty('id_deleted', 0);
-            expect(comments[0]).toHaveProperty('date');
-        });
-
-        it('should return "**balasan telah dihapus**" for deleted replies', async () => {
-            // Arrange
-            const threadId = await ThreadsTableTestHelper.addThread({});
-            await CommentsTableTestHelper.addComment({});
-            await RepliesTableTestHelper.addReply({});
-            await RepliesTableTestHelper.deleteReply({});
-
-            const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
-
-            // Action
-            const replies = await replyRepositoryPostgres.getCommentRepliesById({ threadId });
-
-            // Assert
-            expect(replies).toHaveLength(1);
-            expect(replies[0]).toHaveProperty('content', '**balasan telah dihapus**');
+            expect(replies[0]).toHaveProperty('id', 'reply-123');
+            expect(replies[0]).toHaveProperty('is_deleted', 0);
+            expect(replies[0]).toHaveProperty('comment_id', 'comment-123');
+            expect(replies[0]).toHaveProperty('content', 'Hai, apa kabar');
+            expect(replies[0]).toHaveProperty('username', 'dicoding');
+            expect(replies[0]).toHaveProperty('date');
         });
     });
 
@@ -180,7 +163,8 @@ describe('ReplyRepositoryPostgres', () => {
                 ForbiddenError
             );
             const reply = await RepliesTableTestHelper.findReplyById('reply-123');
-            expect(reply).toHaveLength(0);
+            expect(reply).toHaveLength(1);
+            expect(reply[0]).toHaveProperty('is_deleted', 1);
         });
 
         it('should throw ForbiddenError when the access user is not the owner', async () => {
