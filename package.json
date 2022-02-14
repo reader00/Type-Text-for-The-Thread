@@ -7,8 +7,8 @@
         "start": "node ./src/app.js",
         "start:dev": "nodemon ./src/app.js",
         "test": "jest --setupFiles dotenv/config",
-        "test:watch": "jest --watchAll --coverage --runInBand --setupFiles dotenv/config",
-        "test:watch-clg": "jest --watchAll --coverage --runInBand --silent=false --setupFiles dotenv/config",
+        "test:watch": "jest --watchAll --coverage --runInBand --no-cache --setupFiles dotenv/config",
+        "test:watch-clg": "jest --watchAll --coverage --runInBand --no-cache --silent=false --setupFiles dotenv/config",
         "migrate": "node-pg-migrate",
         "migrate:test": "node-pg-migrate -f ./config/database/test.json"
     },
@@ -36,7 +36,7 @@
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-plugin-import": "^2.25.4",
         "eslint-plugin-jest": "^26.1.0",
-        "jest": "^27.4.7",
+        "jest": "^27.5.1",
         "node-pg-migrate": "^6.2.1",
         "nodemon": "^2.0.15"
     }
