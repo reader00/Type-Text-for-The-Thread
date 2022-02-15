@@ -21,4 +21,19 @@ describe('NewAuth entity', () => {
         // Action and Assert
         expect(() => new NewAuth(authPayload)).toThrowError('NEW_AUTH.NOT_MEET_DATA_TYPE_SPECIFICATION');
     });
+
+    it('should return NewAuth object correctly', () => {
+        // Arrange
+        const payload = {
+            accessToken: 'access token',
+            refreshToken: 'refresh token',
+        };
+
+        // Action
+        const { accessToken, refreshToken } = new NewAuth(payload);
+
+        // Assert
+        expect(accessToken).toBe(payload.accessToken);
+        expect(refreshToken).toBe(payload.refreshToken);
+    });
 });
