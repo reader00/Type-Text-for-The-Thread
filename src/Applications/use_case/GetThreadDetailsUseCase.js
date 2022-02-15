@@ -17,21 +17,11 @@ class GetThreadDetailsUseCase {
 
         await this._threadRepository.verifyThreadExist(useCasePayload.threadId);
 
-        const threadDetails = await this._threadRepository.getThreadDetailsById(
-            getThreadDetails,
-        );
-        const threadComments =
-            await this._commentRepository.getCommentsByThreadId(
-                getThreadDetails,
-            );
-        const threadReplies = await this._replyRepository.getRepliesByThreadId(
-            getThreadDetails,
-        );
+        const threadDetails = await this._threadRepository.getThreadDetailsById(getThreadDetails);
+        const threadComments = await this._commentRepository.getCommentsByThreadId(getThreadDetails);
+        const threadReplies = await this._replyRepository.getRepliesByThreadId(getThreadDetails);
 
-        threadDetails.comments = this._getCommentAndReplies(
-            threadComments,
-            threadReplies,
-        );
+        threadDetails.comments = this._getCommentAndReplies(threadComments, threadReplies);
 
         return new ThreadDetails(threadDetails);
     }
@@ -46,9 +36,10 @@ class GetThreadDetailsUseCase {
                 if (reply.comment_id === commentId) {
                     reply.date = `${reply.date}`;
                     filtered.push(new ReplyDetails(reply));
+                    return filtered;
+                } else {
+                    return filtered;
                 }
-
-                return filtered;
             }, []);
 
             commentDetails.push(new CommentDetails(comments[i]));
