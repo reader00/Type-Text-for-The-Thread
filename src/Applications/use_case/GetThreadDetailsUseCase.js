@@ -37,9 +37,8 @@ class GetThreadDetailsUseCase {
                     reply.date = `${reply.date}`;
                     filtered.push(new ReplyDetails(reply));
                     return filtered;
-                } else {
-                    return filtered;
                 }
+                return filtered;
             }, []);
 
             commentDetails.push(new CommentDetails(comments[i]));
