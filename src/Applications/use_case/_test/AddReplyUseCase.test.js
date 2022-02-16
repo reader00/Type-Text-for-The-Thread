@@ -28,12 +28,12 @@ describe('AddReplyUseCase', () => {
         const mockCommentRepository = new CommentRepository();
 
         /** mocking needed function */
-        mockReplyRepository.addReply = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve(expectedAddedReply));
-        mockCommentRepository.verifyCommentExist = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve());
+        mockReplyRepository.addReply = jest.fn(() =>
+            Promise.resolve(expectedAddedReply),
+        );
+        mockCommentRepository.verifyCommentExist = jest.fn(() =>
+            Promise.resolve(),
+        );
 
         /** creating use case instance */
         const addReplyUseCase = new AddReplyUseCase({

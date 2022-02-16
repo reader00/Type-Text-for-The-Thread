@@ -6,10 +6,14 @@ describe('RefreshAuthenticationUseCase', () => {
     it('should throw error if use case payload not contain refresh token', async () => {
         // Arrange
         const useCasePayload = {};
-        const refreshAuthenticationUseCase = new RefreshAuthenticationUseCase({});
+        const refreshAuthenticationUseCase = new RefreshAuthenticationUseCase(
+            {},
+        );
 
         // Action and Assert
-        await expect(refreshAuthenticationUseCase.execute(useCasePayload)).rejects.toThrowError(
+        await expect(
+            refreshAuthenticationUseCase.execute(useCasePayload),
+        ).rejects.toThrowError(
             'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN',
         );
     });
@@ -19,10 +23,14 @@ describe('RefreshAuthenticationUseCase', () => {
         const useCasePayload = {
             refreshToken: [],
         };
-        const refreshAuthenticationUseCase = new RefreshAuthenticationUseCase({});
+        const refreshAuthenticationUseCase = new RefreshAuthenticationUseCase(
+            {},
+        );
 
         // Action and Assert
-        await expect(refreshAuthenticationUseCase.execute(useCasePayload)).rejects.toThrowError(
+        await expect(
+            refreshAuthenticationUseCase.execute(useCasePayload),
+        ).rejects.toThrowError(
             'REFRESH_AUTHENTICATION_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
@@ -35,19 +43,21 @@ describe('RefreshAuthenticationUseCase', () => {
         const mockAuthenticationRepository = new AuthenticationRepository();
         const mockAuthenticationTokenManager = new AuthenticationTokenManager();
 
-        mockAuthenticationRepository.checkAvailabilityToken = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve());
-        mockAuthenticationTokenManager.verifyRefreshToken = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve());
-        mockAuthenticationTokenManager.decodePayload = jest.fn().mockImplementation(() => Promise.resolve({
-            id: 'user-123',
-            username: 'dicoding',
-        }));
-        mockAuthenticationTokenManager.createAccessToken = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve('access_token'));
+        mockAuthenticationRepository.checkAvailabilityToken = jest.fn(() =>
+            Promise.resolve(),
+        );
+        mockAuthenticationTokenManager.verifyRefreshToken = jest.fn(() =>
+            Promise.resolve(),
+        );
+        mockAuthenticationTokenManager.decodePayload = jest.fn(() =>
+            Promise.resolve({
+                id: 'user-123',
+                username: 'dicoding',
+            }),
+        );
+        mockAuthenticationTokenManager.createAccessToken = jest.fn(() =>
+            Promise.resolve('access_token'),
+        );
 
         const refreshAuthenticationUseCase = new RefreshAuthenticationUseCase({
             authenticationRepository: mockAuthenticationRepository,
@@ -55,18 +65,26 @@ describe('RefreshAuthenticationUseCase', () => {
         });
 
         // Action
-        const accessToken = await refreshAuthenticationUseCase.execute(useCasePayload);
+        const accessToken = await refreshAuthenticationUseCase.execute(
+            useCasePayload,
+        );
 
         // Assert
-        expect(mockAuthenticationTokenManager.verifyRefreshToken).toBeCalledWith(useCasePayload.refreshToken);
-        expect(mockAuthenticationRepository.checkAvailabilityToken).toBeCalledWith(
+        expect(
+            mockAuthenticationTokenManager.verifyRefreshToken,
+        ).toBeCalledWith(useCasePayload.refreshToken);
+        expect(
+            mockAuthenticationRepository.checkAvailabilityToken,
+        ).toBeCalledWith(useCasePayload.refreshToken);
+        expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(
             useCasePayload.refreshToken,
         );
-        expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(useCasePayload.refreshToken);
-        expect(mockAuthenticationTokenManager.createAccessToken).toBeCalledWith({
-            id: 'user-123',
-            username: 'dicoding',
-        });
+        expect(mockAuthenticationTokenManager.createAccessToken).toBeCalledWith(
+            {
+                id: 'user-123',
+                username: 'dicoding',
+            },
+        );
         expect(accessToken).toEqual('access_token');
     });
 });

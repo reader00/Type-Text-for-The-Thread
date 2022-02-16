@@ -24,13 +24,17 @@ describe('AddUserUseCase', () => {
         const mockPasswordHash = new PasswordHash();
 
         // mocking needed function
-        mockUserRepository.verifyAvailableUsername = jest.fn().mockImplementation(() => Promise.resolve());
+        mockUserRepository.verifyAvailableUsername = jest.fn(() =>
+            Promise.resolve(),
+        );
 
-        mockPasswordHash.hash = jest.fn().mockImplementation(() => Promise.resolve('hashed-password'));
+        mockPasswordHash.hash = jest.fn(() =>
+            Promise.resolve('hashed-password'),
+        );
 
-        mockUserRepository.addUser = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve(expectedRegisteredUser));
+        mockUserRepository.addUser = jest.fn(() =>
+            Promise.resolve(expectedRegisteredUser),
+        );
 
         // creating use case instance
         const getUserUseCase = new AddUserUseCase({
@@ -44,7 +48,9 @@ describe('AddUserUseCase', () => {
         // Assert
         expect(registeredUser).toStrictEqual(expectedRegisteredUser);
 
-        expect(mockUserRepository.verifyAvailableUsername).toBeCalledWith(useCasePayload.username);
+        expect(mockUserRepository.verifyAvailableUsername).toBeCalledWith(
+            useCasePayload.username,
+        );
 
         expect(mockPasswordHash.hash).toBeCalledWith(useCasePayload.password);
 
