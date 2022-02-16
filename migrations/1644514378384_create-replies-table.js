@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 exports.up = (pgm) => {
     pgm.createTable('replies', {
         id: {
@@ -23,8 +21,8 @@ exports.up = (pgm) => {
             notNull: true,
         },
         is_deleted: {
-            type: 'INTEGER',
-            default: 0,
+            type: 'BOOLEAN',
+            default: false,
         },
     });
 

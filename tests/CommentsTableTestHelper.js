@@ -19,7 +19,7 @@ const CommentsTableTestHelper = {
 
     async deleteComment({ id = 'comment-123', owner = 'user-123' }) {
         const query = {
-            text: 'UPDATE comments SET is_deleted = 1 WHERE id = $1 AND owner = $2 RETURNING id',
+            text: 'UPDATE comments SET is_deleted = true WHERE id = $1 AND owner = $2 RETURNING id',
             values: [id, owner],
         };
 

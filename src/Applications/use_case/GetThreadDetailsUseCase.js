@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable max-len */
-const CommentDetails = require('../../Domains/threads/comment/entities/CommentDetails');
-const ReplyDetails = require('../../Domains/threads/reply/entities/ReplyDetails');
+const CommentDetail = require('../../Domains/threads/comment/entities/CommentDetail');
+const ReplyDetail = require('../../Domains/threads/reply/entities/ReplyDetail');
 const GetThreadDetails = require('../../Domains/threads/thread/entities/GetThreadDetails');
 const ThreadDetails = require('../../Domains/threads/thread/entities/ThreadDetails');
 
@@ -17,34 +17,43 @@ class GetThreadDetailsUseCase {
 
         await this._threadRepository.verifyThreadExist(useCasePayload.threadId);
 
-        const threadDetails = await this._threadRepository.getThreadDetailsById(getThreadDetails);
-        const threadComments = await this._commentRepository.getCommentsByThreadId(getThreadDetails);
-        const threadReplies = await this._replyRepository.getRepliesByThreadId(getThreadDetails);
+        const threadDetails = await this._threadRepository.getThreadDetailsById(
+            getThreadDetails,
+        );
+        const threadComments =
+            await this._commentRepository.getCommentsByThreadId(
+                getThreadDetails,
+            );
+        const threadReplies = await this._replyRepository.getRepliesByThreadId(
+            getThreadDetails,
+        );
 
-        threadDetails.comments = this._getCommentAndReplies(threadComments, threadReplies);
+        threadDetails.comments = this._getCommentAndReplies(
+            threadComments,
+            threadReplies,
+        );
 
         return new ThreadDetails(threadDetails);
     }
 
     _getCommentAndReplies(comments, replies) {
-        const commentDetails = [];
-        for (let i = 0; i < comments.length; i += 1) {
-            const commentId = comments[i].id;
+        return comments.map((comment) => {
+            comment.replies = replies
+                .filter((reply) => reply.comment_id === comment.id)
+                .map(
+                    (reply) =>
+                        // eslint-disable-next-line implicit-arrow-linebreak
+                        new ReplyDetail({
+                            ...reply,
+                            date: reply.date.toString(),
+                        }),
+                );
 
-            comments[i].date = `${comments[i].date}`;
-            comments[i].replies = replies.reduce((filtered, reply) => {
-                if (reply.comment_id === commentId) {
-                    reply.date = `${reply.date}`;
-                    filtered.push(new ReplyDetails(reply));
-                    return filtered;
-                }
-                return filtered;
-            }, []);
-
-            commentDetails.push(new CommentDetails(comments[i]));
-        }
-
-        return commentDetails;
+            return new CommentDetail({
+                ...comment,
+                date: comment.date.toString(),
+            });
+        });
     }
 }
 

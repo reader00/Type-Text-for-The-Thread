@@ -8,7 +8,9 @@ describe('LogoutUserUseCase', () => {
         const logoutUserUseCase = new LogoutUserUseCase({});
 
         // Action and Assert
-        await expect(logoutUserUseCase.execute(useCasePayload)).rejects.toThrowError(
+        await expect(
+            logoutUserUseCase.execute(useCasePayload),
+        ).rejects.toThrowError(
             'LOGOUT_USER_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN',
         );
     });
@@ -21,7 +23,9 @@ describe('LogoutUserUseCase', () => {
         const logoutUserUseCase = new LogoutUserUseCase({});
 
         // Action and Assert
-        await expect(logoutUserUseCase.execute(useCasePayload)).rejects.toThrowError(
+        await expect(
+            logoutUserUseCase.execute(useCasePayload),
+        ).rejects.toThrowError(
             'LOGOUT_USER_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
@@ -33,19 +37,27 @@ describe('LogoutUserUseCase', () => {
         };
         const mockAuthenticationRepository = new AuthenticationRepository();
 
-        mockAuthenticationRepository.checkAvailabilityToken = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve());
+        mockAuthenticationRepository.checkAvailabilityToken = jest.fn(() =>
+            Promise.resolve(),
+        );
 
-        mockAuthenticationRepository.deleteToken = jest.fn().mockImplementation(() => Promise.resolve());
+        mockAuthenticationRepository.deleteToken = jest.fn(() =>
+            Promise.resolve(),
+        );
 
-        const logoutUserUseCase = new LogoutUserUseCase(mockAuthenticationRepository);
+        const logoutUserUseCase = new LogoutUserUseCase(
+            mockAuthenticationRepository,
+        );
 
         // Action
         await logoutUserUseCase.execute(useCasePayload);
 
         // Assert
-        expect(mockAuthenticationRepository.checkAvailabilityToken).toBeCalledWith('refresh_token');
-        expect(mockAuthenticationRepository.deleteToken).toBeCalledWith('refresh_token');
+        expect(
+            mockAuthenticationRepository.checkAvailabilityToken,
+        ).toBeCalledWith('refresh_token');
+        expect(mockAuthenticationRepository.deleteToken).toBeCalledWith(
+            'refresh_token',
+        );
     });
 });

@@ -19,8 +19,8 @@ describe('DeleteReplyUseCase', () => {
         const mockReplyRepository = new ReplyRepository();
 
         /** mocking needed function */
-        mockReplyRepository.deleteReplyById = jest.fn().mockImplementation(() => Promise.resolve());
-        mockReplyRepository.verifyReplyExist = jest.fn().mockImplementation(() => Promise.resolve());
+        mockReplyRepository.deleteReplyById = jest.fn(() => Promise.resolve());
+        mockReplyRepository.verifyReplyExist = jest.fn(() => Promise.resolve());
 
         /** creating use case instance */
         const deleteReplyUseCase = new DeleteReplyUseCase({
@@ -28,7 +28,9 @@ describe('DeleteReplyUseCase', () => {
         });
 
         // Action and Assert
-        await expect(deleteReplyUseCase.execute(useCasePayload)).resolves.not.toThrow(InvariantError);
+        await expect(
+            deleteReplyUseCase.execute(useCasePayload),
+        ).resolves.not.toThrow(InvariantError);
         expect(mockReplyRepository.deleteReplyById).toBeCalledWith(
             new DeleteReply({
                 commentId: 'comment-123',
@@ -36,9 +38,8 @@ describe('DeleteReplyUseCase', () => {
                 owner: 'user-123',
             }),
         );
-        expect(mockReplyRepository.verifyReplyExist).toBeCalledWith({
-            commentId: 'comment-123',
-            replyId: 'reply-123',
-        });
+        expect(mockReplyRepository.verifyReplyExist).toBeCalledWith(
+            useCasePayload,
+        );
     });
 });

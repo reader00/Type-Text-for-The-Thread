@@ -19,8 +19,12 @@ describe('DeleteCommentUseCase', () => {
         const mockCommentRepository = new CommentRepository();
 
         /** mocking needed function */
-        mockCommentRepository.deleteCommentById = jest.fn().mockImplementation(() => Promise.resolve());
-        mockCommentRepository.verifyCommentExist = jest.fn().mockImplementation(() => Promise.resolve());
+        mockCommentRepository.deleteCommentById = jest.fn(() =>
+            Promise.resolve(),
+        );
+        mockCommentRepository.verifyCommentExist = jest.fn(() =>
+            Promise.resolve(),
+        );
 
         /** creating use case instance */
         const deleteCommentUseCase = new DeleteCommentUseCase({
@@ -28,7 +32,9 @@ describe('DeleteCommentUseCase', () => {
         });
 
         // Action and Assert
-        await expect(deleteCommentUseCase.execute(useCasePayload)).resolves.not.toThrow(InvariantError);
+        await expect(
+            deleteCommentUseCase.execute(useCasePayload),
+        ).resolves.not.toThrow(InvariantError);
         expect(mockCommentRepository.deleteCommentById).toBeCalledWith(
             new DeleteComment({
                 threadId: 'thread-123',
@@ -36,9 +42,8 @@ describe('DeleteCommentUseCase', () => {
                 owner: 'user-123',
             }),
         );
-        expect(mockCommentRepository.verifyCommentExist).toBeCalledWith({
-            threadId: 'thread-123',
-            commentId: 'comment-123',
-        });
+        expect(mockCommentRepository.verifyCommentExist).toBeCalledWith(
+            useCasePayload,
+        );
     });
 });

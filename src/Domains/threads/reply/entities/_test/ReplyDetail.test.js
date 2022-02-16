@@ -1,6 +1,6 @@
-const ReplyDetails = require('../ReplyDetails');
+const ReplyDetail = require('../ReplyDetail');
 
-describe('a ReplyDetails entities', () => {
+describe('a ReplyDetail entities', () => {
     it('should throw error when payload did not contain needed property', () => {
         // Arrange
         const payload = {
@@ -8,7 +8,9 @@ describe('a ReplyDetails entities', () => {
         };
 
         // Action and Assert
-        expect(() => new ReplyDetails(payload)).toThrowError('REPLY_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
+        expect(() => new ReplyDetail(payload)).toThrowError(
+            'REPLY_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY',
+        );
     });
 
     it('should throw error when payload did not meet data type specification', () => {
@@ -22,25 +24,23 @@ describe('a ReplyDetails entities', () => {
         };
 
         // Action and Assert
-        expect(() => new ReplyDetails(payload)).toThrowError(
+        expect(() => new ReplyDetail(payload)).toThrowError(
             'REPLY_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
-    it('should create ReplyDetails object correctly', () => {
+    it('should create ReplyDetail object correctly', () => {
         // Arrange
         const payload = {
             id: 'reply-123',
             content: 'Hai, apa kabar',
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
-            is_deleted: 0,
+            is_deleted: false,
         };
 
         // Action
-        const {
-            id, content, date, username,
-        } = new ReplyDetails(payload);
+        const { id, content, date, username } = new ReplyDetail(payload);
 
         // Assert
         expect(id).toEqual(payload.id);
@@ -49,20 +49,18 @@ describe('a ReplyDetails entities', () => {
         expect(username).toEqual(payload.username);
     });
 
-    it('should create ReplyDetails object when the content is deleted correctly', () => {
+    it('should create ReplyDetail object when the content is deleted correctly', () => {
         // Arrange
         const payload = {
             id: 'reply-123',
             content: 'Hai, apa kabar',
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
-            is_deleted: 1,
+            is_deleted: true,
         };
 
         // Action
-        const {
-            id, content, date, username,
-        } = new ReplyDetails(payload);
+        const { id, content, date, username } = new ReplyDetail(payload);
 
         // Assert
         expect(id).toEqual(payload.id);
