@@ -126,9 +126,12 @@ describe('/threads endpoint', () => {
             expect(response.statusCode).toEqual(201);
             expect(responseJson.status).toEqual('success');
             expect(responseJson.data.addedThread).toBeDefined();
-            expect(responseJson.data.addedThread).toHaveProperty('id');
-            expect(responseJson.data.addedThread).toHaveProperty('title');
-            expect(responseJson.data.addedThread).toHaveProperty('owner');
+            expect(responseJson.data.addedThread).toHaveProperty(
+                'title',
+                'Di atas Awan',
+            );
+            expect(responseJson.data.addedThread.id).toBeDefined();
+            expect(responseJson.data.addedThread.owner).toBeDefined();
         });
     });
 
@@ -158,9 +161,12 @@ describe('/threads endpoint', () => {
             expect(response.statusCode).toEqual(201);
             expect(responseJson.status).toEqual('success');
             expect(responseJson.data.addedComment).toBeDefined();
-            expect(responseJson.data.addedComment).toHaveProperty('id');
-            expect(responseJson.data.addedComment).toHaveProperty('content');
-            expect(responseJson.data.addedComment).toHaveProperty('owner');
+            expect(responseJson.data.addedComment).toHaveProperty(
+                'content',
+                'Tentang cerita dulu',
+            );
+            expect(responseJson.data.addedComment.id).toBeDefined();
+            expect(responseJson.data.addedComment.owner).toBeDefined();
         });
 
         it('should response 400 when request payload not contain needed property', async () => {
@@ -326,9 +332,12 @@ describe('/threads endpoint', () => {
             expect(response.statusCode).toEqual(201);
             expect(responseJson.status).toEqual('success');
             expect(responseJson.data.addedReply).toBeDefined();
-            expect(responseJson.data.addedReply).toHaveProperty('id');
-            expect(responseJson.data.addedReply).toHaveProperty('content');
-            expect(responseJson.data.addedReply).toHaveProperty('owner');
+            expect(responseJson.data.addedReply).toHaveProperty(
+                'content',
+                'Hai, apa kabar',
+            );
+            expect(responseJson.data.addedReply.id).toBeDefined();
+            expect(responseJson.data.addedReply.content).toBeDefined();
         });
 
         it('should response 400 when request payload not contain needed property', async () => {
@@ -499,12 +508,12 @@ describe('/threads endpoint', () => {
                 'body',
                 'Ku ingin terbang',
             );
-            expect(responseJson.data.thread).toHaveProperty('date');
+            expect(responseJson.data.thread.date).toBeDefined();
             expect(responseJson.data.thread).toHaveProperty(
                 'username',
                 'dicoding',
             );
-            expect(responseJson.data.thread).toHaveProperty('comments');
+            expect(responseJson.data.thread.comments).toBeDefined();
             expect(responseJson.data.thread.comments).toHaveLength(0);
         });
 
@@ -536,12 +545,12 @@ describe('/threads endpoint', () => {
                 'body',
                 'Ku ingin terbang',
             );
-            expect(responseJson.data.thread).toHaveProperty('date');
+            expect(responseJson.data.thread.date).toBeDefined();
             expect(responseJson.data.thread).toHaveProperty(
                 'username',
                 'dicoding',
             );
-            expect(responseJson.data.thread).toHaveProperty('comments');
+            expect(responseJson.data.thread.comments).toBeDefined();
             expect(responseJson.data.thread.comments).toHaveLength(1);
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'id',
@@ -551,14 +560,12 @@ describe('/threads endpoint', () => {
                 'content',
                 'Tentang cerita dulu',
             );
-            expect(responseJson.data.thread.comments[0]).toHaveProperty('date');
+            expect(responseJson.data.thread.comments[0].date).toBeDefined();
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'username',
                 'dicoding',
             );
-            expect(responseJson.data.thread.comments[0]).toHaveProperty(
-                'replies',
-            );
+            expect(responseJson.data.thread.comments[0].replies).toBeDefined();
             expect(responseJson.data.thread.comments[0].replies).toHaveLength(
                 0,
             );
@@ -593,12 +600,12 @@ describe('/threads endpoint', () => {
                 'body',
                 'Ku ingin terbang',
             );
-            expect(responseJson.data.thread).toHaveProperty('date');
+            expect(responseJson.data.thread.date).toBeDefined();
             expect(responseJson.data.thread).toHaveProperty(
                 'username',
                 'dicoding',
             );
-            expect(responseJson.data.thread).toHaveProperty('comments');
+            expect(responseJson.data.thread.comments).toBeDefined();
             expect(responseJson.data.thread.comments).toHaveLength(1);
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'id',
@@ -608,14 +615,12 @@ describe('/threads endpoint', () => {
                 'content',
                 'Tentang cerita dulu',
             );
-            expect(responseJson.data.thread.comments[0]).toHaveProperty('date');
+            expect(responseJson.data.thread.comments[0].date).toBeDefined();
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'username',
                 'dicoding',
             );
-            expect(responseJson.data.thread.comments[0]).toHaveProperty(
-                'replies',
-            );
+            expect(responseJson.data.thread.comments[0].replies).toBeDefined();
             expect(responseJson.data.thread.comments[0].replies).toHaveLength(
                 1,
             );
@@ -663,12 +668,12 @@ describe('/threads endpoint', () => {
                 'body',
                 'Ku ingin terbang',
             );
-            expect(responseJson.data.thread).toHaveProperty('date');
+            expect(responseJson.data.thread.date).toBeDefined();
             expect(responseJson.data.thread).toHaveProperty(
                 'username',
                 'dicoding',
             );
-            expect(responseJson.data.thread).toHaveProperty('comments');
+            expect(responseJson.data.thread.comments).toBeDefined();
             expect(responseJson.data.thread.comments).toHaveLength(1);
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'id',
@@ -678,14 +683,12 @@ describe('/threads endpoint', () => {
                 'content',
                 '**komentar telah dihapus**',
             );
-            expect(responseJson.data.thread.comments[0]).toHaveProperty('date');
+            expect(responseJson.data.thread.comments[0].date).toBeDefined();
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'username',
                 'dicoding',
             );
-            expect(responseJson.data.thread.comments[0]).toHaveProperty(
-                'replies',
-            );
+            expect(responseJson.data.thread.comments[0].replies).toBeDefined();
             expect(responseJson.data.thread.comments[0].replies).toHaveLength(
                 1,
             );
@@ -696,8 +699,8 @@ describe('/threads endpoint', () => {
                 responseJson.data.thread.comments[0].replies[0],
             ).toHaveProperty('content', 'Hai, apa kabar');
             expect(
-                responseJson.data.thread.comments[0].replies[0],
-            ).toHaveProperty('date');
+                responseJson.data.thread.comments[0].replies[0].date,
+            ).toBeDefined();
             expect(
                 responseJson.data.thread.comments[0].replies[0],
             ).toHaveProperty('username', 'dicoding');
@@ -733,12 +736,12 @@ describe('/threads endpoint', () => {
                 'body',
                 'Ku ingin terbang',
             );
-            expect(responseJson.data.thread).toHaveProperty('date');
+            expect(responseJson.data.thread.date).toBeDefined();
             expect(responseJson.data.thread).toHaveProperty(
                 'username',
                 'dicoding',
             );
-            expect(responseJson.data.thread).toHaveProperty('comments');
+            expect(responseJson.data.thread.comments).toBeDefined();
             expect(responseJson.data.thread.comments).toHaveLength(1);
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'id',
@@ -748,14 +751,12 @@ describe('/threads endpoint', () => {
                 'content',
                 'Tentang cerita dulu',
             );
-            expect(responseJson.data.thread.comments[0]).toHaveProperty('date');
+            expect(responseJson.data.thread.comments[0].date).toBeDefined();
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'username',
                 'dicoding',
             );
-            expect(responseJson.data.thread.comments[0]).toHaveProperty(
-                'replies',
-            );
+            expect(responseJson.data.thread.comments[0].replies).toBeDefined();
             expect(responseJson.data.thread.comments[0].replies).toHaveLength(
                 1,
             );
@@ -766,8 +767,8 @@ describe('/threads endpoint', () => {
                 responseJson.data.thread.comments[0].replies[0],
             ).toHaveProperty('content', '**balasan telah dihapus**');
             expect(
-                responseJson.data.thread.comments[0].replies[0],
-            ).toHaveProperty('date');
+                responseJson.data.thread.comments[0].replies[0].date,
+            ).toBeDefined();
             expect(
                 responseJson.data.thread.comments[0].replies[0],
             ).toHaveProperty('username', 'dicoding');
@@ -804,12 +805,12 @@ describe('/threads endpoint', () => {
                 'body',
                 'Ku ingin terbang',
             );
-            expect(responseJson.data.thread).toHaveProperty('date');
+            expect(responseJson.data.thread.date).toBeDefined();
             expect(responseJson.data.thread).toHaveProperty(
                 'username',
                 'dicoding',
             );
-            expect(responseJson.data.thread).toHaveProperty('comments');
+            expect(responseJson.data.thread.comments).toBeDefined();
             expect(responseJson.data.thread.comments).toHaveLength(1);
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'id',
@@ -819,14 +820,12 @@ describe('/threads endpoint', () => {
                 'content',
                 '**komentar telah dihapus**',
             );
-            expect(responseJson.data.thread.comments[0]).toHaveProperty('date');
+            expect(responseJson.data.thread.comments[0].date).toBeDefined();
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'username',
                 'dicoding',
             );
-            expect(responseJson.data.thread.comments[0]).toHaveProperty(
-                'replies',
-            );
+            expect(responseJson.data.thread.comments[0].replies).toBeDefined();
             expect(responseJson.data.thread.comments[0].replies).toHaveLength(
                 1,
             );
@@ -837,8 +836,8 @@ describe('/threads endpoint', () => {
                 responseJson.data.thread.comments[0].replies[0],
             ).toHaveProperty('content', '**balasan telah dihapus**');
             expect(
-                responseJson.data.thread.comments[0].replies[0],
-            ).toHaveProperty('date');
+                responseJson.data.thread.comments[0].replies[0].date,
+            ).toBeDefined();
             expect(
                 responseJson.data.thread.comments[0].replies[0],
             ).toHaveProperty('username', 'dicoding');
