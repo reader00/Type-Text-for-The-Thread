@@ -21,8 +21,8 @@ exports.up = (pgm) => {
             notNull: true,
         },
         is_deleted: {
-            type: 'INTEGER',
-            default: 0,
+            type: 'BOOLEAN',
+            default: false,
         },
     });
 
