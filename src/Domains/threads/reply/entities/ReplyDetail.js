@@ -1,12 +1,12 @@
 /* eslint-disable camelcase */
-class ReplyDetails {
+class ReplyDetail {
     constructor(payload) {
         this._verifyPayload(payload);
 
         const { id, content, date, username, is_deleted } = payload;
 
         this.id = id;
-        this.content = is_deleted === 0 ? content : '**balasan telah dihapus**';
+        this.content = is_deleted ? '**balasan telah dihapus**' : content;
         this.date = date;
         this.username = username;
     }
@@ -21,11 +21,11 @@ class ReplyDetails {
             typeof content !== 'string' ||
             typeof date !== 'string' ||
             typeof username !== 'string' ||
-            typeof is_deleted !== 'number'
+            typeof is_deleted !== 'boolean'
         ) {
             throw new Error('REPLY_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
         }
     }
 }
 
-module.exports = ReplyDetails;
+module.exports = ReplyDetail;
