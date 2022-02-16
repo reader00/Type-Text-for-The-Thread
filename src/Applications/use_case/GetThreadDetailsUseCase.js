@@ -37,24 +37,23 @@ class GetThreadDetailsUseCase {
     }
 
     _getCommentAndReplies(comments, replies) {
-        const commentDetails = [];
-        for (let i = 0; i < comments.length; i += 1) {
-            const commentId = comments[i].id;
+        return comments.map((comment) => {
+            comment.replies = replies
+                .filter((reply) => reply.comment_id === comment.id)
+                .map(
+                    (reply) =>
+                        // eslint-disable-next-line implicit-arrow-linebreak
+                        new ReplyDetail({
+                            ...reply,
+                            date: reply.date.toString(),
+                        }),
+                );
 
-            comments[i].date = `${comments[i].date}`;
-            comments[i].replies = replies.reduce((filtered, reply) => {
-                if (reply.comment_id === commentId) {
-                    reply.date = `${reply.date}`;
-                    filtered.push(new ReplyDetail(reply));
-                    return filtered;
-                }
-                return filtered;
-            }, []);
-
-            commentDetails.push(new CommentDetail(comments[i]));
-        }
-
-        return commentDetails;
+            return new CommentDetail({
+                ...comment,
+                date: comment.date.toString(),
+            });
+        });
     }
 }
 
