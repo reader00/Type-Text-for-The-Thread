@@ -1,6 +1,6 @@
-const CommentDetails = require('../CommentDetails');
+const CommentDetail = require('../CommentDetail');
 
-describe('a CommentDetails entities', () => {
+describe('a CommentDetail entities', () => {
     it('should throw error when payload did not contain needed property', () => {
         // Arrange
         const payload = {
@@ -8,7 +8,9 @@ describe('a CommentDetails entities', () => {
         };
 
         // Action and Assert
-        expect(() => new CommentDetails(payload)).toThrowError('COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
+        expect(() => new CommentDetail(payload)).toThrowError(
+            'COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY',
+        );
     });
 
     it('should throw error when payload did not meet data type specification', () => {
@@ -23,26 +25,26 @@ describe('a CommentDetails entities', () => {
         };
 
         // Action and Assert
-        expect(() => new CommentDetails(payload)).toThrowError(
+        expect(() => new CommentDetail(payload)).toThrowError(
             'COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
-    it('should create CommentDetails object correctly', () => {
+    it('should create CommentDetail object correctly', () => {
         // Arrange
         const payload = {
             id: 'comment-123',
             content: 'Tentang cerita dulu',
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
-            is_deleted: 0,
+            is_deleted: false,
             replies: [],
         };
 
         // Action
-        const {
-            id, content, date, username, replies,
-        } = new CommentDetails(payload);
+        const { id, content, date, username, replies } = new CommentDetail(
+            payload,
+        );
 
         // Assert
         expect(id).toEqual(payload.id);
@@ -52,21 +54,21 @@ describe('a CommentDetails entities', () => {
         expect(replies).toStrictEqual(payload.replies);
     });
 
-    it('should create CommentDetails object when the content is deleted correctly', () => {
+    it('should create CommentDetail object when the content is deleted correctly', () => {
         // Arrange
         const payload = {
             id: 'comment-123',
             content: 'Tentang cerita dulu',
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
-            is_deleted: 1,
+            is_deleted: true,
             replies: [],
         };
 
         // Action
-        const {
-            id, content, date, username, replies,
-        } = new CommentDetails(payload);
+        const { id, content, date, username, replies } = new CommentDetail(
+            payload,
+        );
 
         // Assert
         expect(id).toEqual(payload.id);

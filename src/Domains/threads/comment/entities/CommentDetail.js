@@ -1,13 +1,12 @@
 /* eslint-disable camelcase */
-class CommentDetails {
+class CommentDetail {
     constructor(payload) {
         this._verifyPayload(payload);
 
         const { id, content, date, username, is_deleted, replies } = payload;
 
         this.id = id;
-        this.content =
-            is_deleted === 0 ? content : '**komentar telah dihapus**';
+        this.content = is_deleted ? '**komentar telah dihapus**' : content;
         this.date = date;
         this.username = username;
         this.replies = replies;
@@ -23,7 +22,7 @@ class CommentDetails {
             typeof content !== 'string' ||
             typeof date !== 'string' ||
             typeof username !== 'string' ||
-            typeof is_deleted !== 'number' ||
+            typeof is_deleted !== 'boolean' ||
             !(replies instanceof Array)
         ) {
             throw new Error('COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
@@ -31,4 +30,4 @@ class CommentDetails {
     }
 }
 
-module.exports = CommentDetails;
+module.exports = CommentDetail;
