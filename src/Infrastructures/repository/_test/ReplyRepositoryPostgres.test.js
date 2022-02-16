@@ -29,12 +29,15 @@ describe('ReplyRepositoryPostgres', () => {
     describe('verifyReplyExist function', () => {
         it('should throw NotFoundError when reply is not exist', async () => {
             // Arrange
-            const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+            const replyRepositoryPostgres = new ReplyRepositoryPostgres(
+                pool,
+                {},
+            );
 
             // Action and Assert
-            await expect(replyRepositoryPostgres.verifyReplyExist('reply-123')).rejects.toThrow(
-                NotFoundError,
-            );
+            await expect(
+                replyRepositoryPostgres.verifyReplyExist('reply-123'),
+            ).rejects.toThrow(NotFoundError);
         });
 
         it('should not throw NotFoundError when reply is exist', async () => {
@@ -42,11 +45,17 @@ describe('ReplyRepositoryPostgres', () => {
             await ThreadsTableTestHelper.addThread({});
             await CommentsTableTestHelper.addComment({});
             await RepliesTableTestHelper.addReply({});
-            const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+            const replyRepositoryPostgres = new ReplyRepositoryPostgres(
+                pool,
+                {},
+            );
 
             // Action and Assert
             await expect(
-                replyRepositoryPostgres.verifyReplyExist({ commentId: 'comment-123', replyId: 'reply-123' }),
+                replyRepositoryPostgres.verifyReplyExist({
+                    commentId: 'comment-123',
+                    replyId: 'reply-123',
+                }),
             ).resolves.not.toThrowError(NotFoundError);
         });
     });
@@ -63,19 +72,24 @@ describe('ReplyRepositoryPostgres', () => {
             });
 
             const fakeIdGenerator = () => '123'; // stub
-            const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+            const replyRepositoryPostgres = new ReplyRepositoryPostgres(
+                pool,
+                fakeIdGenerator,
+            );
 
             // Action
             await replyRepositoryPostgres.addReply(addReply);
 
             // Assert
-            const reply = await RepliesTableTestHelper.findReplyById('reply-123');
+            const reply = await RepliesTableTestHelper.findReplyById(
+                'reply-123',
+            );
             expect(reply).toHaveLength(1);
             expect(reply[0]).toHaveProperty('id', 'reply-123');
             expect(reply[0]).toHaveProperty('comment_id', 'comment-123');
             expect(reply[0]).toHaveProperty('content', 'Hai, apa kabar');
             expect(reply[0]).toHaveProperty('owner', 'user-123');
-            expect(reply[0]).toHaveProperty('is_deleted', 0);
+            expect(reply[0]).toHaveProperty('is_deleted', false);
             expect(reply[0]).toHaveProperty('date');
         });
 
@@ -90,7 +104,10 @@ describe('ReplyRepositoryPostgres', () => {
             });
 
             const fageIdGenerator = () => '123'; // stub
-            const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fageIdGenerator);
+            const replyRepositoryPostgres = new ReplyRepositoryPostgres(
+                pool,
+                fageIdGenerator,
+            );
 
             // Action
             const addedReply = await replyRepositoryPostgres.addReply(addReply);
@@ -112,10 +129,15 @@ describe('ReplyRepositoryPostgres', () => {
             const threadId = await ThreadsTableTestHelper.addThread({});
             await CommentsTableTestHelper.addComment({});
 
-            const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+            const replyRepositoryPostgres = new ReplyRepositoryPostgres(
+                pool,
+                {},
+            );
 
             // Action
-            const replies = await replyRepositoryPostgres.getRepliesByThreadId({ threadId });
+            const replies = await replyRepositoryPostgres.getRepliesByThreadId({
+                threadId,
+            });
 
             // Assert
             expect(replies).toHaveLength(0);
@@ -127,15 +149,20 @@ describe('ReplyRepositoryPostgres', () => {
             await CommentsTableTestHelper.addComment({});
             await RepliesTableTestHelper.addReply({});
 
-            const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+            const replyRepositoryPostgres = new ReplyRepositoryPostgres(
+                pool,
+                {},
+            );
 
             // Action
-            const replies = await replyRepositoryPostgres.getRepliesByThreadId({ threadId });
+            const replies = await replyRepositoryPostgres.getRepliesByThreadId({
+                threadId,
+            });
 
             // Assert
             expect(replies).toHaveLength(1);
             expect(replies[0]).toHaveProperty('id', 'reply-123');
-            expect(replies[0]).toHaveProperty('is_deleted', 0);
+            expect(replies[0]).toHaveProperty('is_deleted', false);
             expect(replies[0]).toHaveProperty('comment_id', 'comment-123');
             expect(replies[0]).toHaveProperty('content', 'Hai, apa kabar');
             expect(replies[0]).toHaveProperty('username', 'dicoding');
@@ -156,15 +183,20 @@ describe('ReplyRepositoryPostgres', () => {
                 owner: 'user-123',
             });
 
-            const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+            const replyRepositoryPostgres = new ReplyRepositoryPostgres(
+                pool,
+                {},
+            );
 
             // Action and Assert
-            await expect(replyRepositoryPostgres.deleteReplyById(deleteReply)).resolves.not.toThrow(
-                ForbiddenError,
+            await expect(
+                replyRepositoryPostgres.deleteReplyById(deleteReply),
+            ).resolves.not.toThrow(ForbiddenError);
+            const reply = await RepliesTableTestHelper.findReplyById(
+                'reply-123',
             );
-            const reply = await RepliesTableTestHelper.findReplyById('reply-123');
             expect(reply).toHaveLength(1);
-            expect(reply[0]).toHaveProperty('is_deleted', 1);
+            expect(reply[0]).toHaveProperty('is_deleted', true);
         });
 
         it('should throw ForbiddenError when the access user is not the owner', async () => {
@@ -179,13 +211,18 @@ describe('ReplyRepositoryPostgres', () => {
                 owner: 'user-124',
             });
 
-            const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+            const replyRepositoryPostgres = new ReplyRepositoryPostgres(
+                pool,
+                {},
+            );
 
             // Action and Assert
-            await expect(replyRepositoryPostgres.deleteReplyById(deleteReply)).rejects.toThrow(
-                ForbiddenError,
+            await expect(
+                replyRepositoryPostgres.deleteReplyById(deleteReply),
+            ).rejects.toThrow(ForbiddenError);
+            const reply = await RepliesTableTestHelper.findReplyById(
+                'reply-123',
             );
-            const reply = await RepliesTableTestHelper.findReplyById('reply-123');
             expect(reply).toHaveLength(1);
         });
     });
