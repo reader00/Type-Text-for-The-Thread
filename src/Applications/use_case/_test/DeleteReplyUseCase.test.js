@@ -38,9 +38,8 @@ describe('DeleteReplyUseCase', () => {
                 owner: 'user-123',
             }),
         );
-        expect(mockReplyRepository.verifyReplyExist).toBeCalledWith({
-            commentId: 'comment-123',
-            replyId: 'reply-123',
-        });
+        expect(mockReplyRepository.verifyReplyExist).toBeCalledWith(
+            useCasePayload,
+        );
     });
 });

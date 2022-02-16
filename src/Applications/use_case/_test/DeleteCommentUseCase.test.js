@@ -42,9 +42,8 @@ describe('DeleteCommentUseCase', () => {
                 owner: 'user-123',
             }),
         );
-        expect(mockCommentRepository.verifyCommentExist).toBeCalledWith({
-            threadId: 'thread-123',
-            commentId: 'comment-123',
-        });
+        expect(mockCommentRepository.verifyCommentExist).toBeCalledWith(
+            useCasePayload,
+        );
     });
 });

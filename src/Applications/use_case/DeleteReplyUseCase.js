@@ -8,10 +8,7 @@ class DeleteReplyUseCase {
     async execute(useCasePayload) {
         const deleteReply = new DeleteReply(useCasePayload);
 
-        await this._replyRepository.verifyReplyExist({
-            commentId: useCasePayload.commentId,
-            replyId: useCasePayload.replyId,
-        });
+        await this._replyRepository.verifyReplyExist(useCasePayload);
 
         return this._replyRepository.deleteReplyById(deleteReply);
     }
