@@ -1,6 +1,6 @@
 const CommentRepository = require('../../../Domains/threads/comment/CommentRepository');
-const CommentDetails = require('../../../Domains/threads/comment/entities/CommentDetails');
-const ReplyDetails = require('../../../Domains/threads/reply/entities/ReplyDetails');
+const CommentDetail = require('../../../Domains/threads/comment/entities/CommentDetail');
+const ReplyDetail = require('../../../Domains/threads/reply/entities/ReplyDetail');
 const ReplyRepository = require('../../../Domains/threads/reply/ReplyRepository');
 const GetThreadDetails = require('../../../Domains/threads/thread/entities/GetThreadDetails');
 const ThreadDetails = require('../../../Domains/threads/thread/entities/ThreadDetails');
@@ -24,35 +24,35 @@ describe('GetThreadDetailsUseCase', () => {
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
             comments: [
-                new CommentDetails({
+                new CommentDetail({
                     id: 'comment-123',
                     content: 'Tentang cerita dulu',
                     date: '2021-08-08T07:19:09.775Z',
                     username: 'dicoding',
-                    is_deleted: 0,
+                    is_deleted: false,
                     replies: [
-                        new ReplyDetails({
+                        new ReplyDetail({
                             id: 'reply-123',
                             content: 'Hai, apa kabar',
                             date: '2021-08-08T07:19:09.775Z',
                             username: 'dicoding',
-                            is_deleted: 1,
+                            is_deleted: true,
                         }),
                     ],
                 }),
-                new CommentDetails({
+                new CommentDetail({
                     id: 'comment-124',
                     content: 'Tentang cerita dulu',
                     date: '2021-08-08T07:19:09.775Z',
                     username: 'dicoding',
-                    is_deleted: 1,
+                    is_deleted: true,
                     replies: [
-                        new ReplyDetails({
+                        new ReplyDetail({
                             id: 'reply-124',
                             content: 'Hai, apa kabar',
                             date: '2021-08-08T07:19:09.775Z',
                             username: 'dicoding',
-                            is_deleted: 0,
+                            is_deleted: false,
                         }),
                     ],
                 }),
@@ -90,7 +90,7 @@ describe('GetThreadDetailsUseCase', () => {
                         content: 'Tentang cerita dulu',
                         date: '2021-08-08T07:19:09.775Z',
                         username: 'dicoding',
-                        is_deleted: 0,
+                        is_deleted: false,
                     },
                     {
                         id: 'comment-124',
@@ -98,7 +98,7 @@ describe('GetThreadDetailsUseCase', () => {
                         content: 'Tentang cerita dulu',
                         date: '2021-08-08T07:19:09.775Z',
                         username: 'dicoding',
-                        is_deleted: 1,
+                        is_deleted: true,
                     },
                 ]),
             );
@@ -113,7 +113,7 @@ describe('GetThreadDetailsUseCase', () => {
                         content: 'Hai, apa kabar',
                         date: '2021-08-08T07:19:09.775Z',
                         username: 'dicoding',
-                        is_deleted: 1,
+                        is_deleted: true,
                     },
                     {
                         id: 'reply-124',
@@ -121,7 +121,7 @@ describe('GetThreadDetailsUseCase', () => {
                         content: 'Hai, apa kabar',
                         date: '2021-08-08T07:19:09.775Z',
                         username: 'dicoding',
-                        is_deleted: 0,
+                        is_deleted: false,
                     },
                 ]),
             );
