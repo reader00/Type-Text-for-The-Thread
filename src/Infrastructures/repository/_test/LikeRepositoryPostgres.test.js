@@ -125,7 +125,7 @@ describe('LikeRepositoryPostgres', () => {
             const likeCount =
                 await likeRepositoryPostgres.getLikeCountByCommentId({
                     commentId,
-                    owser: 'user-123',
+                    owner: 'user-123',
                 });
 
             // Assert
@@ -144,11 +144,48 @@ describe('LikeRepositoryPostgres', () => {
             const likeCount =
                 await likeRepositoryPostgres.getLikeCountByCommentId({
                     commentId,
-                    owser: 'user-123',
+                    owner: 'user-123',
                 });
 
             // Assert
             expect(parseInt(likeCount)).toEqual(1);
+        });
+    });
+
+    describe('getLikeCountByThreadId', () => {
+        it('should return an empty array if there is no like in the comment in the thread', async () => {
+            // Arrange
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            await CommentsTableTestHelper.addComment({});
+
+            const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
+
+            // Action
+            const likeCounts =
+                await likeRepositoryPostgres.getLikeCountsByThreadId({
+                    threadId,
+                });
+
+            // Assert
+            expect(likeCounts).toHaveLength(0);
+        });
+
+        it('should return an array with length 1 if there is a like in the comment in the thread', async () => {
+            // Arrange
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            await CommentsTableTestHelper.addComment({});
+            await LikesTableTestHelper.addLike({});
+
+            const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
+
+            // Action
+            const likeCounts =
+                await likeRepositoryPostgres.getLikeCountByCommentId({
+                    threadId,
+                });
+
+            // Assert
+            expect(likeCounts).toHaveLength(1);
         });
     });
 });

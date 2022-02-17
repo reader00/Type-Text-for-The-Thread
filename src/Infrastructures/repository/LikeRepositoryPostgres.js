@@ -41,6 +41,24 @@ class LikeRepositoryPostgres extends LikeRepository {
         return results.rows[0].like_count;
     }
 
+    async getLikeCountsByThreadId({ threadId }) {
+        const query = {
+            text: `	SELECT
+						l.comment_id,
+						COUNT(l.id) AS like_count
+					FROM likes l
+					JOIN comments c ON c.id = l.comment_id
+					JOIN threads t ON t.id = c.thread_id
+					WHERE t.id = $1
+					GROUP by l.comment_id`,
+            values: [threadId],
+        };
+
+        const results = await this._pool.query(query);
+
+        return results.rows;
+    }
+
     async deleteLike({ commentId, owner }) {
         const query = {
             text: 'DELETE FROM likes WHERE comment_id = $1 AND owner = $2',
