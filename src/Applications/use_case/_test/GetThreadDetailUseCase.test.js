@@ -3,10 +3,10 @@ const CommentRepository = require('../../../Domains/threads/comment/CommentRepos
 const CommentDetail = require('../../../Domains/threads/comment/entities/CommentDetail');
 const ReplyDetail = require('../../../Domains/threads/reply/entities/ReplyDetail');
 const ReplyRepository = require('../../../Domains/threads/reply/ReplyRepository');
-const GetThreadDetails = require('../../../Domains/threads/thread/entities/GetThreadDetails');
-const ThreadDetails = require('../../../Domains/threads/thread/entities/ThreadDetails');
+const GetThreadDetails = require('../../../Domains/threads/thread/entities/GetThreadDetail');
+const ThreadDetail = require('../../../Domains/threads/thread/entities/ThreadDetail');
 const ThreadRepository = require('../../../Domains/threads/thread/ThreadRepository');
-const GetThreadDetailsUseCase = require('../GetThreadDetailsUseCase');
+const GetThreadDetailsUseCase = require('../GetThreadDetailUseCase');
 
 describe('GetThreadDetailsUseCase', () => {
     /**
@@ -18,7 +18,7 @@ describe('GetThreadDetailsUseCase', () => {
             threadId: 'thread-123',
         };
 
-        const expectedThreadDetails = new ThreadDetails({
+        const expectedThreadDetails = new ThreadDetail({
             id: 'thread-123',
             title: 'Di atas Awan',
             body: 'Ku ingin terbang',
@@ -69,7 +69,7 @@ describe('GetThreadDetailsUseCase', () => {
         const mockLikeRepository = new LikeRepository();
 
         /** mocking needed function */
-        mockThreadRepository.getThreadDetailsById = jest.fn(() =>
+        mockThreadRepository.getThreadDetailById = jest.fn(() =>
             Promise.resolve({
                 id: 'thread-123',
                 title: 'Di atas Awan',
@@ -130,10 +130,6 @@ describe('GetThreadDetailsUseCase', () => {
                     comment_id: 'comment-123',
                     like_count: 1,
                 },
-                {
-                    comment_id: 'comment-124',
-                    like_count: 0,
-                },
             ]),
         );
 
@@ -150,7 +146,7 @@ describe('GetThreadDetailsUseCase', () => {
 
         // Assert
         expect(threadDetails).toStrictEqual(expectedThreadDetails);
-        expect(mockThreadRepository.getThreadDetailsById).toBeCalledWith(
+        expect(mockThreadRepository.getThreadDetailById).toBeCalledWith(
             new GetThreadDetails({
                 threadId: 'thread-123',
             }),

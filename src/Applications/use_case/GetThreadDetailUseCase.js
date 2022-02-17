@@ -2,10 +2,10 @@
 /* eslint-disable max-len */
 const CommentDetail = require('../../Domains/threads/comment/entities/CommentDetail');
 const ReplyDetail = require('../../Domains/threads/reply/entities/ReplyDetail');
-const GetThreadDetails = require('../../Domains/threads/thread/entities/GetThreadDetails');
-const ThreadDetails = require('../../Domains/threads/thread/entities/ThreadDetails');
+const GetThreadDetail = require('../../Domains/threads/thread/entities/GetThreadDetail');
+const ThreadDetail = require('../../Domains/threads/thread/entities/ThreadDetail');
 
-class GetThreadDetailsUseCase {
+class GetThreadDetailUseCase {
     constructor({
         threadRepository,
         commentRepository,
@@ -19,22 +19,22 @@ class GetThreadDetailsUseCase {
     }
 
     async execute(useCasePayload) {
-        const getThreadDetails = new GetThreadDetails(useCasePayload);
+        const getThreadDetail = new GetThreadDetail(useCasePayload);
 
         await this._threadRepository.verifyThreadExist(useCasePayload.threadId);
 
-        const threadDetails = await this._threadRepository.getThreadDetailsById(
-            getThreadDetails,
+        const threadDetails = await this._threadRepository.getThreadDetailById(
+            getThreadDetail,
         );
         const threadComments =
             await this._commentRepository.getCommentsByThreadId(
-                getThreadDetails,
+                getThreadDetail,
             );
         const threadReplies = await this._replyRepository.getRepliesByThreadId(
-            getThreadDetails,
+            getThreadDetail,
         );
         const likeCounts = await this._likeRepository.getLikeCountsByThreadId(
-            getThreadDetails,
+            getThreadDetail,
         );
         threadDetails.comments = this._getCommentAndReplies(
             threadComments,
@@ -42,7 +42,7 @@ class GetThreadDetailsUseCase {
             likeCounts,
         );
 
-        return new ThreadDetails(threadDetails);
+        return new ThreadDetail(threadDetails);
     }
 
     _getCommentAndReplies(comments, replies, likeCounts) {
@@ -71,4 +71,4 @@ class GetThreadDetailsUseCase {
     }
 }
 
-module.exports = GetThreadDetailsUseCase;
+module.exports = GetThreadDetailUseCase;
