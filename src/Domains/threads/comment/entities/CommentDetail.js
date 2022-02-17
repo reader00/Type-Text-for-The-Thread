@@ -3,15 +3,8 @@ class CommentDetail {
     constructor(payload) {
         this._verifyPayload(payload);
 
-        const {
-            id,
-            content,
-            date,
-            username,
-            is_deleted,
-            replies,
-            like_count: likeCount,
-        } = payload;
+        const { id, content, date, username, is_deleted, replies, likeCount } =
+            payload;
 
         this.id = id;
         this.content = is_deleted ? '**komentar telah dihapus**' : content;
@@ -28,7 +21,7 @@ class CommentDetail {
         username,
         is_deleted,
         replies,
-        like_count: likeCount,
+        likeCount,
     }) {
         if (
             !id ||
