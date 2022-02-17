@@ -12,6 +12,10 @@ class LikeRepository {
         throw new Error('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
     }
 
+    async getLikeCountsByThreadId(threadId) {
+        throw new Error('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+    }
+
     async deleteLike(replyId) {
         throw new Error('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
     }
