@@ -1,7 +1,7 @@
 const AddThreadUseCase = require('../../../../Applications/use_case/AddThreadUseCase');
 const AddCommentUseCase = require('../../../../Applications/use_case/AddCommentUseCase');
 const Handler = require('../Handler');
-const GetThreadDetailsUseCase = require('../../../../Applications/use_case/GetThreadDetailUseCase');
+const GetThreadDetailUseCase = require('../../../../Applications/use_case/GetThreadDetailUseCase');
 const DeleteCommentUseCase = require('../../../../Applications/use_case/DeleteCommentUseCase');
 const DeleteReplyUseCase = require('../../../../Applications/use_case/DeleteReplyUseCase');
 const AddReplyUseCase = require('../../../../Applications/use_case/AddReplyUseCase');
@@ -87,7 +87,7 @@ class ThreadsHandler extends Handler {
     async getThreadByIdHandler(requet, h) {
         const { threadId } = requet.params;
         const getThreadDetailsUseCase = this._container.getInstance(
-            GetThreadDetailsUseCase.name,
+            GetThreadDetailUseCase.name,
         );
         const thread = await getThreadDetailsUseCase.execute({ threadId });
 
