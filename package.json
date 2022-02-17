@@ -6,6 +6,7 @@
     "scripts": {
         "start": "node ./src/app.js",
         "start:dev": "nodemon ./src/app.js",
+        "lint": "eslint ./",
         "test": "jest --setupFiles dotenv/config",
         "test:watch": "jest --watchAll --coverage --runInBand --no-cache --setupFiles dotenv/config",
         "test:watch-clg": "jest --watchAll --coverage --runInBand --no-cache --silent=false --setupFiles dotenv/config",
