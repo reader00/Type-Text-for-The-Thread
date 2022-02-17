@@ -1,8 +1,8 @@
 const container = require('../../container');
 const createServer = require('../createServer');
 
-describe('/hi endpoint', () => {
-    describe('when GET /hi', () => {
+describe('/ endpoint', () => {
+    describe('when GET /', () => {
         it('should return Hello', async () => {
             // Arrange
             const server = await createServer(container);
@@ -10,12 +10,14 @@ describe('/hi endpoint', () => {
             // Actions
             const response = await server.inject({
                 method: 'GET',
-                url: '/hi',
+                url: '/',
             });
 
             // Assert
             expect(response.statusCode).toBe(200);
-            expect(response.payload).toEqual('Hello');
+            expect(response.payload).toEqual(
+                'Selamat datang di aplikasi forum API.',
+            );
         });
     });
 });

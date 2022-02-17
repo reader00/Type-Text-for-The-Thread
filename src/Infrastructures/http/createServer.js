@@ -26,8 +26,8 @@ const createServer = async (container) => {
     // hi route
     server.route({
         method: 'GET',
-        path: '/hi',
-        handler: () => 'Hello',
+        path: '/',
+        handler: () => 'Selamat datang di aplikasi forum API.',
     });
 
     // Set onPreResponse for error handler
