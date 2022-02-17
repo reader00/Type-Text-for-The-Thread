@@ -59,6 +59,24 @@ DomainErrorTranslator._dictionaries = {
     'GET_THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
         'tidak dapat mengambil rincian karena tipe data tidak sesuai',
     ),
+    'THREAD_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+        'tidak dapat membuat rincian thread karena properti yang dibutuhkan tidak lengkap',
+    ),
+    'THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+        'tidak dapat membuat rincian thread karena tipe data tidak sesuai',
+    ),
+    'COMMENT_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+        'tidak dapat membuat rincian komentar karena properti yang dibutuhkan tidak lengkap',
+    ),
+    'COMMENT_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+        'tidak dapat membuat rincian komentar karena tipe data tidak sesuai',
+    ),
+    'REPLY_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+        'tidak dapat membuat rincian balasan karena properti yang dibutuhkan tidak lengkap',
+    ),
+    'REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+        'tidak dapat membuat rincian balasan karena tipe data tidak sesuai',
+    ),
     'ADD_REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
         'tidak dapat membuat balasan baru karena properti yang dibutuhkan tidak lengkap',
     ),
