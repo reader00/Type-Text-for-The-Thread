@@ -51,7 +51,10 @@ class GetThreadDetailUseCase {
             const like = likeCounts.filter(
                 (likeCount) => likeCount.comment_id === comment.id,
             );
-            comment.likeCount = like.length > 0 ? like[0].like_count : 0;
+
+            comment.likeCount =
+                like.length > 0 ? parseInt(like[0].like_count, 10) : 0;
+
             comment.replies = replies
                 .filter((reply) => reply.comment_id === comment.id)
                 .map(
