@@ -6,10 +6,16 @@ const GetThreadDetails = require('../../Domains/threads/thread/entities/GetThrea
 const ThreadDetails = require('../../Domains/threads/thread/entities/ThreadDetails');
 
 class GetThreadDetailsUseCase {
-    constructor({ threadRepository, commentRepository, replyRepository }) {
+    constructor({
+        threadRepository,
+        commentRepository,
+        replyRepository,
+        likeRepository,
+    }) {
         this._threadRepository = threadRepository;
         this._commentRepository = commentRepository;
         this._replyRepository = replyRepository;
+        this._likeRepository = likeRepository;
     }
 
     async execute(useCasePayload) {
@@ -27,17 +33,25 @@ class GetThreadDetailsUseCase {
         const threadReplies = await this._replyRepository.getRepliesByThreadId(
             getThreadDetails,
         );
-
+        const likeCounts = await this._likeRepository.getLikeCountsByThreadId(
+            getThreadDetails,
+        );
         threadDetails.comments = this._getCommentAndReplies(
             threadComments,
             threadReplies,
+            likeCounts,
         );
 
         return new ThreadDetails(threadDetails);
     }
 
-    _getCommentAndReplies(comments, replies) {
+    _getCommentAndReplies(comments, replies, likeCounts) {
         return comments.map((comment) => {
+            // eslint-disable-next-line prefer-destructuring
+            const like = likeCounts.filter(
+                (likeCount) => likeCount.comment_id === comment.id,
+            );
+            comment.likeCount = like.length > 0 ? like[0].like_count : 0;
             comment.replies = replies
                 .filter((reply) => reply.comment_id === comment.id)
                 .map(
