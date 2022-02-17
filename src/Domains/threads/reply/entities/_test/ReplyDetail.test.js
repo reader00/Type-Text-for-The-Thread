@@ -9,7 +9,7 @@ describe('a ReplyDetail entities', () => {
 
         // Action and Assert
         expect(() => new ReplyDetail(payload)).toThrowError(
-            'REPLY_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY',
+            'REPLY_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY',
         );
     });
 
@@ -25,7 +25,7 @@ describe('a ReplyDetail entities', () => {
 
         // Action and Assert
         expect(() => new ReplyDetail(payload)).toThrowError(
-            'REPLY_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
+            'REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 

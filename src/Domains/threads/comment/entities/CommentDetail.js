@@ -32,7 +32,7 @@ class CommentDetail {
             likeCount === undefined ||
             likeCount === null
         ) {
-            throw new Error('COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
+            throw new Error('COMMENT_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY');
         }
 
         if (
@@ -44,7 +44,7 @@ class CommentDetail {
             typeof likeCount !== 'number' ||
             !(replies instanceof Array)
         ) {
-            throw new Error('COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
+            throw new Error('COMMENT_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
         }
     }
 }

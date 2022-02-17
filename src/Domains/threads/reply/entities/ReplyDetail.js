@@ -13,7 +13,7 @@ class ReplyDetail {
 
     _verifyPayload({ id, content, date, username, is_deleted }) {
         if (!id || !content || !date || !username) {
-            throw new Error('REPLY_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
+            throw new Error('REPLY_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY');
         }
 
         if (
@@ -23,7 +23,7 @@ class ReplyDetail {
             typeof username !== 'string' ||
             typeof is_deleted !== 'boolean'
         ) {
-            throw new Error('REPLY_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
+            throw new Error('REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
         }
     }
 }

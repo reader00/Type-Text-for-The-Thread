@@ -9,7 +9,7 @@ describe('a CommentDetail entities', () => {
 
         // Action and Assert
         expect(() => new CommentDetail(payload)).toThrowError(
-            'COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY',
+            'COMMENT_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY',
         );
     });
 
@@ -27,7 +27,7 @@ describe('a CommentDetail entities', () => {
 
         // Action and Assert
         expect(() => new CommentDetail(payload)).toThrowError(
-            'COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
+            'COMMENT_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
