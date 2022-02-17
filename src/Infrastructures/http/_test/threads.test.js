@@ -518,7 +518,7 @@ describe('/threads endpoint', () => {
             expect(responseJson.data.thread.comments).toHaveLength(0);
         });
 
-        it('should response 200 and persisted thread details with comments', async () => {
+        it('should response 200 and persisted thread details with comment and 0 like', async () => {
             // Arrange
             await UsersTableTestHelper.addUser({});
             const threadId = await ThreadsTableTestHelper.addThread({});
@@ -565,6 +565,69 @@ describe('/threads endpoint', () => {
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'username',
                 'dicoding',
+            );
+            expect(responseJson.data.thread.comments[0]).toHaveProperty(
+                'likeCount',
+                0,
+            );
+            expect(responseJson.data.thread.comments[0].replies).toBeDefined();
+            expect(responseJson.data.thread.comments[0].replies).toHaveLength(
+                0,
+            );
+        });
+
+        it('should response 200 and persisted thread details with comment and like', async () => {
+            // Arrange
+            await UsersTableTestHelper.addUser({});
+            const threadId = await ThreadsTableTestHelper.addThread({});
+            await CommentsTableTestHelper.addComment({});
+            await LikesTableTestHelper.addLike({});
+
+            const server = await createServer(container);
+
+            // Action
+            const response = await server.inject({
+                method: 'GET',
+                url: `/threads/${threadId}`,
+            });
+
+            // Assert
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(200);
+            expect(responseJson.status).toEqual('success');
+            expect(responseJson.data.thread).toBeDefined();
+            expect(responseJson.data.thread).toHaveProperty('id', 'thread-123');
+            expect(responseJson.data.thread).toHaveProperty(
+                'title',
+                'Di atas Awan',
+            );
+            expect(responseJson.data.thread).toHaveProperty(
+                'body',
+                'Ku ingin terbang',
+            );
+            expect(responseJson.data.thread.date).toBeDefined();
+            expect(responseJson.data.thread).toHaveProperty(
+                'username',
+                'dicoding',
+            );
+            expect(responseJson.data.thread.comments).toBeDefined();
+            expect(responseJson.data.thread.comments).toHaveLength(1);
+            expect(responseJson.data.thread.comments[0]).toHaveProperty(
+                'id',
+                'comment-123',
+            );
+            expect(responseJson.data.thread.comments[0]).toHaveProperty(
+                'content',
+                'Tentang cerita dulu',
+            );
+            expect(responseJson.data.thread.comments[0].date).toBeDefined();
+            expect(responseJson.data.thread.comments[0]).toHaveProperty(
+                'username',
+                'dicoding',
+            );
+            expect(responseJson.data.thread.comments[0]).toHaveProperty(
+                'likeCount',
+                1,
             );
             expect(responseJson.data.thread.comments[0].replies).toBeDefined();
             expect(responseJson.data.thread.comments[0].replies).toHaveLength(
@@ -620,6 +683,10 @@ describe('/threads endpoint', () => {
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'username',
                 'dicoding',
+            );
+            expect(responseJson.data.thread.comments[0]).toHaveProperty(
+                'likeCount',
+                0,
             );
             expect(responseJson.data.thread.comments[0].replies).toBeDefined();
             expect(responseJson.data.thread.comments[0].replies).toHaveLength(
@@ -689,6 +756,10 @@ describe('/threads endpoint', () => {
                 'username',
                 'dicoding',
             );
+            expect(responseJson.data.thread.comments[0]).toHaveProperty(
+                'likeCount',
+                0,
+            );
             expect(responseJson.data.thread.comments[0].replies).toBeDefined();
             expect(responseJson.data.thread.comments[0].replies).toHaveLength(
                 1,
@@ -756,6 +827,10 @@ describe('/threads endpoint', () => {
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'username',
                 'dicoding',
+            );
+            expect(responseJson.data.thread.comments[0]).toHaveProperty(
+                'likeCount',
+                0,
             );
             expect(responseJson.data.thread.comments[0].replies).toBeDefined();
             expect(responseJson.data.thread.comments[0].replies).toHaveLength(
@@ -825,6 +900,10 @@ describe('/threads endpoint', () => {
             expect(responseJson.data.thread.comments[0]).toHaveProperty(
                 'username',
                 'dicoding',
+            );
+            expect(responseJson.data.thread.comments[0]).toHaveProperty(
+                'likeCount',
+                0,
             );
             expect(responseJson.data.thread.comments[0].replies).toBeDefined();
             expect(responseJson.data.thread.comments[0].replies).toHaveLength(
