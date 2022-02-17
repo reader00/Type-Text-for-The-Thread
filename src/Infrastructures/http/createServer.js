@@ -23,6 +23,13 @@ const createServer = async (container) => {
 
     await server.register(plugins(container));
 
+    // hi route
+    server.route({
+        method: 'GET',
+        path: '/hi',
+        handler: () => 'Hello',
+    });
+
     // Set onPreResponse for error handler
     server.ext('onPreResponse', extensions.onPreResponse);
 
