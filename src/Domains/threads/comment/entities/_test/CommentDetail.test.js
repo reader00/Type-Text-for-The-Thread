@@ -9,7 +9,7 @@ describe('a CommentDetail entities', () => {
 
         // Action and Assert
         expect(() => new CommentDetail(payload)).toThrowError(
-            'COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY',
+            'COMMENT_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY',
         );
     });
 
@@ -21,12 +21,13 @@ describe('a CommentDetail entities', () => {
             date: '2021-08-08T07:19:09.775Z',
             username: [],
             is_deleted: '',
+            likeCount: '',
             replies: {},
         };
 
         // Action and Assert
         expect(() => new CommentDetail(payload)).toThrowError(
-            'COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
+            'COMMENT_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
@@ -38,6 +39,7 @@ describe('a CommentDetail entities', () => {
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
             is_deleted: false,
+            likeCount: 10,
             replies: [],
         };
 
@@ -62,6 +64,7 @@ describe('a CommentDetail entities', () => {
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
             is_deleted: true,
+            likeCount: 0,
             replies: [],
         };
 

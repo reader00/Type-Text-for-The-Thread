@@ -19,17 +19,19 @@ DomainErrorTranslator._dictionaries = {
     'REGISTER_USER.USERNAME_CONTAINS_RESTRICTED_CHARACTER': new InvariantError(
         'tidak dapat membuat user baru karena username mengandung karakter terlarang',
     ),
-    'LOGIN_USER.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan username dan password'),
+    'LOGIN_USER.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+        'harus mengirimkan username dan password',
+    ),
     'LOGIN_USER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
         'username dan password harus bertipe data string',
     ),
-    'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError(
+    'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN':
+        new InvariantError('harus mengirimkan refresh token'),
+    'REFRESH_AUTHENTICATION_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION':
+        new InvariantError('refresh token harus bertipe data string'),
+    'LOGOUT_USER_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError(
         'harus mengirimkan refresh token',
     ),
-    'REFRESH_AUTHENTICATION_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
-        'refresh token harus bertipe data string',
-    ),
-    'LOGOUT_USER_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('harus mengirimkan refresh token'),
     'LOGOUT_USER_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
         'refresh token harus bertipe data string',
     ),
@@ -57,6 +59,24 @@ DomainErrorTranslator._dictionaries = {
     'GET_THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
         'tidak dapat mengambil rincian karena tipe data tidak sesuai',
     ),
+    'THREAD_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+        'tidak dapat membuat rincian thread karena properti yang dibutuhkan tidak lengkap',
+    ),
+    'THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+        'tidak dapat membuat rincian thread karena tipe data tidak sesuai',
+    ),
+    'COMMENT_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+        'tidak dapat membuat rincian komentar karena properti yang dibutuhkan tidak lengkap',
+    ),
+    'COMMENT_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+        'tidak dapat membuat rincian komentar karena tipe data tidak sesuai',
+    ),
+    'REPLY_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+        'tidak dapat membuat rincian balasan karena properti yang dibutuhkan tidak lengkap',
+    ),
+    'REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+        'tidak dapat membuat rincian balasan karena tipe data tidak sesuai',
+    ),
     'ADD_REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
         'tidak dapat membuat balasan baru karena properti yang dibutuhkan tidak lengkap',
     ),
@@ -68,6 +88,12 @@ DomainErrorTranslator._dictionaries = {
     ),
     'DELETE_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
         'tidak dapat menghapus balasan karena tipe data tidak sesuai',
+    ),
+    'LIKE.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+        'tidak dapat menyukai atau batal menyukai komentar karena properti yang dibutuhkan tidak lengkap',
+    ),
+    'LIKE.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+        'tidak dapat menyukai atau batal menyukai komentar karena tipe data tidak sesuai',
     ),
 };
 

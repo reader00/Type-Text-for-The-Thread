@@ -37,7 +37,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
         }
     }
 
-    async getThreadDetailsById({ threadId }) {
+    async getThreadDetailById({ threadId }) {
         const query = {
             text: `	SELECT t.id, t.title, t.body, CAST(t.date AS VARCHAR) date, u.username
 					FROM threads t

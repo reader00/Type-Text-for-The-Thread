@@ -1,6 +1,6 @@
-const ThreadDetails = require('../ThreadDetails');
+const ThreadDetail = require('../ThreadDetail');
 
-describe('a ThreadDetails entities', () => {
+describe('a ThreadDetail entities', () => {
     it('should throw error when payload did not contain needed property', () => {
         // Arrange
         const payload = {
@@ -8,7 +8,9 @@ describe('a ThreadDetails entities', () => {
         };
 
         // Action and Assert
-        expect(() => new ThreadDetails(payload)).toThrowError('THREAD_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
+        expect(() => new ThreadDetail(payload)).toThrowError(
+            'THREAD_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY',
+        );
     });
 
     it('should throw error when payload did not meet data type specification', () => {
@@ -23,12 +25,12 @@ describe('a ThreadDetails entities', () => {
         };
 
         // Action and Assert
-        expect(() => new ThreadDetails(payload)).toThrowError(
-            'THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
+        expect(() => new ThreadDetail(payload)).toThrowError(
+            'THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
-    it('should create ThreadDetails object correctly', () => {
+    it('should create ThreadDetail object correctly', () => {
         // Arrange
         const payload = {
             id: 'thread-123',
@@ -40,9 +42,9 @@ describe('a ThreadDetails entities', () => {
         };
 
         // Action
-        const {
-            id, title, body, date, username, comments,
-        } = new ThreadDetails(payload);
+        const { id, title, body, date, username, comments } = new ThreadDetail(
+            payload,
+        );
 
         // Assert
         expect(id).toEqual(payload.id);

@@ -27,7 +27,7 @@ const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
 const AddThreadUseCase = require('../Applications/use_case/AddThreadUseCase');
 const ThreadRepository = require('../Domains/threads/thread/ThreadRepository');
 const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
-const GetThreadDetailsUseCase = require('../Applications/use_case/GetThreadDetailsUseCase');
+const GetThreadDetailUseCase = require('../Applications/use_case/GetThreadDetailUseCase');
 const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase');
 const AddReplyUseCase = require('../Applications/use_case/AddReplyUseCase');
 const DeleteReplyUseCase = require('../Applications/use_case/DeleteReplyUseCase');
@@ -35,6 +35,9 @@ const CommentRepository = require('../Domains/threads/comment/CommentRepository'
 const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
 const ReplyRepository = require('../Domains/threads/reply/ReplyRepository');
 const ReplyRepositoryPostgres = require('./repository/ReplyRepositoryPostgres');
+const LikeRepository = require('../Domains/threads/like/LikeRepository');
+const LikeRepositoryPostgres = require('./repository/LikeRepositoryPostgres');
+const LikeUseCase = require('../Applications/use_case/LikeUseCase');
 
 // creating container
 const container = createContainer();
@@ -119,6 +122,20 @@ container.register([
     {
         key: ReplyRepository.name,
         Class: ReplyRepositoryPostgres,
+        parameter: {
+            dependencies: [
+                {
+                    concrete: pool,
+                },
+                {
+                    concrete: nanoid,
+                },
+            ],
+        },
+    },
+    {
+        key: LikeRepository.name,
+        Class: LikeRepositoryPostgres,
         parameter: {
             dependencies: [
                 {
@@ -219,8 +236,8 @@ container.register([
         },
     },
     {
-        key: GetThreadDetailsUseCase.name,
-        Class: GetThreadDetailsUseCase,
+        key: GetThreadDetailUseCase.name,
+        Class: GetThreadDetailUseCase,
         parameter: {
             injectType: 'destructuring',
             dependencies: [
@@ -235,6 +252,10 @@ container.register([
                 {
                     name: 'replyRepository',
                     internal: ReplyRepository.name,
+                },
+                {
+                    name: 'likeRepository',
+                    internal: LikeRepository.name,
                 },
             ],
         },
@@ -295,6 +316,23 @@ container.register([
                 {
                     name: 'replyRepository',
                     internal: ReplyRepository.name,
+                },
+            ],
+        },
+    },
+    {
+        key: LikeUseCase.name,
+        Class: LikeUseCase,
+        parameter: {
+            injectType: 'destructuring',
+            dependencies: [
+                {
+                    name: 'likeRepository',
+                    internal: LikeRepository.name,
+                },
+                {
+                    name: 'commentRepository',
+                    internal: CommentRepository.name,
                 },
             ],
         },

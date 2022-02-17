@@ -1,9 +1,11 @@
-const GetThreadDetails = require('../GetThreadDetails');
+const GetThreadDetail = require('../GetThreadDetail');
 
-describe('a GetThreadDetails entities', () => {
+describe('a GetThreadDetail entities', () => {
     it('should throw error when payload did not contain needed property', () => {
         // Action and Assert
-        expect(() => new GetThreadDetails({})).toThrowError('GET_THREAD_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
+        expect(() => new GetThreadDetail({})).toThrowError(
+            'GET_THREAD_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY',
+        );
     });
 
     it('should throw error when payload did not meet data type specification', () => {
@@ -13,19 +15,19 @@ describe('a GetThreadDetails entities', () => {
         };
 
         // Action and Assert
-        expect(() => new GetThreadDetails(payload)).toThrowError(
-            'GET_THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION',
+        expect(() => new GetThreadDetail(payload)).toThrowError(
+            'GET_THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION',
         );
     });
 
-    it('should create GetThreadDetails object correctly', () => {
+    it('should create GetThreadDetail object correctly', () => {
         // Arrange
         const payload = {
             threadId: 'thread-123',
         };
 
         // Action
-        const { threadId } = new GetThreadDetails(payload);
+        const { threadId } = new GetThreadDetail(payload);
 
         // Assert
         expect(threadId).toEqual(payload.threadId);
