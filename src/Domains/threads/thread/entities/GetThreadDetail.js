@@ -1,4 +1,4 @@
-class GetThreadDetails {
+class GetThreadDetail {
     constructor(payload) {
         this._verifyPayload(payload);
 
@@ -9,13 +9,15 @@ class GetThreadDetails {
 
     _verifyPayload({ threadId }) {
         if (!threadId) {
-            throw new Error('GET_THREAD_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
+            throw new Error('GET_THREAD_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY');
         }
 
         if (typeof threadId !== 'string') {
-            throw new Error('GET_THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
+            throw new Error(
+                'GET_THREAD_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION',
+            );
         }
     }
 }
 
-module.exports = GetThreadDetails;
+module.exports = GetThreadDetail;
