@@ -21,6 +21,7 @@ describe('a CommentDetail entities', () => {
             date: '2021-08-08T07:19:09.775Z',
             username: [],
             is_deleted: '',
+            like_count: '',
             replies: {},
         };
 
@@ -38,6 +39,7 @@ describe('a CommentDetail entities', () => {
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
             is_deleted: false,
+            like_count: 10,
             replies: [],
         };
 
@@ -62,6 +64,7 @@ describe('a CommentDetail entities', () => {
             date: '2021-08-08T07:19:09.775Z',
             username: 'dicoding',
             is_deleted: true,
+            like_count: 0,
             replies: [],
         };
 
