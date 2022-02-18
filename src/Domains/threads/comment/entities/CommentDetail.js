@@ -1,13 +1,19 @@
-/* eslint-disable camelcase */
 class CommentDetail {
     constructor(payload) {
         this._verifyPayload(payload);
 
-        const { id, content, date, username, is_deleted, replies, likeCount } =
-            payload;
+        const {
+            id,
+            content,
+            date,
+            username,
+            is_deleted: isDeleted,
+            replies,
+            likeCount,
+        } = payload;
 
         this.id = id;
-        this.content = is_deleted ? '**komentar telah dihapus**' : content;
+        this.content = isDeleted ? '**komentar telah dihapus**' : content;
         this.date = date.toISOString();
         this.username = username;
         this.replies = replies;
@@ -19,7 +25,7 @@ class CommentDetail {
         content,
         date,
         username,
-        is_deleted,
+        is_deleted: isDeleted,
         replies,
         likeCount,
     }) {
@@ -40,7 +46,7 @@ class CommentDetail {
             typeof content !== 'string' ||
             !(date instanceof Date) ||
             typeof username !== 'string' ||
-            typeof is_deleted !== 'boolean' ||
+            typeof isDeleted !== 'boolean' ||
             Number.isNaN(likeCount) ||
             !(replies instanceof Array)
         ) {
