@@ -60,16 +60,10 @@ class GetThreadDetailUseCase {
                 .map(
                     (reply) =>
                         // eslint-disable-next-line implicit-arrow-linebreak
-                        new ReplyDetail({
-                            ...reply,
-                            date: reply.date.toString(),
-                        }),
+                        new ReplyDetail(reply),
                 );
 
-            return new CommentDetail({
-                ...comment,
-                date: comment.date.toString(),
-            });
+            return new CommentDetail(comment);
         });
     }
 }

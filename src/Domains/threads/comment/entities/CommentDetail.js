@@ -8,7 +8,7 @@ class CommentDetail {
 
         this.id = id;
         this.content = is_deleted ? '**komentar telah dihapus**' : content;
-        this.date = date;
+        this.date = date.toISOString();
         this.username = username;
         this.replies = replies;
         this.likeCount = likeCount;
@@ -38,7 +38,7 @@ class CommentDetail {
         if (
             typeof id !== 'string' ||
             typeof content !== 'string' ||
-            typeof date !== 'string' ||
+            !(date instanceof Date) ||
             typeof username !== 'string' ||
             typeof is_deleted !== 'boolean' ||
             typeof likeCount !== 'number' ||
