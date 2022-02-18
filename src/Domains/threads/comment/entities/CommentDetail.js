@@ -11,7 +11,7 @@ class CommentDetail {
         this.date = date.toISOString();
         this.username = username;
         this.replies = replies;
-        this.likeCount = likeCount;
+        this.likeCount = parseInt(likeCount, 10);
     }
 
     _verifyPayload({
@@ -41,7 +41,7 @@ class CommentDetail {
             !(date instanceof Date) ||
             typeof username !== 'string' ||
             typeof is_deleted !== 'boolean' ||
-            typeof likeCount !== 'number' ||
+            Number.isNaN(likeCount) ||
             !(replies instanceof Array)
         ) {
             throw new Error('COMMENT_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');

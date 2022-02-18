@@ -51,8 +51,7 @@ class GetThreadDetailUseCase {
                 (likeCount) => likeCount.comment_id === comment.id,
             );
 
-            comment.likeCount =
-                like !== undefined ? parseInt(like.like_count, 10) : 0;
+            comment.likeCount = like !== undefined ? like.like_count : 0;
 
             comment.replies = replies
                 .filter((reply) => reply.comment_id === comment.id)
