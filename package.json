@@ -7,9 +7,9 @@
         "start": "node ./src/app.js",
         "start:dev": "nodemon ./src/app.js",
         "lint": "eslint ./",
-        "test": "jest --setupFiles dotenv/config",
-        "test:watch": "jest --watchAll --coverage --runInBand --no-cache --setupFiles dotenv/config",
-        "test:watch-clg": "jest --watchAll --coverage --runInBand --no-cache --silent=false --setupFiles dotenv/config",
+        "test": "jest --runInBand --setupFiles dotenv/config",
+        "test:watch": "jest --watchAll --coverage --runInBand --setupFiles dotenv/config",
+        "test:watch-clg": "jest --watchAll --coverage --runInBand --silent=false --setupFiles dotenv/config",
         "migrate": "node-pg-migrate",
         "migrate:test": "node-pg-migrate -f ./config/database/test.json"
     },

@@ -1,17 +1,23 @@
-/* eslint-disable camelcase */
 class CommentDetail {
     constructor(payload) {
         this._verifyPayload(payload);
 
-        const { id, content, date, username, is_deleted, replies, likeCount } =
-            payload;
+        const {
+            id,
+            content,
+            date,
+            username,
+            is_deleted: isDeleted,
+            replies,
+            likeCount,
+        } = payload;
 
         this.id = id;
-        this.content = is_deleted ? '**komentar telah dihapus**' : content;
-        this.date = date;
+        this.content = isDeleted ? '**komentar telah dihapus**' : content;
+        this.date = date.toISOString();
         this.username = username;
         this.replies = replies;
-        this.likeCount = likeCount;
+        this.likeCount = parseInt(likeCount, 10);
     }
 
     _verifyPayload({
@@ -19,7 +25,7 @@ class CommentDetail {
         content,
         date,
         username,
-        is_deleted,
+        is_deleted: isDeleted,
         replies,
         likeCount,
     }) {
@@ -38,10 +44,10 @@ class CommentDetail {
         if (
             typeof id !== 'string' ||
             typeof content !== 'string' ||
-            typeof date !== 'string' ||
+            !(date instanceof Date) ||
             typeof username !== 'string' ||
-            typeof is_deleted !== 'boolean' ||
-            typeof likeCount !== 'number' ||
+            typeof isDeleted !== 'boolean' ||
+            Number.isNaN(likeCount) ||
             !(replies instanceof Array)
         ) {
             throw new Error('COMMENT_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');

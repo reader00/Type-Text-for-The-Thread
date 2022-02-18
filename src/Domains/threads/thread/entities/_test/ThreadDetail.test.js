@@ -36,7 +36,7 @@ describe('a ThreadDetail entities', () => {
             id: 'thread-123',
             title: 'Di atas Awan',
             body: 'Ku ingin terbang',
-            date: '2021-08-08T07:19:09.775Z',
+            date: new Date('2021-08-08T07:19:09.775Z'),
             username: 'dicoding',
             comments: [],
         };
@@ -50,7 +50,7 @@ describe('a ThreadDetail entities', () => {
         expect(id).toEqual(payload.id);
         expect(title).toEqual(payload.title);
         expect(body).toEqual(payload.body);
-        expect(date).toEqual(payload.date);
+        expect(date).toEqual(payload.date.toISOString());
         expect(username).toEqual(payload.username);
         expect(comments).toStrictEqual(payload.comments);
     });

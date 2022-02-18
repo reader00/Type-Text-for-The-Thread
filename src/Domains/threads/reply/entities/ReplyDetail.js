@@ -1,17 +1,16 @@
-/* eslint-disable camelcase */
 class ReplyDetail {
     constructor(payload) {
         this._verifyPayload(payload);
 
-        const { id, content, date, username, is_deleted } = payload;
+        const { id, content, date, username, is_deleted: isDeleted } = payload;
 
         this.id = id;
-        this.content = is_deleted ? '**balasan telah dihapus**' : content;
-        this.date = date;
+        this.content = isDeleted ? '**balasan telah dihapus**' : content;
+        this.date = date.toISOString();
         this.username = username;
     }
 
-    _verifyPayload({ id, content, date, username, is_deleted }) {
+    _verifyPayload({ id, content, date, username, is_deleted: isDeleted }) {
         if (!id || !content || !date || !username) {
             throw new Error('REPLY_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY');
         }
@@ -19,9 +18,9 @@ class ReplyDetail {
         if (
             typeof id !== 'string' ||
             typeof content !== 'string' ||
-            typeof date !== 'string' ||
+            !(date instanceof Date) ||
             typeof username !== 'string' ||
-            typeof is_deleted !== 'boolean'
+            typeof isDeleted !== 'boolean'
         ) {
             throw new Error('REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
         }
