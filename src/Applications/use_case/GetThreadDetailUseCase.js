@@ -47,21 +47,16 @@ class GetThreadDetailUseCase {
 
     _getCommentAndReplies(comments, replies, likeCounts) {
         return comments.map((comment) => {
-            // eslint-disable-next-line prefer-destructuring
-            const like = likeCounts.filter(
+            const like = likeCounts.find(
                 (likeCount) => likeCount.comment_id === comment.id,
             );
 
             comment.likeCount =
-                like.length > 0 ? parseInt(like[0].like_count, 10) : 0;
+                like !== undefined ? parseInt(like.like_count, 10) : 0;
 
             comment.replies = replies
                 .filter((reply) => reply.comment_id === comment.id)
-                .map(
-                    (reply) =>
-                        // eslint-disable-next-line implicit-arrow-linebreak
-                        new ReplyDetail(reply),
-                );
+                .map((reply) => new ReplyDetail(reply));
 
             return new CommentDetail(comment);
         });
