@@ -58,9 +58,12 @@ describe('CommentRepositoryPostgres', () => {
     });
 
     describe('addComment function', () => {
+        beforeEach(async () => {
+            await ThreadsTableTestHelper.addThread({});
+        });
+
         it('should persist add comment', async () => {
             // Arrange
-            await ThreadsTableTestHelper.addThread({});
             const addComment = new AddComment({
                 threadId: 'thread-123',
                 content: 'Tentang cerita dulu',
@@ -91,7 +94,6 @@ describe('CommentRepositoryPostgres', () => {
 
         it('should return added comment correctly', async () => {
             // Arrange
-            await ThreadsTableTestHelper.addThread({});
             const addComment = new AddComment({
                 threadId: 'thread-123',
                 content: 'Hai, apa kabar',
@@ -121,9 +123,12 @@ describe('CommentRepositoryPostgres', () => {
     });
 
     describe('getCommentsByThreadId', () => {
+        beforeEach(async () => {
+            await ThreadsTableTestHelper.addThread({});
+        });
+
         it('should return empty comments if there is no comment in the thread', async () => {
             // Arrange
-            const threadId = await ThreadsTableTestHelper.addThread({});
 
             const commentRepositoryPostgres = new CommentRepositoryPostgres(
                 pool,
@@ -133,7 +138,7 @@ describe('CommentRepositoryPostgres', () => {
             // Action
             const comments =
                 await commentRepositoryPostgres.getCommentsByThreadId({
-                    threadId,
+                    threadId: 'thread-123',
                 });
 
             // Assert
@@ -142,7 +147,6 @@ describe('CommentRepositoryPostgres', () => {
 
         it('should return comments correctly', async () => {
             // Arrange
-            const threadId = await ThreadsTableTestHelper.addThread({});
             await CommentsTableTestHelper.addComment({});
 
             const commentRepositoryPostgres = new CommentRepositoryPostgres(
@@ -153,7 +157,7 @@ describe('CommentRepositoryPostgres', () => {
             // Action
             const comments =
                 await commentRepositoryPostgres.getCommentsByThreadId({
-                    threadId,
+                    threadId: 'thread-123',
                 });
 
             // Assert
@@ -171,11 +175,13 @@ describe('CommentRepositoryPostgres', () => {
     });
 
     describe('deleteCommentById function', () => {
-        it('should persist delete comment', async () => {
-            // Arrange
+        beforeEach(async () => {
             await ThreadsTableTestHelper.addThread({});
             await CommentsTableTestHelper.addComment({});
+        });
 
+        it('should persist delete comment', async () => {
+            // Arrange
             const deleteComment = new DeleteComment({
                 threadId: 'thread-123',
                 commentId: 'comment-123',
@@ -200,9 +206,6 @@ describe('CommentRepositoryPostgres', () => {
 
         it('should throw ForbiddenError when the access user is not the owner', async () => {
             // Arrange
-            await ThreadsTableTestHelper.addThread({});
-            await CommentsTableTestHelper.addComment({});
-
             const deleteComment = new DeleteComment({
                 threadId: 'thread-123',
                 commentId: 'comment-123',

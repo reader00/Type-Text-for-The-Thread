@@ -11,6 +11,11 @@ describe('LikeRepositoryPostgres', () => {
         await UsersTableTestHelper.addUser({});
     });
 
+    beforeEach(async () => {
+        await ThreadsTableTestHelper.addThread({});
+        await CommentsTableTestHelper.addComment({});
+    });
+
     afterEach(async () => {
         await ThreadsTableTestHelper.cleanTable();
         await CommentsTableTestHelper.cleanTable();
@@ -25,11 +30,8 @@ describe('LikeRepositoryPostgres', () => {
     describe('checkLiked function', () => {
         it('should return an empty array when a comment is not liked yet', async () => {
             // Arrange
-            await ThreadsTableTestHelper.addThread({});
-            const commentId = await CommentsTableTestHelper.addComment({});
-
             const like = new Like({
-                commentId,
+                commentId: 'comment-123',
                 owner: 'user-123',
             });
             const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
@@ -43,12 +45,10 @@ describe('LikeRepositoryPostgres', () => {
 
         it('should return non empty array when a comment is liked', async () => {
             // Arrange
-            await ThreadsTableTestHelper.addThread({});
-            const commentId = await CommentsTableTestHelper.addComment({});
             await LikesTableTestHelper.addLike({});
 
             const like = new Like({
-                commentId,
+                commentId: 'comment-123',
                 owner: 'user-123',
             });
 
@@ -65,8 +65,6 @@ describe('LikeRepositoryPostgres', () => {
     describe('addLike function', () => {
         it('should persist add like', async () => {
             // Arrange
-            await ThreadsTableTestHelper.addThread({});
-            await CommentsTableTestHelper.addComment({});
             const like = new Like({
                 commentId: 'comment-123',
                 owner: 'user-123',
@@ -94,8 +92,6 @@ describe('LikeRepositoryPostgres', () => {
     describe('deleteLike function', () => {
         it('should persist delete like', async () => {
             // Arrange
-            await ThreadsTableTestHelper.addThread({});
-            await CommentsTableTestHelper.addComment({});
             await LikesTableTestHelper.addLike({});
             const like = new Like({
                 commentId: 'comment-123',
@@ -116,15 +112,12 @@ describe('LikeRepositoryPostgres', () => {
     describe('getLikeCountByThreadId', () => {
         it('should return an empty array if there is no like in the comment in the thread', async () => {
             // Arrange
-            const threadId = await ThreadsTableTestHelper.addThread({});
-            await CommentsTableTestHelper.addComment({});
-
             const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
 
             // Action
             const likeCounts =
                 await likeRepositoryPostgres.getLikeCountsByThreadId({
-                    threadId,
+                    threadId: 'thread-123',
                 });
 
             // Assert
@@ -133,8 +126,6 @@ describe('LikeRepositoryPostgres', () => {
 
         it('should return an array with length 1 if there is a like in the comment in the thread', async () => {
             // Arrange
-            const threadId = await ThreadsTableTestHelper.addThread({});
-            await CommentsTableTestHelper.addComment({});
             await LikesTableTestHelper.addLike({});
 
             const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
@@ -142,7 +133,7 @@ describe('LikeRepositoryPostgres', () => {
             // Action
             const likeCounts =
                 await likeRepositoryPostgres.getLikeCountsByThreadId({
-                    threadId,
+                    threadId: 'thread-123',
                 });
 
             // Assert

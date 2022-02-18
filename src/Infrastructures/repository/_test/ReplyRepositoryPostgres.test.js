@@ -61,10 +61,13 @@ describe('ReplyRepositoryPostgres', () => {
     });
 
     describe('addReply function', () => {
-        it('should persist add reply', async () => {
-            // Arrange
+        beforeEach(async () => {
             await ThreadsTableTestHelper.addThread({});
             await CommentsTableTestHelper.addComment({});
+        });
+
+        it('should persist add reply', async () => {
+            // Arrange
             const addReply = new AddReply({
                 commentId: 'comment-123',
                 content: 'Hai, apa kabar',
@@ -95,8 +98,6 @@ describe('ReplyRepositoryPostgres', () => {
 
         it('should return added reply correctly', async () => {
             // Arrange
-            await ThreadsTableTestHelper.addThread({});
-            await CommentsTableTestHelper.addComment({});
             const addReply = new AddReply({
                 commentId: 'comment-123',
                 content: 'Hai, apa kabar',
@@ -124,11 +125,13 @@ describe('ReplyRepositoryPostgres', () => {
     });
 
     describe('getRepliesByThreadId', () => {
+        beforeEach(async () => {
+            await ThreadsTableTestHelper.addThread({});
+            await CommentsTableTestHelper.addComment({});
+        });
+
         it('should return empty replies if there is no replies in the thread', async () => {
             // Arrange
-            const threadId = await ThreadsTableTestHelper.addThread({});
-            await CommentsTableTestHelper.addComment({});
-
             const replyRepositoryPostgres = new ReplyRepositoryPostgres(
                 pool,
                 {},
@@ -136,7 +139,7 @@ describe('ReplyRepositoryPostgres', () => {
 
             // Action
             const replies = await replyRepositoryPostgres.getRepliesByThreadId({
-                threadId,
+                threadId: 'thread-123',
             });
 
             // Assert
@@ -145,8 +148,6 @@ describe('ReplyRepositoryPostgres', () => {
 
         it('should return replies correctly', async () => {
             // Arrange
-            const threadId = await ThreadsTableTestHelper.addThread({});
-            await CommentsTableTestHelper.addComment({});
             await RepliesTableTestHelper.addReply({});
 
             const replyRepositoryPostgres = new ReplyRepositoryPostgres(
@@ -156,7 +157,7 @@ describe('ReplyRepositoryPostgres', () => {
 
             // Action
             const replies = await replyRepositoryPostgres.getRepliesByThreadId({
-                threadId,
+                threadId: 'thread-123',
             });
 
             // Assert
@@ -171,12 +172,13 @@ describe('ReplyRepositoryPostgres', () => {
     });
 
     describe('deleteReplyById function', () => {
-        it('should persist delete reply detail', async () => {
-            // Arrange
+        beforeEach(async () => {
             await ThreadsTableTestHelper.addThread({});
             await CommentsTableTestHelper.addComment({});
             await RepliesTableTestHelper.addReply({});
-
+        });
+        it('should persist delete reply detail', async () => {
+            // Arrange
             const deleteReply = new DeleteReply({
                 commentId: 'comment-123',
                 replyId: 'reply-123',
@@ -201,10 +203,6 @@ describe('ReplyRepositoryPostgres', () => {
 
         it('should throw ForbiddenError when the access user is not the owner', async () => {
             // Arrange
-            await ThreadsTableTestHelper.addThread({});
-            await CommentsTableTestHelper.addComment({});
-            await RepliesTableTestHelper.addReply({});
-
             const deleteReply = new DeleteReply({
                 commentId: 'comment-123',
                 replyId: 'reply-123',
