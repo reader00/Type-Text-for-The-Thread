@@ -113,45 +113,6 @@ describe('LikeRepositoryPostgres', () => {
         });
     });
 
-    describe('getLikeCountByCommentId', () => {
-        it('should return 0 if there is no like in the comment', async () => {
-            // Arrange
-            await ThreadsTableTestHelper.addThread({});
-            const commentId = await CommentsTableTestHelper.addComment({});
-
-            const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
-
-            // Action
-            const likeCount =
-                await likeRepositoryPostgres.getLikeCountByCommentId({
-                    commentId,
-                    owner: 'user-123',
-                });
-
-            // Assert
-            expect(parseInt(likeCount)).toEqual(0);
-        });
-
-        it('should return 1 if there is a like in the comment', async () => {
-            // Arrange
-            await ThreadsTableTestHelper.addThread({});
-            const commentId = await CommentsTableTestHelper.addComment({});
-            await LikesTableTestHelper.addLike({});
-
-            const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
-
-            // Action
-            const likeCount =
-                await likeRepositoryPostgres.getLikeCountByCommentId({
-                    commentId,
-                    owner: 'user-123',
-                });
-
-            // Assert
-            expect(parseInt(likeCount)).toEqual(1);
-        });
-    });
-
     describe('getLikeCountByThreadId', () => {
         it('should return an empty array if there is no like in the comment in the thread', async () => {
             // Arrange
@@ -180,7 +141,7 @@ describe('LikeRepositoryPostgres', () => {
 
             // Action
             const likeCounts =
-                await likeRepositoryPostgres.getLikeCountByCommentId({
+                await likeRepositoryPostgres.getLikeCountsByThreadId({
                     threadId,
                 });
 

@@ -15,10 +15,6 @@ describe('LikeRepository interface', () => {
         );
 
         await expect(
-            likeRepository.getLikeCountByCommentId({}),
-        ).rejects.toThrowError('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
-
-        await expect(
             likeRepository.getLikeCountsByThreadId({}),
         ).rejects.toThrowError('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
 
