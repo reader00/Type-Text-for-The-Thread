@@ -27,10 +27,10 @@ describe('DeleteReplyUseCase', () => {
             replyRepository: mockReplyRepository,
         });
 
-        // Action and Assert
-        await expect(
-            deleteReplyUseCase.execute(useCasePayload),
-        ).resolves.not.toThrow(InvariantError);
+        // Action
+        await deleteReplyUseCase.execute(useCasePayload);
+
+        // Assert
         expect(mockReplyRepository.deleteReplyById).toBeCalledWith(
             new DeleteReply({
                 commentId: 'comment-123',

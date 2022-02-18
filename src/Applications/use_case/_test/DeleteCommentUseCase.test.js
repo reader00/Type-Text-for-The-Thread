@@ -31,10 +31,10 @@ describe('DeleteCommentUseCase', () => {
             commentRepository: mockCommentRepository,
         });
 
-        // Action and Assert
-        await expect(
-            deleteCommentUseCase.execute(useCasePayload),
-        ).resolves.not.toThrow(InvariantError);
+        // Action
+        await deleteCommentUseCase.execute(useCasePayload);
+
+        // Assert
         expect(mockCommentRepository.deleteCommentById).toBeCalledWith(
             new DeleteComment({
                 threadId: 'thread-123',
