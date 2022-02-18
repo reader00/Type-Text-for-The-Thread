@@ -1,6 +1,5 @@
 class ThreadDetail {
     constructor(payload) {
-        console.log(payload);
         this._verifyPayload(payload);
 
         const { id, title, body, date, username, comments } = payload;
